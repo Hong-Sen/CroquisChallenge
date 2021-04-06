@@ -1,3 +1,9 @@
 <resources>
     <string name="app_name">CroquisChallenge</string>
+    <string name="facebook_app_id">165897431947953</string>
+    <string name="fb_login_protocol_scheme">fb165897431947953</string>
+    <string name="kakao_app_key">7e27f2ee8d03fbbf63629931272b8be7</string>
+    <string name="naver_client_id">QvvfJBdstGThsVteDbK5</string>
+    <string name="naver_client_secret">zOW_gFxLec</string>
+    <string name="naver_client_name">xxx</string>
 </resources>

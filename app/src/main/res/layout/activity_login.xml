@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:layout_marginBottom="20dp">
+
+    <ImageView
+        android:layout_width="200dp"
+        android:layout_height="200dp"
+        android:layout_gravity="center_horizontal"
+        android:src="@drawable/babysally"
+        android:layout_marginTop="100dp"
+        android:layout_marginBottom="100dp"
+        />
+
+    <Button
+        android:id="@+id/naver_login_button"
+        android:layout_width="280dp"
+        android:layout_height="50dp"
+        android:drawableLeft="@drawable/naver_login"
+        android:layout_gravity="center_horizontal"
+        android:paddingLeft="0dp"
+        android:layout_marginBottom="10dp" />
+
+    <FrameLayout
+     android:layout_width="match_parent"
+     android:layout_height="wrap_content">
+
+    <com.facebook.login.widget.LoginButton
+        android:id="@+id/facebook_login_button"
+        android:layout_width="50dp"
+        android:layout_height="20dp"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginBottom="10dp"
+        android:layout_marginTop="10dp"/>
+
+        <Button
+            android:id="@+id/facebook_fake_button"
+            android:layout_width="280dp"
+            android:layout_height="50dp"
+            android:layout_gravity="center_horizontal"
+            android:drawableLeft="@drawable/facebook_login"
+            android:paddingLeft="0dp"
+            android:layout_marginBottom="10dp"/>
+    </FrameLayout>
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        >
+
+        <com.kakao.usermgmt.LoginButton
+            android:id="@+id/kak_login_button"
+            android:layout_width="50dp"
+            android:layout_height="20dp"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="10dp"/>
+
+        <Button
+            android:id="@+id/kakao_fake_button"
+            android:layout_width="280dp"
+            android:layout_height="50dp"
+            android:layout_gravity="center_horizontal"
+            android:drawableLeft="@drawable/kakao_login"
+            android:paddingLeft="0dp"/>
+
+    </FrameLayout>
+
+</LinearLayout>
