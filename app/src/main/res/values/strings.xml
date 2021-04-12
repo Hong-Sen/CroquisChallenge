@@ -1,9 +1,36 @@
 <resources>
-    <string name="app_name">CroquisChallenge</string>
+    <!-- login -->
     <string name="facebook_app_id">165897431947953</string>
     <string name="fb_login_protocol_scheme">fb165897431947953</string>
     <string name="kakao_app_key">7e27f2ee8d03fbbf63629931272b8be7</string>
     <string name="naver_client_id">QvvfJBdstGThsVteDbK5</string>
     <string name="naver_client_secret">zOW_gFxLec</string>
     <string name="naver_client_name">xxx</string>
+
+    <!-- bottom navigation -->
+    <string name="bottom_feed">Feed</string>
+    <string name="bottom_search">Search</string>
+    <string name="bottom_calendar">Calendar</string>
+    <string name="bottom_add">Add Calendar</string>
+    <string name="bottom_setting">Setting</string>
+    >
+
+    <!-- feed drawer navigation -->
+    <string name="menu_feed">Feed</string>
+    <string name="menu_all"> ALL</string>
+    <string name="menu_anatomy">Anatomy</string>
+    <string name="menu_animal">Animal</string>
+    <string name="menu_objects">Objects</string>
+    <string name="menu_scenery">Scenery</string>
+
+    <!-- setting fragment -->
+    <string name="text1">안녕하세요! 가나다님!</string>
+    <string name="btn1">로그아웃</string>
+    <string name="btn2">서비스 탈퇴</string>
+    <string name="btn3">좋아요 리스트</string>
+    <string name="text2">안녕하세요! 가나다님!</string>
+
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>

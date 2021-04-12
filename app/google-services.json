@@ -1,0 +1,69 @@
+{
+  "project_info": {
+    "project_number": "215002492680",
+    "firebase_url": "https://croquischallenge-default-rtdb.firebaseio.com",
+    "project_id": "croquischallenge",
+    "storage_bucket": "croquischallenge.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:215002492680:android:7b032e0108cf8824ab06bd",
+        "android_client_info": {
+          "package_name": "com.example.croquischallenge"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "215002492680-keasn2a988jmq13li2jbr8mtiljpaj0c.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAP-Iepa8bgTNDvgLK21FN7_7v2Xo7bxb0"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "215002492680-keasn2a988jmq13li2jbr8mtiljpaj0c.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:215002492680:android:7d5537298b620820ab06bd",
+        "android_client_info": {
+          "package_name": "kr.sswu.croquischallenge"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "215002492680-keasn2a988jmq13li2jbr8mtiljpaj0c.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAP-Iepa8bgTNDvgLK21FN7_7v2Xo7bxb0"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "215002492680-keasn2a988jmq13li2jbr8mtiljpaj0c.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

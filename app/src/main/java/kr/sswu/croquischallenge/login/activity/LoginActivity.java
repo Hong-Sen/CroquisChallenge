@@ -1,5 +1,6 @@
 package kr.sswu.croquischallenge.login.activity;
 
+import android.content.Intent;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
@@ -36,6 +37,7 @@ import com.nhn.android.naverlogin.OAuthLoginHandler;
 
 import java.util.Arrays;
 
+import kr.sswu.croquischallenge.MainActivity;
 import kr.sswu.croquischallenge.R;
 import kr.sswu.croquischallenge.application.SessionCallback;
 
@@ -54,6 +56,7 @@ public class LoginActivity extends AppCompatActivity {
         Session.getCurrentSession().addCallback(sessionCallback);
         FacebookSdk.sdkInitialize(getApplicationContext());
         setContentView(R.layout.activity_login);
+        setFacebookLoginButton();
 
         fakeFacebookLoginBtn = (Button)findViewById(R.id.facebook_fake_button);
         LoginButton facebookloginButton = (LoginButton)findViewById(R.id.facebook_login_button);
@@ -102,6 +105,10 @@ public class LoginActivity extends AppCompatActivity {
                             Log.i("LoginData", "expiresAt : " + expiresAt);
                             Log.i("LoginData", "tokenType : " + tokenType);
 
+                            Intent intent = new Intent(LoginActivity.this, MainActivity.class);
+                            startActivity(intent);
+                            Log.e("Naver_SESSION", "네이버 로그인 성공");
+
                         } else {
                             String errorCode = mOAuthLoginModule
                                     .getLastErrorCode(mContext).getCode();
@@ -123,11 +130,15 @@ public class LoginActivity extends AppCompatActivity {
 
         LoginButton loginButton = findViewById(R.id.facebook_login_button);
         loginButton.setReadPermissions(Arrays.asList("email"));
+        loginButton.setToolTipMode(LoginButton.ToolTipMode.NEVER_DISPLAY);
 
         // Callback registration
         loginButton.registerCallback(callbackManager, new FacebookCallback<LoginResult>() {
             @Override
             public void onSuccess(LoginResult loginResult) {
+                Intent intent = new Intent(LoginActivity.this, MainActivity.class);
+                startActivity(intent);
+                Log.e("FaceBook_SESSION", "페이스북 로그인 성공");
                 finish();
             }
 
@@ -139,25 +150,29 @@ public class LoginActivity extends AppCompatActivity {
             @Override
             public void onError(FacebookException exception) {
                 // App code
+                Log.e("FaceBook_SESSION", "페이스북 - 로그인 실패", exception);
             }
         });
 
-        LoginManager.getInstance().retrieveLoginStatus(this, new LoginStatusCallback() {
-            @Override
-            public void onCompleted(AccessToken accessToken) {
-                finish();
-            }
-
-            @Override
-            public void onFailure() {
-                // No access token could be retrieved for the user
-            }
-
-            @Override
-            public void onError(Exception exception) {
-                // An error occurred
-            }
-        });
+//        LoginManager.getInstance().retrieveLoginStatus(this, new LoginStatusCallback() {
+//            @Override
+//            public void onCompleted(AccessToken accessToken) {
+//
+//                Intent intent = new Intent(LoginActivity.this, MainActivity.class);
+//                startActivity(intent);
+//                finish();
+//            }
+//
+//            @Override
+//            public void onFailure() {
+//                // No access token could be retrieved for the user
+//            }
+//
+//            @Override
+//            public void onError(Exception exception) {
+//                // An error occurred
+//            }
+//        });
 
     }
 
@@ -174,7 +189,9 @@ public class LoginActivity extends AppCompatActivity {
     private ISessionCallback sessionCallback = new ISessionCallback() {
         @Override
         public void onSessionOpened() {
-            Log.d("KAKAO_SESSION", "로그인 성공");
+            Intent intent = new Intent(LoginActivity.this, MainActivity.class);
+            startActivity(intent);
+            Log.d("KAKAO_SESSION", "카카오 로그인 성공");
             UserManagement.requestMe(new MeResponseCallback() {
                 @Override
                 public void onSessionClosed(ErrorResult errorResult) {

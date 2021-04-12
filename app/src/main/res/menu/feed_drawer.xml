@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:showIn="navigation_view">
+
+    <item
+        android:id="@+id/nav_feed"
+        android:title= "@string/menu_all" />
+
+    <item
+        android:id="@+id/nav_category"
+        android:title="Category">
+        <menu>
+            <item
+                android:id="@+id/nav_anatomy"
+                android:icon="@drawable/anatomy"
+                android:title="@string/menu_anatomy" />
+            <item
+                android:id="@+id/nav_animal"
+                android:icon="@drawable/animal"
+                android:title="@string/menu_animal" />
+            <item
+                android:id="@+id/nav_objects"
+                android:icon="@drawable/objects"
+                android:title="@string/menu_objects" />
+
+            <item
+                android:id="@+id/nav_scenery"
+                android:icon="@drawable/scenery"
+                android:title="@string/menu_scenery" />
+        </menu>
+    </item>
+</menu>

@@ -11,8 +11,6 @@ import com.kakao.auth.ISessionConfig;
 import com.kakao.auth.KakaoAdapter;
 import com.kakao.auth.KakaoSDK;
 
-import kr.sswu.croquischallenge.MainActivity;
-
 public class CroquisChallengeApplication extends Application {
 
     private static CroquisChallengeApplication instance;
