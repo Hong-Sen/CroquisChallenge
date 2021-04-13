@@ -1,35 +1,35 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:orientation="vertical"
     tools:context=".MainActivity">
+
 
     <!-- tool bar -->
     <com.google.android.material.appbar.AppBarLayout
         android:id="@+id/bar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="?android:windowBackground"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
+        android:background="?android:windowBackground">
 
         <androidx.appcompat.widget.Toolbar
             android:id="@+id/toolbar"
             android:layout_width="match_parent"
             android:layout_height="?android:actionBarSize"
-            android:background="?android:windowBackground"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.5"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent">
+            android:background="?android:windowBackground">
 
             <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentLeft="true"
+                    android:src="@drawable/title"/>
 
                 <ImageView
                     android:id="@+id/toolbar_timer"
@@ -43,49 +43,40 @@
         </androidx.appcompat.widget.Toolbar>
     </com.google.android.material.appbar.AppBarLayout>
 
-    <Button
-        android:id="@+id/Btn1"
-        android:layout_width="250dp"
-        android:layout_height="0dp"
-        android:layout_marginTop="120dp"
-        android:layout_marginBottom="30dp"
-        android:text="Line of action"
-        app:layout_constraintBottom_toTopOf="@+id/Btn2"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+    <com.google.android.material.tabs.TabLayout
+        android:id="@+id/webView_tab"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:tabMode="scrollable">
 
-    <Button
-        android:id="@+id/Btn2"
-        android:layout_width="250dp"
-        android:layout_height="0dp"
-        android:layout_marginBottom="30dp"
-        android:text="SketchDaily References"
-        app:layout_constraintBottom_toTopOf="@+id/Btn3"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/Btn1" />
+        <com.google.android.material.tabs.TabItem
+            android:id="@+id/tab1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Line of action" />
 
-    <Button
-        android:id="@+id/Btn3"
-        android:layout_width="250dp"
-        android:layout_height="0dp"
-        android:layout_marginBottom="30dp"
-        android:text="Croquis Cafe"
-        app:layout_constraintBottom_toTopOf="@+id/Btn4"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/Btn2" />
+        <com.google.android.material.tabs.TabItem
+            android:id="@+id/tab2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Croquis Cafe" />
 
-    <Button
-        android:id="@+id/Btn4"
-        android:layout_width="250dp"
-        android:layout_height="0dp"
-        android:layout_marginBottom="160dp"
-        android:text="Quickposes"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/Btn3" />
+        <com.google.android.material.tabs.TabItem
+            android:id="@+id/tab3"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Quickposes" />
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+        <com.google.android.material.tabs.TabItem
+            android:id="@+id/tab4"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="SketchDaily Reference " />
+    </com.google.android.material.tabs.TabLayout>
+
+    <WebView
+        android:id="@+id/webView_container"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" >
+    </WebView>
+</LinearLayout>
