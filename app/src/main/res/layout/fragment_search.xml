@@ -43,6 +43,7 @@
         </androidx.appcompat.widget.Toolbar>
     </com.google.android.material.appbar.AppBarLayout>
 
+    <!--tab-->
     <com.google.android.material.tabs.TabLayout
         android:id="@+id/webView_tab"
         android:layout_width="match_parent"
