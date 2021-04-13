@@ -102,8 +102,8 @@ public class PostActivity extends AppCompatActivity {
                     @Override
                     public void onClick(View view) {
                         //카메라로 사진 찍기 구현
-
-
+                        Toast.makeText(PostActivity.this, "Camera cannot be used yet. \n" +
+                                "Please bring a photo from the gallery", Toast.LENGTH_LONG).show();
                         bottomSheetDialog.dismiss();
                     }
                 });
@@ -141,7 +141,7 @@ public class PostActivity extends AppCompatActivity {
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
-        if (requestCode == 2 && resultCode == RESULT_OK && data != null) {
+        if (requestCode == PICK_FROM_CAMERA && resultCode == RESULT_OK && data != null) {
             imageUri = data.getData();
             imageView.setBackgroundColor(Color.WHITE);
             imageView.setImageURI(imageUri);
