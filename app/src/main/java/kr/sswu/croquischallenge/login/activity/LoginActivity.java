@@ -53,32 +53,10 @@ public class LoginActivity extends AppCompatActivity {
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        Session.getCurrentSession().addCallback(sessionCallback);
-        FacebookSdk.sdkInitialize(getApplicationContext());
         setContentView(R.layout.activity_login);
-        setFacebookLoginButton();
 
-        fakeFacebookLoginBtn = (Button)findViewById(R.id.facebook_fake_button);
-        LoginButton facebookloginButton = (LoginButton)findViewById(R.id.facebook_login_button);
-        fakeKakaoLoginBtn = (Button)findViewById(R.id.kakao_fake_button);
         naverLoginBtn = (Button)findViewById(R.id.naver_login_button);
         mContext = getApplicationContext();
-
-        fakeFacebookLoginBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                facebookloginButton.performClick();
-            }
-        });
-
-        fakeKakaoLoginBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Session session = Session.getCurrentSession();
-                session.addCallback(new SessionCallback());
-                session.open(AuthType.KAKAO_LOGIN_ALL, LoginActivity.this);
-            }
-        });
 
         naverLoginBtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -124,105 +102,4 @@ public class LoginActivity extends AppCompatActivity {
             }
         });
     }
-
-    private void setFacebookLoginButton() {
-        callbackManager = CallbackManager.Factory.create();
-
-        LoginButton loginButton = findViewById(R.id.facebook_login_button);
-        loginButton.setReadPermissions(Arrays.asList("email"));
-        loginButton.setToolTipMode(LoginButton.ToolTipMode.NEVER_DISPLAY);
-
-        // Callback registration
-        loginButton.registerCallback(callbackManager, new FacebookCallback<LoginResult>() {
-            @Override
-            public void onSuccess(LoginResult loginResult) {
-                Intent intent = new Intent(LoginActivity.this, MainActivity.class);
-                startActivity(intent);
-                Log.e("FaceBook_SESSION", "페이스북 로그인 성공");
-                finish();
-            }
-
-            @Override
-            public void onCancel() {
-                // App code
-            }
-
-            @Override
-            public void onError(FacebookException exception) {
-                // App code
-                Log.e("FaceBook_SESSION", "페이스북 - 로그인 실패", exception);
-            }
-        });
-
-//        LoginManager.getInstance().retrieveLoginStatus(this, new LoginStatusCallback() {
-//            @Override
-//            public void onCompleted(AccessToken accessToken) {
-//
-//                Intent intent = new Intent(LoginActivity.this, MainActivity.class);
-//                startActivity(intent);
-//                finish();
-//            }
-//
-//            @Override
-//            public void onFailure() {
-//                // No access token could be retrieved for the user
-//            }
-//
-//            @Override
-//            public void onError(Exception exception) {
-//                // An error occurred
-//            }
-//        });
-
-    }
-
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        callbackManager.onActivityResult(requestCode, resultCode, data);
-        // 카카오톡|스토리 간편로그인 실행 결과를 받아서 SDK로 전달
-        if (Session.getCurrentSession().handleActivityResult(requestCode, resultCode, data)) {
-            return;
-        }
-        super.onActivityResult(requestCode, resultCode, data);
-    }
-
-    private ISessionCallback sessionCallback = new ISessionCallback() {
-        @Override
-        public void onSessionOpened() {
-            Intent intent = new Intent(LoginActivity.this, MainActivity.class);
-            startActivity(intent);
-            Log.d("KAKAO_SESSION", "카카오 로그인 성공");
-            UserManagement.requestMe(new MeResponseCallback() {
-                @Override
-                public void onSessionClosed(ErrorResult errorResult) {
-                    Log.e("kakao",errorResult.toString());
-                }
-
-                @Override
-                public void onNotSignedUp() {
-                    Log.e("kakao","not signed up");
-                }
-
-                @Override
-                public void onSuccess(UserProfile result) {
-                    finish();
-                    Toast.makeText(LoginActivity.this, result.getNickname() + "님 로그인 완료", Toast.LENGTH_LONG)
-                            .show();
-                }
-            });
-        }
-
-        @Override
-        public void onSessionOpenFailed(KakaoException exception) {
-            Log.e("KAKAO_SESSION", "로그인 실패", exception);
-        }
-    };
-
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        // 세션 콜백 삭제
-        Session.getCurrentSession().removeCallback(sessionCallback);
-    }
-
 }
