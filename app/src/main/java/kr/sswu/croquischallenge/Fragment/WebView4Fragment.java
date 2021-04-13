@@ -25,7 +25,7 @@ public class WebView4Fragment extends Fragment {
         View view =  inflater.inflate(R.layout.fragment_web_view4, container, false);
 
         webView = view.findViewById(R.id.webView4);
-        webView.loadUrl("http://reference.sketchdaily.net/en");
+        webView.loadUrl("https://www.bodiesinmotion.photo/");
 
         return view;
     }
