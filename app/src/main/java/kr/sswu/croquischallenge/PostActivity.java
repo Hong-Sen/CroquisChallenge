@@ -17,6 +17,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -45,6 +46,7 @@ public class PostActivity extends AppCompatActivity {
     private static final int PICK_FROM_ALBUM = 1;
     private static final int PICK_FROM_CAMERA = 2;
 
+    private TextView toolBarTitle;
     private ImageView buttonClose, imageView;
     private BottomSheetDialog bottomSheetDialog;
     private ProgressBar progressBar;
@@ -65,7 +67,9 @@ public class PostActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_post);
 
+        toolBarTitle = findViewById(R.id.toolbar_title);
         buttonClose = findViewById(R.id.close_button);
+
         imageView = findViewById(R.id.add_photo);
         progressBar = findViewById(R.id.progressBar);
         autoCompleteTextView = findViewById(R.id.autoCompleteText);
@@ -74,11 +78,12 @@ public class PostActivity extends AppCompatActivity {
 
         progressBar.setVisibility(View.INVISIBLE);
 
+        toolBarTitle.setText("New Post");
+
         buttonClose.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(PostActivity.this, MainActivity.class);
-                startActivity(intent);
+            public void onClick(View v) {
+                finish();
             }
         });
 
@@ -102,8 +107,8 @@ public class PostActivity extends AppCompatActivity {
                     @Override
                     public void onClick(View view) {
                         //카메라로 사진 찍기 구현
-
-
+                        Toast.makeText(PostActivity.this, "Camera cannot be used yet. \n" +
+                                "Please bring a photo from the gallery", Toast.LENGTH_LONG).show();
                         bottomSheetDialog.dismiss();
                     }
                 });
@@ -141,7 +146,7 @@ public class PostActivity extends AppCompatActivity {
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
-        if (requestCode == 2 && resultCode == RESULT_OK && data != null) {
+        if (requestCode == PICK_FROM_CAMERA && resultCode == RESULT_OK && data != null) {
             imageUri = data.getData();
             imageView.setBackgroundColor(Color.WHITE);
             imageView.setImageURI(imageUri);

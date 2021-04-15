@@ -3,10 +3,10 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".Fragment.WebView1Fragment">
+    tools:context=".Fragment.WebView4Fragment">
 
     <WebView
-        android:id="@+id/webView1"
+        android:id="@+id/webView4"
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
 
