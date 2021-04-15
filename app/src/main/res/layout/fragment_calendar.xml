@@ -8,4 +8,10 @@
     <!-- toolbar -->
     <include layout="@layout/custom_toolbar"/>
 
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/bottom_calendar"
+        android:layout_gravity="center"/>
+
 </FrameLayout>
