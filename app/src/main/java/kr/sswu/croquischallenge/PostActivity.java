@@ -17,6 +17,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -45,6 +46,7 @@ public class PostActivity extends AppCompatActivity {
     private static final int PICK_FROM_ALBUM = 1;
     private static final int PICK_FROM_CAMERA = 2;
 
+    private TextView toolBarTitle;
     private ImageView buttonClose, imageView;
     private BottomSheetDialog bottomSheetDialog;
     private ProgressBar progressBar;
@@ -65,7 +67,9 @@ public class PostActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_post);
 
+        toolBarTitle = findViewById(R.id.toolbar_title);
         buttonClose = findViewById(R.id.close_button);
+
         imageView = findViewById(R.id.add_photo);
         progressBar = findViewById(R.id.progressBar);
         autoCompleteTextView = findViewById(R.id.autoCompleteText);
@@ -74,11 +78,12 @@ public class PostActivity extends AppCompatActivity {
 
         progressBar.setVisibility(View.INVISIBLE);
 
+        toolBarTitle.setText("New Post");
+
         buttonClose.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(PostActivity.this, MainActivity.class);
-                startActivity(intent);
+            public void onClick(View v) {
+                finish();
             }
         });
 
