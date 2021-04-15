@@ -7,41 +7,8 @@
     android:orientation="vertical"
     tools:context=".MainActivity">
 
-
-    <!-- tool bar -->
-    <com.google.android.material.appbar.AppBarLayout
-        android:id="@+id/bar"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="?android:windowBackground">
-
-        <androidx.appcompat.widget.Toolbar
-            android:id="@+id/toolbar"
-            android:layout_width="match_parent"
-            android:layout_height="?android:actionBarSize"
-            android:background="?android:windowBackground">
-
-            <RelativeLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content">
-
-                <ImageView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentLeft="true"
-                    android:src="@drawable/title"/>
-
-                <ImageView
-                    android:id="@+id/toolbar_timer"
-                    android:layout_width="35dp"
-                    android:layout_height="35dp"
-                    android:layout_alignParentEnd="true"
-                    android:layout_alignParentRight="true"
-                    android:layout_marginRight="10dp"
-                    android:src="@drawable/timer" />
-            </RelativeLayout>
-        </androidx.appcompat.widget.Toolbar>
-    </com.google.android.material.appbar.AppBarLayout>
+    <!-- toolbar -->
+    <include layout="@layout/custom_toolbar"/>
 
     <!--tab-->
     <com.google.android.material.tabs.TabLayout
@@ -54,25 +21,25 @@
             android:id="@+id/tab1"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Line of action" />
+            android:text="@string/refWeb1" />
 
         <com.google.android.material.tabs.TabItem
             android:id="@+id/tab2"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Croquis Cafe" />
+            android:text="@string/refWeb2" />
 
         <com.google.android.material.tabs.TabItem
             android:id="@+id/tab3"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Quickposes" />
+            android:text="@string/refWeb3" />
 
         <com.google.android.material.tabs.TabItem
             android:id="@+id/tab4"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Bodies in Motion" />
+            android:text="@string/refWeb4" />
     </com.google.android.material.tabs.TabLayout>
 
     <WebView
