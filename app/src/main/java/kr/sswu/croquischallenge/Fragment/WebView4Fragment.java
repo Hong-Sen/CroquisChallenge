@@ -7,16 +7,13 @@ import androidx.fragment.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.webkit.WebSettings;
 import android.webkit.WebView;
 
 import kr.sswu.croquischallenge.R;
 
-
 public class WebView4Fragment extends Fragment {
 
     WebView webView;
-    WebSettings webSettings;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
