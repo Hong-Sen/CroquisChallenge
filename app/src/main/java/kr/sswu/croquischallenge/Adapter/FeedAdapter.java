@@ -1,6 +1,6 @@
 package kr.sswu.croquischallenge.Adapter;
 
-import android.content.Context;
+import android.net.Uri;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -9,45 +9,42 @@ import android.widget.ImageView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.bumptech.glide.Glide;
-import kr.sswu.croquischallenge.Model.Feed;
+import com.firebase.ui.firestore.FirestoreRecyclerAdapter;
+import com.firebase.ui.firestore.FirestoreRecyclerOptions;
+
+import kr.sswu.croquischallenge.Model.FeedModel;
 import kr.sswu.croquischallenge.R;
 
-import java.util.ArrayList;
+public class FeedAdapter extends FirestoreRecyclerAdapter<FeedModel, FeedAdapter.FeedHolder> {
 
-public class FeedAdapter extends RecyclerView.Adapter<FeedAdapter.FeedViewHolder> {
+    public FeedAdapter(@NonNull FirestoreRecyclerOptions<FeedModel> options) {
+        super(options);
+    }
 
-    private ArrayList<Feed> mList;
-    private Context context;
-
-    public FeedAdapter(Context context, ArrayList<Feed> mList) {
-        this.context = context;
-        this.mList = mList;
+    @Override
+    protected void onBindViewHolder(@NonNull FeedHolder holder, int position, @NonNull FeedModel model) {
+        holder.imageView.setImageURI(Uri.parse(model.getImageUrl()));
+     //   holder.category.setText(model.getCategory());
     }
 
     @NonNull
     @Override
-    public FeedViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View v = LayoutInflater.from(context).inflate(R.layout.feed_item, parent, false);
-        return new FeedViewHolder(v);
+    public FeedHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+        View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.feed_item, parent, false);
+        return new FeedHolder(v);
     }
 
-    @Override
-    public void onBindViewHolder(@NonNull FeedViewHolder holder, int position) {
-        Glide.with(context).load(mList.get(position).getImageUrl()).into(holder.imageView);
 
-    }
-
-    @Override
-    public int getItemCount() {
-        return mList.size();
-    }
-
-    public static class FeedViewHolder extends RecyclerView.ViewHolder {
+    class FeedHolder extends RecyclerView.ViewHolder {
         ImageView imageView;
-        public FeedViewHolder(@NonNull View itemView) {
+     //   TextView category;
+
+        public FeedHolder(View itemView) {
             super(itemView);
             imageView = itemView.findViewById(R.id.f_image);
+        //    category = itemView.findViewById(R.id.f_category);
         }
     }
+
 }
+
