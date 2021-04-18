@@ -1,6 +1,7 @@
 package kr.sswu.croquischallenge.Fragment;
 
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
@@ -14,10 +15,16 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.firebase.ui.firestore.FirestoreRecyclerAdapter;
+import com.firebase.ui.firestore.FirestoreRecyclerOptions;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.navigation.NavigationView;
+import com.google.firebase.FirebaseOptions;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.firestore.CollectionReference;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.Query;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 
@@ -25,7 +32,7 @@ import java.util.ArrayList;
 
 import kr.sswu.croquischallenge.Adapter.FeedAdapter;
 import kr.sswu.croquischallenge.MainActivity;
-import kr.sswu.croquischallenge.Model.Feed;
+import kr.sswu.croquischallenge.Model.FeedModel;
 import kr.sswu.croquischallenge.PostActivity;
 import kr.sswu.croquischallenge.R;
 import kr.sswu.croquischallenge.TimerActivity;
@@ -42,12 +49,13 @@ public class FeedFragment extends Fragment {
 
     //feed upload btn
     private FloatingActionButton fab;
+
+    //feed view
     private RecyclerView recyclerView;
-    private ArrayList<Feed> list;
+    private FirebaseFirestore db = FirebaseFirestore.getInstance();
+    private CollectionReference feedRef = db.collection("feeds");
     private FeedAdapter adapter;
- //   private FirebaseFirestore db = FirebaseFirestore.getInstance();;
-    private StorageReference reference = FirebaseStorage.getInstance().getReference();
-    private DatabaseReference root = FirebaseDatabase.getInstance().getReference("Image");
+
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -61,29 +69,22 @@ public class FeedFragment extends Fragment {
         drawerLayout = view.findViewById(R.id.drawer_layout);
         navigationView = view.findViewById(R.id.nav_view);
 
+        /*
         recyclerView = view.findViewById(R.id.feed_recyclerview);
+
+        //Query
+        Query query = feedRef; //orderby() limit()
+
+        //RecyclerOptions
+        FirestoreRecyclerOptions<FeedModel> options = new FirestoreRecyclerOptions.Builder<FeedModel>()
+                .setQuery(query, FeedModel.class)
+                .build();
+
+        adapter = new FeedAdapter(options);
+
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         recyclerView.setAdapter(adapter);
-
-        list = new ArrayList<>();
-        adapter = new FeedAdapter(getContext(), list);
-        /*
-        root.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot snapshot) {
-                for(DataSnapshot dataSnapshot : snapshot.getChildren()) {
-                    Feed feed = dataSnapshot.getValue(Feed.class);
-                    list.add(feed);
-                }
-                adapter.notifyDataSetChanged();
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError error) {
-
-            }
-        });
 */
 
         // drawer navigation open
@@ -145,4 +146,18 @@ public class FeedFragment extends Fragment {
 
         return view;
     }
+/*
+    @Override
+    public void onStart() {
+        super.onStart();
+        adapter.startListening();
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        adapter.stopListening();
+    }
+ */
 }
+
