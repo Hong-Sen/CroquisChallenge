@@ -53,8 +53,6 @@ dependencies {
     implementation "androidx.browser:browser:$android_x_version"
     implementation "androidx.legacy:legacy-support-v4:$android_x_version"
 
-
-
     //feed fragment & post activity
     //bottom_sheet
     implementation "com.google.android.material:material:1.2.0-alpha01"
@@ -63,12 +61,6 @@ dependencies {
     //glide
     implementation 'com.github.bumptech.glide:glide:4.12.0'
     annotationProcessor 'com.github.bumptech.glide:compiler:4.12.0'
-    //crop image
-    api 'com.theartofdev.edmodo:android-image-cropper:2.8.+'
-    // FirebaseUI for Cloud Firestore
-    implementation 'com.firebaseui:firebase-ui-firestore:7.1.1'
-
-
 
     //setting activity
     implementation 'androidx.appcompat:appcompat:1.1.0'
