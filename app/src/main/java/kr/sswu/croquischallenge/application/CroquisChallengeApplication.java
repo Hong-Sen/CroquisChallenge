@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.app.Application;
 import android.content.Context;
 
+import com.androidnetworking.AndroidNetworking;
 import com.kakao.auth.ApprovalType;
 import com.kakao.auth.AuthType;
 import com.kakao.auth.IApplicationConfig;
@@ -27,7 +28,7 @@ public class CroquisChallengeApplication extends Application {
     public void onCreate() {
         super.onCreate();
         instance = this;
-
+        AndroidNetworking.initialize(getApplicationContext());
         // Kakao Sdk 초기화
         KakaoSDK.init(new KakaoSDKAdapter());
     }
