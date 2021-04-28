@@ -87,5 +87,8 @@ dependencies {
     // https://firebase.google.com/docs/android/setup#available-libraries
 
     implementation 'com.google.firebase:firebase-messaging:17.3.4'
+
+    // RNetworking Library
+    implementation 'com.amitshekhar.android:android-networking:1.0.2'
 }
 apply plugin: 'com.google.gms.google-services'
