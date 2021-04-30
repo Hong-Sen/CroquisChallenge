@@ -1,13 +1,18 @@
 package kr.sswu.croquischallenge;
 
+import android.Manifest;
 import android.content.ContentResolver;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.Color;
+import android.graphics.ImageDecoder;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Environment;
 import android.provider.MediaStore;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -25,10 +30,13 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.FileProvider;
 
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
+import com.google.firebase.Timestamp;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.firestore.DocumentReference;
@@ -40,6 +48,10 @@ import com.google.firebase.storage.UploadTask;
 import com.theartofdev.edmodo.cropper.CropImage;
 import com.theartofdev.edmodo.cropper.CropImageView;
 
+import java.io.File;
+import java.io.IOException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -62,6 +74,8 @@ public class PostActivity extends AppCompatActivity {
     private Uri imageUri;
     private DatabaseReference root = FirebaseDatabase.getInstance().getReference("Image");
 
+    final private static String TAG = "";
+    String mCurrentPhotoPath;
 
     @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN_MR1)
     @Override
@@ -79,9 +93,7 @@ public class PostActivity extends AppCompatActivity {
         buttonUpload = findViewById(R.id.upload_button);
 
         progressBar.setVisibility(View.INVISIBLE);
-
         toolBarTitle.setText("New Post");
-
         buttonClose.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -96,12 +108,19 @@ public class PostActivity extends AppCompatActivity {
         //   autoCompleteTextView.setText(arrayAdapter.getItem(0).toString(), false);
         autoCompleteTextView.setAdapter(arrayAdapter);
 
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            if (checkSelfPermission(Manifest.permission.CAMERA) == PackageManager.PERMISSION_GRANTED
+                    && checkSelfPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED) {
+                Log.d(TAG, "권한 설정 완료");
+            } else {
+                Log.d(TAG, "권한 설정 요청");
+                ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.CAMERA, Manifest.permission.WRITE_EXTERNAL_STORAGE}, 1);
+            }
+        }
 
         imageView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
-                //    startCropActivity();
 
                 bottomSheetDialog = new BottomSheetDialog(PostActivity.this, R.style.BottomSheetTheme);
 
@@ -111,22 +130,8 @@ public class PostActivity extends AppCompatActivity {
                 sheetView.findViewById(R.id.getCamera).setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
-                        //카메라로 사진 찍기 구현
-                        
-                        Toast.makeText(PostActivity.this, "Camera cannot be used yet. \n" +
-                                "Please bring a photo from the gallery", Toast.LENGTH_LONG).show();
-
-
-
-                        /*
-                        Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-                        if (intent.resolveActivity(getPackageManager()) != null) {
-                            startActivityForResult(intent, CAMERA_ACTION_CODE);
-                        } else {
-                            Toast.makeText(PostActivity.this, "There is no app that support this action", Toast.LENGTH_SHORT).show();
-                        }
-
-                         */
+                        //카메라로 사진 가져오기
+                        dispatchTakePhotoIntent();
                     }
                 });
 
@@ -134,7 +139,6 @@ public class PostActivity extends AppCompatActivity {
                     @Override
                     public void onClick(View view) {
                         // 앨범에서 사진 가져오기
-
                         Intent intent = new Intent();
                         intent.setAction(Intent.ACTION_GET_CONTENT);
                         intent.setType("image/*");
@@ -160,37 +164,62 @@ public class PostActivity extends AppCompatActivity {
         });
     }
 
-    /*
-        @Override
-        protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
-            super.onActivityResult(requestCode, resultCode, data);
-
-            if (requestCode == PICK_FROM_ALBUM && resultCode == RESULT_OK && data != null) {
-                imageUri = data.getData();
-                imageView.setBackgroundColor(Color.WHITE);
-                imageView.setImageURI(imageUri);
-            }
-
+    @Override
+    public void onRequestPermissionsResult(int requestCode, String permissions[], int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        Log.d(TAG, "onRequestPermissionResult");
+        if (grantResults[0] == PackageManager.PERMISSION_GRANTED && grantResults[1] == PackageManager.PERMISSION_GRANTED) {
+            Log.d(TAG, "Permission: " + permissions[0] + "was " + grantResults[0]);
         }
-    */
+    }
+
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
+        //앨범에서 이미지 가져오는 경우
         if (requestCode == GALLERY_ACTION_CODE && resultCode == RESULT_OK) {
             imageUri = data.getData();
             CropImage.activity(imageUri)
                     .setGuidelines(CropImageView.Guidelines.ON)
                     .start(this);
         }
-/*
-        if (requestCode == CAMERA_ACTION_CODE && requestCode == RESULT_OK && data != null) {
-            Bundle bundle = data.getExtras();
-            Bitmap photo = (Bitmap)bundle.get("data");
-            imageView.setBackgroundColor(Color.WHITE);
-            imageView.setImageBitmap(photo);
+
+        // 카메라로 사진을 찍어 이미지 가져오는 경우
+        if (requestCode == CAMERA_ACTION_CODE && resultCode == RESULT_OK) {
+            try {
+                File file = new File(mCurrentPhotoPath);
+                Bitmap bitmap;
+                if (Build.VERSION.SDK_INT >= 29) {
+                    ImageDecoder.Source source = ImageDecoder.createSource(getContentResolver(), Uri.fromFile(file));
+
+                    try {
+                        bitmap = ImageDecoder.decodeBitmap(source);
+                        if (bitmap != null) {
+                            CropImage.activity(imageUri)
+                                    .setGuidelines(CropImageView.Guidelines.ON)
+                                    .start(this);
+                        }
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                } else {
+                    try {
+                        bitmap = MediaStore.Images.Media.getBitmap(getContentResolver(), Uri.fromFile(file));
+                        if (bitmap != null) {
+                            CropImage.activity(imageUri)
+                                    .setGuidelines(CropImageView.Guidelines.ON)
+                                    .start(this);
+                        }
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                }
+            } catch (Exception error) {
+                error.printStackTrace();
+            }
         }
-*/
+
         if (requestCode == CropImage.CROP_IMAGE_ACTIVITY_REQUEST_CODE) {
             CropImage.ActivityResult result = CropImage.getActivityResult(data);
             if (resultCode == RESULT_OK) {
@@ -204,6 +233,40 @@ public class PostActivity extends AppCompatActivity {
 
     }
 
+    private void dispatchTakePhotoIntent() {
+        Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+
+        File photoFile = null;
+
+        try {
+            photoFile = createImageFile();
+        } catch (IOException ex) {
+            Toast.makeText(this, "이미지 처리 오류 발생. 다시 시도해주세요.", Toast.LENGTH_SHORT).show();
+            finish();
+            ex.printStackTrace();
+        }
+        if (photoFile != null) {
+            imageUri = FileProvider.getUriForFile(this, "kr.sswu.croquischallenge.fileprovider", photoFile);
+            intent.putExtra(MediaStore.EXTRA_OUTPUT, imageUri);
+            startActivityForResult(intent, CAMERA_ACTION_CODE);
+            bottomSheetDialog.dismiss();
+        }
+    }
+
+    private File createImageFile() throws IOException {
+        String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
+        String imageFileName = "JPEG_" + timeStamp + "_";
+        File storageDir = getExternalFilesDir(Environment.DIRECTORY_PICTURES);
+        File image = File.createTempFile(
+                imageFileName,
+                ".jpg",
+                storageDir
+        );
+
+        mCurrentPhotoPath = image.getAbsolutePath();
+        return image;
+    }
+
     private void uploadToFirebase(Uri uri) {
         StorageReference fileRef = reference.child(System.currentTimeMillis() + getFileExtension(uri));
         fileRef.putFile(uri).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
@@ -215,6 +278,7 @@ public class PostActivity extends AppCompatActivity {
                         // Create a new feed with a feedId, category and description
                         Map<String, Object> feed = new HashMap<>();
                         feed.put("feedId", uri.toString());
+                        feed.put("date", Timestamp.now());
                         feed.put("category", autoCompleteTextView.getEditableText().toString());
                         feed.put("description", editText.getEditableText().toString());
 
@@ -223,13 +287,13 @@ public class PostActivity extends AppCompatActivity {
                                 .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
                                     @Override
                                     public void onSuccess(DocumentReference documentReference) {
-                                        //    Log.d(TAG, "DocumentSnapshot added with ID: " + documentReference.getId());
+                                        Log.d(TAG, "DocumentSnapshot added with ID: " + documentReference.getId());
                                     }
                                 })
                                 .addOnFailureListener(new OnFailureListener() {
                                     @Override
                                     public void onFailure(@NonNull Exception e) {
-                                        //   Log.w(TAG, "Error adding document", e);
+                                        Log.w(TAG, "Error adding document", e);
                                     }
                                 });
 
