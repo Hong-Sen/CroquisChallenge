@@ -2,6 +2,7 @@ package kr.sswu.croquischallenge.Fragment;
 
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -12,6 +13,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.CompoundButton;
+import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -21,6 +24,9 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.iid.FirebaseInstanceId;
 import com.google.firebase.iid.InstanceIdResult;
+import com.google.firebase.messaging.FirebaseMessaging;
+
+import static android.content.Context.MODE_PRIVATE;
 
 public class SettingFragment extends Fragment {
 
@@ -28,12 +34,36 @@ public class SettingFragment extends Fragment {
     Button btnRemove;
     Button btnList;
     TextView imt;
+    Switch sw;
+    SharedPreferences sharedPreferences;
+    public static final String ex = "sw";
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_setting, container, false);
+
+        // 스위치
+        sw = (Switch) view.findViewById(R.id.sw);
+        sharedPreferences = getActivity().getSharedPreferences(" ",MODE_PRIVATE);
+        final SharedPreferences.Editor editor = sharedPreferences.edit();
+        sw.setChecked(sharedPreferences.getBoolean(ex,false));
+
+        sw.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                if (isChecked){
+                    editor.putBoolean(ex, true); // value to store
+                    FirebaseMessaging.getInstance().subscribeToTopic("1");
+                }
+                else{
+                    editor.putBoolean(ex, false); // value to store
+                    FirebaseMessaging.getInstance().unsubscribeFromTopic("1");
+                }
+                editor.commit();
+            }
+        });
 
         //fcm cloudmessage token
         FirebaseInstanceId.getInstance().getInstanceId()
@@ -47,10 +77,9 @@ public class SettingFragment extends Fragment {
                         String token = task.getResult().getToken();
 
                         Log.d("FCM Log", "FCM 토큰: "+ token);
-                        //Toast.makeText(MainActivity.this, token, Toast.LENGTH_SHORT).show();
-
                     }
                 });
+
 
         //좋아요 리스트
         btnList = (Button)view.findViewById(R.id.btnList);
@@ -86,5 +115,11 @@ public class SettingFragment extends Fragment {
         imt.setText(" 개발자 성신여자대학교 정시공 에이틴");
 
         return view;
+    }
+    //액티비티 종료 전 저장
+    public void onDestroy() {
+        super.onDestroy();
+
+
     }
 }

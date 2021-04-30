@@ -63,6 +63,14 @@
         android:layout_height="wrap_content"
         android:layout_weight="1"
         android:text="@string/btn2"/>
+
+    <Switch
+        android:id="@+id/sw"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:text="푸시 알람" />
+
     <TextView
         android:id="@+id/imt"
         android:layout_width="match_parent"
