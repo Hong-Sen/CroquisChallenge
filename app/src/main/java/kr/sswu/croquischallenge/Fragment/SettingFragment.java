@@ -10,6 +10,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.CompoundButton;
+import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -20,7 +22,9 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.iid.FirebaseInstanceId;
 import com.google.firebase.iid.InstanceIdResult;
+import com.google.firebase.messaging.FirebaseMessaging;
 
+import static android.content.Context.MODE_PRIVATE;
 import kr.sswu.croquischallenge.MainActivity;
 import kr.sswu.croquischallenge.R;
 import kr.sswu.croquischallenge.likeActivity;
@@ -34,6 +38,10 @@ public class SettingFragment extends Fragment {
     Button btnList;
     TextView imt;
     TextView myAccount;
+    Switch sw;
+    SharedPreferences sharedPreferences;
+    public static final String ex = "sw";
+
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -49,6 +57,27 @@ public class SettingFragment extends Fragment {
         myAccount.setText(
                 getString(R.string.text1, username)
         );
+
+        sw = (Switch) view.findViewById(R.id.sw);
+        sharedPreferences = getActivity().getSharedPreferences(" ",MODE_PRIVATE);
+        final SharedPreferences.Editor editor = sharedPreferences.edit();
+        sw.setChecked(sharedPreferences.getBoolean(ex,false));
+
+        sw.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                if (isChecked){
+                    editor.putBoolean(ex, true); // value to store
+                    FirebaseMessaging.getInstance().subscribeToTopic("1");
+                }
+                else{
+                    editor.putBoolean(ex, false); // value to store
+                    FirebaseMessaging.getInstance().unsubscribeFromTopic("1");
+                }
+                editor.commit();
+            }
+        });
+
 
         //fcm cloudmessage token
         FirebaseInstanceId.getInstance().getInstanceId()
