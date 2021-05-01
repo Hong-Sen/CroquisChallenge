@@ -121,16 +121,6 @@ public class SettingFragment extends Fragment {
             }
         });
 
-
-        //서비스 탈퇴
-        btnRemove = (Button) view.findViewById(R.id.btnRemove);
-        btnRemove.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Toast.makeText(getContext(), "서비스 탈퇴 완료", Toast.LENGTH_SHORT).show();
-            }
-        });
-
         imt = (TextView) view.findViewById(R.id.imt);
         imt.setText(" 개발자 성신여자대학교 정시공 에이틴");
 
