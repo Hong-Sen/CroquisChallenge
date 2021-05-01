@@ -12,6 +12,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
+import android.text.format.DateFormat;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -35,11 +36,10 @@ import androidx.core.content.FileProvider;
 
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
-import com.google.firebase.Timestamp;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.OnProgressListener;
@@ -51,9 +51,9 @@ import com.theartofdev.edmodo.cropper.CropImageView;
 import java.io.File;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
-import java.util.Map;
 
 public class PostActivity extends AppCompatActivity {
 
@@ -72,7 +72,6 @@ public class PostActivity extends AppCompatActivity {
     private StorageReference reference = storage.getReference();
     private FirebaseFirestore db = FirebaseFirestore.getInstance();
     private Uri imageUri;
-    private DatabaseReference root = FirebaseDatabase.getInstance().getReference("Image");
 
     final private static String TAG = "";
     String mCurrentPhotoPath;
@@ -268,54 +267,62 @@ public class PostActivity extends AppCompatActivity {
     }
 
     private void uploadToFirebase(Uri uri) {
-        StorageReference fileRef = reference.child(System.currentTimeMillis() + getFileExtension(uri));
-        fileRef.putFile(uri).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
-            @Override
-            public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-                fileRef.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+        String timeStamp = String.valueOf(System.currentTimeMillis());
+
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTimeInMillis(System.currentTimeMillis());
+        String fTime = DateFormat.format("yyyy-MM-dd hh:mm aa", calendar).toString();
+
+        String filePathName = "Feeds/" + "feeds_" + timeStamp;
+
+        StorageReference ref = FirebaseStorage.getInstance().getReference().child(filePathName);
+        ref.putFile(uri)
+                .addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
                     @Override
-                    public void onSuccess(Uri uri) {
-                        // Create a new feed with a feedId, category and description
-                        Map<String, Object> feed = new HashMap<>();
-                        feed.put("feedId", uri.toString());
-                        feed.put("date", Timestamp.now());
-                        feed.put("category", autoCompleteTextView.getEditableText().toString());
-                        feed.put("description", editText.getEditableText().toString());
+                    public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                        Task<Uri> uriTask = taskSnapshot.getStorage().getDownloadUrl();
+                        while (!uriTask.isSuccessful());
 
-                        db.collection("feeds")
-                                .add(feed)
-                                .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
-                                    @Override
-                                    public void onSuccess(DocumentReference documentReference) {
-                                        Log.d(TAG, "DocumentSnapshot added with ID: " + documentReference.getId());
-                                    }
-                                })
-                                .addOnFailureListener(new OnFailureListener() {
-                                    @Override
-                                    public void onFailure(@NonNull Exception e) {
-                                        Log.w(TAG, "Error adding document", e);
-                                    }
-                                });
+                        String downloadUri = uriTask.getResult().toString();
 
-                        Toast.makeText(PostActivity.this, "Uploaded Successfully", Toast.LENGTH_SHORT).show();
+                        if(uriTask.isSuccessful()) {
+                            HashMap<String, Object> feed = new HashMap<>();
+                            feed.put("image", downloadUri);
+                            feed.put("date", fTime);
+                            feed.put("category", autoCompleteTextView.getEditableText().toString());
+                            feed.put("description", editText.getEditableText().toString());
 
-                        //feed upload 후 Feed 메인 회면으로 전환
-                        startActivity(new Intent(PostActivity.this, MainActivity.class));
+                            DatabaseReference ref = FirebaseDatabase.getInstance().getReference("Feeds");
+                            ref.child(timeStamp).setValue(feed)
+                                    .addOnSuccessListener(new OnSuccessListener<Void>() {
+                                        @Override
+                                        public void onSuccess(Void aVoid) {
+                                            Toast.makeText(PostActivity.this, "Uploaded Successfully", Toast.LENGTH_SHORT).show();
+                                        }
+                                    })
+                                    .addOnFailureListener(new OnFailureListener() {
+                                        @Override
+                                        public void onFailure(@NonNull Exception e) {
+
+                                        }
+                                    });
+                        }
+                    }
+                })
+                .addOnProgressListener(new OnProgressListener<UploadTask.TaskSnapshot>() {
+                    @Override
+                    public void onProgress(@NonNull UploadTask.TaskSnapshot snapshot) {
+                        progressBar.setVisibility(View.VISIBLE);
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        Toast.makeText(PostActivity.this, e.getMessage(), Toast.LENGTH_SHORT).show();
                     }
                 });
-            }
-        }).addOnProgressListener(new OnProgressListener<UploadTask.TaskSnapshot>() {
-            @Override
-            public void onProgress(@NonNull UploadTask.TaskSnapshot snapshot) {
-                progressBar.setVisibility(View.VISIBLE);
-            }
-        }).addOnFailureListener(new OnFailureListener() {
-            @Override
-            public void onFailure(@NonNull Exception e) {
-                progressBar.setVisibility(View.INVISIBLE);
-                Toast.makeText(PostActivity.this, "Uploading Failed", Toast.LENGTH_SHORT).show();
-            }
-        });
+         //feed upload 후 Feed 메인 회면으로 전환
+        startActivity(new Intent(PostActivity.this, MainActivity.class));
     }
 
     private String getFileExtension(Uri uri) {

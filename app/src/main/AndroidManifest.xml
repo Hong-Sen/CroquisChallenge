@@ -63,7 +63,7 @@
             </intent-filter>
         </service>
 
-        //take photo 
+        //take photo
         <provider
             android:authorities="kr.sswu.croquischallenge.fileprovider"
             android:name="androidx.core.content.FileProvider"
