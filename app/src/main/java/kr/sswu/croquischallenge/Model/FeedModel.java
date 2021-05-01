@@ -1,30 +1,28 @@
 package kr.sswu.croquischallenge.Model;
 
 public class FeedModel {
-    private String imageUrl;
- //   private String category;
-    //
+    private String image, date;
 
     public FeedModel() { }
 
-    public FeedModel(String imageUrl, String category){
-        this.imageUrl = imageUrl;
-     //   this.category = category;
+    public FeedModel(String image, String date) {
+        this.image = image;
+        this.date = date;
     }
 
-    public String getImageUrl() {
-        return imageUrl;
+    public String getImage() {
+        return image;
     }
 
-    public void setImageUrl(String imageUrl) {
-        this.imageUrl = imageUrl;
+    public void setImage(String image) {
+        this.image = image;
     }
 
- /*   public String getCategory() {
-        return category;
+    public String getDate() {
+        return date;
     }
 
-    public void setCategory(String category) {
-        this.category = category;
-    } */
+    public void setDate(String date) {
+        this.date = date;
+    }
 }

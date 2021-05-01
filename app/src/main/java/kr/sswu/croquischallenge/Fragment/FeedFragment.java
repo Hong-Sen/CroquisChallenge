@@ -1,13 +1,13 @@
 package kr.sswu.croquischallenge.Fragment;
 
 import android.content.Intent;
-import android.net.Uri;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.drawerlayout.widget.DrawerLayout;
@@ -15,18 +15,13 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.firebase.ui.firestore.FirestoreRecyclerAdapter;
-import com.firebase.ui.firestore.FirestoreRecyclerOptions;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.navigation.NavigationView;
-import com.google.firebase.FirebaseOptions;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.firestore.CollectionReference;
-import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.firestore.Query;
-import com.google.firebase.storage.FirebaseStorage;
-import com.google.firebase.storage.StorageReference;
+import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 
@@ -52,9 +47,13 @@ public class FeedFragment extends Fragment {
 
     //feed view
     private RecyclerView recyclerView;
-    private FirebaseFirestore db = FirebaseFirestore.getInstance();
-    private CollectionReference feedRef = db.collection("feeds");
     private FeedAdapter adapter;
+    private ArrayList<FeedModel> feedList;
+
+    // private FirestoreRecyclerAdapter<FeedModel, FeedViewHolder> adapter;
+    //  private RecyclerView.LayoutManager layoutManager;
+    //  private ArrayList<FeedModel> arrayList;
+    //private FirebaseFirestore firestore;
 
 
     @Override
@@ -69,23 +68,38 @@ public class FeedFragment extends Fragment {
         drawerLayout = view.findViewById(R.id.drawer_layout);
         navigationView = view.findViewById(R.id.nav_view);
 
-        /*
         recyclerView = view.findViewById(R.id.feed_recyclerview);
-
-        //Query
-        Query query = feedRef; //orderby() limit()
-
-        //RecyclerOptions
-        FirestoreRecyclerOptions<FeedModel> options = new FirestoreRecyclerOptions.Builder<FeedModel>()
-                .setQuery(query, FeedModel.class)
-                .build();
-
-        adapter = new FeedAdapter(options);
-
+        LinearLayoutManager layoutManager = new LinearLayoutManager(getActivity());
         recyclerView.setHasFixedSize(true);
-        recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+        layoutManager.setStackFromEnd(true);
+        layoutManager.setReverseLayout(true);
+        recyclerView.setLayoutManager(layoutManager);
+        feedList = new ArrayList<>();
+        loadFeeds();
+        /*
+        adapter = new FeedAdapter(getContext(), feedList);
+
         recyclerView.setAdapter(adapter);
-*/
+
+        firestore = FirebaseFirestore.getInstance();
+        firestore.collection("feeds").get()
+                .addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
+                    @Override
+                    public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
+                        if(!queryDocumentSnapshots.isEmpty()) {
+                            List<DocumentSnapshot> list = queryDocumentSnapshots.getDocuments();
+
+                            for(DocumentSnapshot d : list) {
+                                FeedModel feed = d.toObject(FeedModel.class);
+                                feed.setImageUrl(d.getString("feedId"));
+                                feedList.add(feed);
+                            }
+
+                            adapter.notifyDataSetChanged();
+                        }
+                    }
+                });
+                */
 
         // drawer navigation open
         menu.setOnClickListener(new View.OnClickListener() {
@@ -120,7 +134,7 @@ public class FeedFragment extends Fragment {
                 int id = item.getItemId();
                 switch (id) {
                     case R.id.nav_feed:
-                        selectedFragment = new FeedFragment();
+                        selectedFragment = new AllFragment();
                         break;
                     case R.id.nav_anatomy:
                         selectedFragment = new AnatomyFragment();
@@ -143,21 +157,32 @@ public class FeedFragment extends Fragment {
                 return false;
             }
         });
-
         return view;
     }
-/*
-    @Override
-    public void onStart() {
-        super.onStart();
-        adapter.startListening();
-    }
 
-    @Override
-    public void onStop() {
-        super.onStop();
-        adapter.stopListening();
+    private void loadFeeds() {
+        DatabaseReference ref = FirebaseDatabase.getInstance().getReference("Feeds");
+        ref.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                feedList.clear();
+                for (DataSnapshot d : snapshot.getChildren()) {
+                    String img = d.child("image").getValue().toString();
+                    String time = d.child("date").getValue().toString();
+                    FeedModel feedModel = new FeedModel(img, time);
+
+                    feedList.add(feedModel);
+
+                    adapter = new FeedAdapter(getActivity(), feedList);
+                    recyclerView.setAdapter(adapter);
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+                Toast.makeText(getActivity(), ""+ error.getMessage(), Toast.LENGTH_SHORT).show();
+            }
+        });
     }
- */
 }
 
