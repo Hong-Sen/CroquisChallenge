@@ -1,7 +1,9 @@
 package kr.sswu.croquischallenge;
 
 import android.Manifest;
+import android.app.DatePickerDialog;
 import android.content.ContentResolver;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
@@ -21,7 +23,9 @@ import android.webkit.MimeTypeMap;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
+import android.widget.DatePicker;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
@@ -30,9 +34,11 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.FileProvider;
+import androidx.fragment.app.DialogFragment;
 
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -64,8 +70,19 @@ public class PostActivity extends AppCompatActivity {
     private ImageView buttonClose, imageView;
     private BottomSheetDialog bottomSheetDialog;
     private ProgressBar progressBar;
+
+    //title
+    private EditText edit_title;
+    private ImageButton btn_title;
+    //description
+    private ImageButton btn_description;
+    private EditText edit_description;
+    //date
+    private ImageButton btn_date;
+    private EditText edit_date;
+    //category
     private AutoCompleteTextView autoCompleteTextView;
-    private EditText editText;
+
     private Button buttonUpload;
 
     private FirebaseStorage storage = FirebaseStorage.getInstance();
@@ -82,14 +99,25 @@ public class PostActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_post);
 
-        toolBarTitle = findViewById(R.id.toolbar_title);
-        buttonClose = findViewById(R.id.close_button);
+        toolBarTitle = (TextView) findViewById(R.id.toolbar_title);
+        buttonClose = (ImageView)findViewById(R.id.close_button);
 
-        imageView = findViewById(R.id.add_photo);
-        progressBar = findViewById(R.id.progressBar);
-        autoCompleteTextView = findViewById(R.id.autoCompleteText);
-        editText = findViewById(R.id.description);
-        buttonUpload = findViewById(R.id.upload_button);
+        imageView = (ImageView)findViewById(R.id.add_photo);
+        progressBar = (ProgressBar)findViewById(R.id.progressBar);
+
+        //title
+        btn_title = (ImageButton) findViewById(R.id.btn_title);
+        edit_title = (EditText)findViewById(R.id.edit_title);
+        //description
+        btn_description = (ImageButton) findViewById(R.id.btn_description);
+        edit_description = (EditText) findViewById(R.id.edit_description);
+        //date
+        btn_date = (ImageButton) findViewById(R.id.btn_date);
+        edit_date = (EditText)findViewById(R.id.edit_date);
+        //category
+        autoCompleteTextView = (AutoCompleteTextView) findViewById(R.id.autoCompleteText);
+
+        buttonUpload = (Button)findViewById(R.id.upload_button);
 
         progressBar.setVisibility(View.INVISIBLE);
         toolBarTitle.setText("New Post");
@@ -102,9 +130,6 @@ public class PostActivity extends AppCompatActivity {
 
         String[] category = {"Anatomy", "Animal", "Objects", "Scenery"};
         ArrayAdapter arrayAdapter = new ArrayAdapter(this, R.layout.dropdown_item, category);
-
-        //default value setting
-        //   autoCompleteTextView.setText(arrayAdapter.getItem(0).toString(), false);
         autoCompleteTextView.setAdapter(arrayAdapter);
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
@@ -148,6 +173,78 @@ public class PostActivity extends AppCompatActivity {
                 });
                 bottomSheetDialog.setContentView(sheetView);
                 bottomSheetDialog.show();
+            }
+        });
+
+        btn_title.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                EditText edit = new EditText(PostActivity.this);
+                edit.setSingleLine();
+                edit.setText(edit_title.getText().toString());
+                AlertDialog.Builder builder = new AlertDialog.Builder(PostActivity.this);
+                builder.setTitle("Title");
+                builder.setMessage("Enter the title of the work");
+                builder.setView(edit);
+                builder.setPositiveButton("입력",
+                        new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int which) {
+                                edit_title.setText(edit.getText().toString());
+                                edit_title.setTextColor(Color.DKGRAY);
+                            }
+                        });
+                builder.setNegativeButton("취소",
+                        new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int which) {
+
+                            }
+                        });
+                builder.show();
+            }
+        });
+
+        btn_description.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                EditText edit = new EditText(PostActivity.this);
+                edit.setText(edit_description.getText().toString());
+                AlertDialog.Builder builder = new AlertDialog.Builder(PostActivity.this);
+                builder.setTitle("Description");
+                builder.setMessage("Enter the description of the work");
+                builder.setView(edit);
+                builder.setPositiveButton("입력",
+                        new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int which) {
+                                edit_description.setText(edit.getText().toString());
+                                edit_description.setTextColor(Color.DKGRAY);
+                            }
+                        });
+                builder.setNegativeButton("취소",
+                        new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int which) {
+
+                            }
+                        });
+                builder.show();
+            }
+        });
+
+        btn_date.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                final Calendar c = Calendar.getInstance();
+                int year = c.get(Calendar.YEAR);
+                int month = c.get(Calendar.MONTH);
+                int day = c.get(Calendar.DAY_OF_MONTH);
+
+
+                DatePickerDialog datePickerDialog = new DatePickerDialog(PostActivity.this, new DatePickerDialog.OnDateSetListener() {
+                    @Override
+                    public void onDateSet(DatePicker datePicker, int y, int m, int d) {
+                        edit_date.setTextColor(Color.DKGRAY);
+                        edit_date.setText(y + "-" + m + "-" + d);
+                    }}, year, month, day);
+                datePickerDialog.show();
             }
         });
 
@@ -287,10 +384,12 @@ public class PostActivity extends AppCompatActivity {
 
                         if(uriTask.isSuccessful()) {
                             HashMap<String, Object> feed = new HashMap<>();
+                            feed.put("upload_time", fTime);
                             feed.put("image", downloadUri);
-                            feed.put("date", fTime);
+                            feed.put("title", edit_title.getText().toString());
+                            feed.put("description", edit_description.getEditableText().toString());
+                            feed.put("date", edit_date.getText().toString());
                             feed.put("category", autoCompleteTextView.getEditableText().toString());
-                            feed.put("description", editText.getEditableText().toString());
 
                             DatabaseReference ref = FirebaseDatabase.getInstance().getReference("Feeds");
                             ref.child(timeStamp).setValue(feed)

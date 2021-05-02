@@ -50,12 +50,6 @@ public class FeedFragment extends Fragment {
     private FeedAdapter adapter;
     private ArrayList<FeedModel> feedList;
 
-    // private FirestoreRecyclerAdapter<FeedModel, FeedViewHolder> adapter;
-    //  private RecyclerView.LayoutManager layoutManager;
-    //  private ArrayList<FeedModel> arrayList;
-    //private FirebaseFirestore firestore;
-
-
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -76,30 +70,6 @@ public class FeedFragment extends Fragment {
         recyclerView.setLayoutManager(layoutManager);
         feedList = new ArrayList<>();
         loadFeeds();
-        /*
-        adapter = new FeedAdapter(getContext(), feedList);
-
-        recyclerView.setAdapter(adapter);
-
-        firestore = FirebaseFirestore.getInstance();
-        firestore.collection("feeds").get()
-                .addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
-                    @Override
-                    public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
-                        if(!queryDocumentSnapshots.isEmpty()) {
-                            List<DocumentSnapshot> list = queryDocumentSnapshots.getDocuments();
-
-                            for(DocumentSnapshot d : list) {
-                                FeedModel feed = d.toObject(FeedModel.class);
-                                feed.setImageUrl(d.getString("feedId"));
-                                feedList.add(feed);
-                            }
-
-                            adapter.notifyDataSetChanged();
-                        }
-                    }
-                });
-                */
 
         // drawer navigation open
         menu.setOnClickListener(new View.OnClickListener() {
@@ -134,23 +104,20 @@ public class FeedFragment extends Fragment {
                 int id = item.getItemId();
                 switch (id) {
                     case R.id.nav_feed:
-                        selectedFragment = new AllFragment();
+                        loadFeeds();
                         break;
                     case R.id.nav_anatomy:
-                        selectedFragment = new AnatomyFragment();
+                        searchFeeds("Anatomy");
                         break;
                     case R.id.nav_animal:
-                        selectedFragment = new AnimalFragment();
+                        searchFeeds("Animal");
                         break;
                     case R.id.nav_objects:
-                        selectedFragment = new ObjectsFragment();
+                        searchFeeds("Objects");
                         break;
                     case R.id.nav_scenery:
-                        selectedFragment = new SceneryFragment();
+                        searchFeeds("Scenery");
                         break;
-                }
-                if (selectedFragment != null) {
-                    ((MainActivity) getActivity()).replaceFragment(R.id.nav_host_fragment, selectedFragment);
                 }
 
                 drawerLayout.closeDrawer(navigationView);
@@ -166,12 +133,49 @@ public class FeedFragment extends Fragment {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 feedList.clear();
+                String uTime, fImg, fTitle, fDescription, fDate, fCategory;
                 for (DataSnapshot d : snapshot.getChildren()) {
+                    String upload_time = d.child("upload_time").getValue().toString();
                     String img = d.child("image").getValue().toString();
-                    String time = d.child("date").getValue().toString();
-                    FeedModel feedModel = new FeedModel(img, time);
+                    String title = d.child("title").getValue().toString();
+                    String description = d.child("description").getValue().toString();
+                    String date = d.child("date").getValue().toString();
+                    String category = d.child("category").getValue().toString();
+
+                    FeedModel feedModel = new FeedModel(upload_time, img, title, description, date, category);
 
                     feedList.add(feedModel);
+
+                    adapter = new FeedAdapter(getActivity(), feedList);
+                    recyclerView.setAdapter(adapter);
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+                Toast.makeText(getActivity(), ""+ error.getMessage(), Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+
+    private void searchFeeds(String c) {
+        DatabaseReference ref = FirebaseDatabase.getInstance().getReference("Feeds");
+        ref.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                feedList.clear();
+                for (DataSnapshot d : snapshot.getChildren()) {
+                    String upload_time = d.child("upload_time").getValue().toString();
+                    String img = d.child("image").getValue().toString();
+                    String title = d.child("title").getValue().toString();
+                    String description = d.child("description").getValue().toString();
+                    String date = d.child("date").getValue().toString();
+                    String category = d.child("category").getValue().toString();
+
+                    FeedModel feedModel = new FeedModel(upload_time, img, title, description, date, category);
+
+                    if(feedModel.getCategory().contains(c))
+                        feedList.add(feedModel);
 
                     adapter = new FeedAdapter(getActivity(), feedList);
                     recyclerView.setAdapter(adapter);

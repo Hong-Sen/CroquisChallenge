@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_margin="20dp"
-    app:cardElevation="5dp"
+    app:cardElevation="0dp"
     app:cardCornerRadius="7dp">
 
     <LinearLayout
@@ -15,9 +15,8 @@
         <ImageView
             android:id="@+id/fImage"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:minHeight="230dp"
-            android:scaleType="centerCrop"/>
+            android:layout_height="230dp"
+            android:scaleType="fitCenter"/>
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -27,21 +26,27 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
+            android:gravity="center"
             android:layout_weight="1">
             <TextView
-                android:id="@+id/uName"
-                android:text="uName"
+                android:id="@+id/fTitle"
+                android:text="title"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textSize="20sp"/>
+                android:textSize="13sp"/>
+            <!---->
             <TextView
                 android:id="@+id/fTime"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="13 min"/>
-        </LinearLayout>
+                android:text="13 min"
+                android:visibility="gone"
+                android:textSize="9sp"/>
 
+        </LinearLayout>
+        <!---->
         <ImageButton
+            android:visibility="gone"
             android:id="@+id/moreBtn"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
