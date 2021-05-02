@@ -38,9 +38,10 @@ public class FeedAdapter extends RecyclerView.Adapter<FeedAdapter.FeedViewHolder
     @Override
     public void onBindViewHolder(@NonNull FeedViewHolder holder, int position) {
         String fImg = feedList.get(position).getImage();
-        String fDate = feedList.get(position).getDate();
+        String fTitle = feedList.get(position).getTitle();
 
-        holder.fTime.setText(fDate);
+        holder.fTitle.setText(fTitle);
+
         try{
             Picasso.get().load(fImg).into(holder.fImage);
         } catch (Exception e) {
@@ -64,14 +65,14 @@ public class FeedAdapter extends RecyclerView.Adapter<FeedAdapter.FeedViewHolder
 
     class FeedViewHolder extends RecyclerView.ViewHolder {
         ImageView fImage;
-        TextView uName, fTime;
+        TextView fTitle, fTime;
         ImageButton moreBtn;
 
         public FeedViewHolder(View itemView) {
             super(itemView);
 
             fImage = itemView.findViewById(R.id.fImage);
-            uName = itemView.findViewById(R.id.uName);
+            fTitle = itemView.findViewById(R.id.fTitle);
             fTime = itemView.findViewById(R.id.fTime);
             moreBtn = itemView.findViewById(R.id.moreBtn);
         }
