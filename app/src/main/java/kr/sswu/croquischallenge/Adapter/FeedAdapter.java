@@ -44,9 +44,12 @@ public class FeedAdapter extends RecyclerView.Adapter<FeedAdapter.FeedViewHolder
         String fImg = tmp.getImage();
         String fTitle = tmp.getTitle();
 
-        holder.fTitle.setText(fTitle);
+        if (fTitle.equals(""))
+            holder.fTitle.setVisibility(View.GONE);
+        else
+            holder.fTitle.setText(fTitle);
 
-        try{
+        try {
             Picasso.get().load(fImg).into(holder.fImage);
         } catch (Exception e) {
 
@@ -59,7 +62,7 @@ public class FeedAdapter extends RecyclerView.Adapter<FeedAdapter.FeedViewHolder
                 intent.putExtra("image", fImg);
                 intent.putExtra("title", fTitle);
                 intent.putExtra("description", tmp.getDescription());
-            //    intent.putExtra("category", tmp.getCategory());
+                //    intent.putExtra("category", tmp.getCategory());
                 intent.putExtra("uTime", tmp.getUpload_time());
                 intent.putExtra("date", tmp.getDate());
 
@@ -75,14 +78,13 @@ public class FeedAdapter extends RecyclerView.Adapter<FeedAdapter.FeedViewHolder
 
     class FeedViewHolder extends RecyclerView.ViewHolder {
         ImageView fImage;
-        TextView fTitle, fTime;
+        TextView fTitle;
 
         public FeedViewHolder(View itemView) {
             super(itemView);
 
             fImage = itemView.findViewById(R.id.fImage);
             fTitle = itemView.findViewById(R.id.fTitle);
-            fTime = itemView.findViewById(R.id.fTime);
         }
     }
 

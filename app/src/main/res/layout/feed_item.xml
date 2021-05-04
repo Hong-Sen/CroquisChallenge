@@ -1,60 +1,55 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.cardview.widget.CardView
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_margin="20dp"
-    app:cardElevation="3dp"
-    app:cardCornerRadius="7dp">
+    app:cardCornerRadius="3dp"
+    app:cardElevation="3dp">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical">
+
         <ImageView
             android:id="@+id/fImage"
             android:layout_width="match_parent"
             android:layout_height="230dp"
-            android:scaleType="fitCenter"/>
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:layout_margin="10dp">
+            android:layout_marginHorizontal="10dp"
+            android:layout_marginTop="10dp"
+            android:scaleType="fitCenter" />
+
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:gravity="center"
-            android:layout_weight="1">
-            <TextView
-                android:id="@+id/fTitle"
-                android:text="title"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textSize="13sp"/>
-            <!---->
-            <TextView
-                android:id="@+id/fTime"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="13 min"
-                android:visibility="gone"
-                android:textSize="9sp"/>
+            android:layout_margin="10dp"
+            android:orientation="horizontal">
 
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/fTitle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="title"
+                    android:textSize="13sp" />
+            </LinearLayout>
+
+            <ImageButton
+                android:id="@+id/moreBtn"
+                android:layout_width="wrap_content"
+                android:layout_height="350dp"
+                android:layout_gravity="center"
+                android:background="@null"
+                android:scaleType="fitCenter"
+                android:src="@drawable/ic_more"
+                android:visibility="gone" />
         </LinearLayout>
-        <!---->
-        <ImageButton
-            android:visibility="gone"
-            android:id="@+id/moreBtn"
-            android:layout_width="wrap_content"
-            android:layout_height="350dp"
-            android:src="@drawable/ic_more"
-            android:layout_gravity="center"
-            android:scaleType="fitCenter"
-            android:background="@null" />
-    </LinearLayout>
 
     </LinearLayout>
 
