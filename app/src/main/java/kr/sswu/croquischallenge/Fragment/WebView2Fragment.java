@@ -8,7 +8,6 @@ import android.webkit.WebView;
 import androidx.fragment.app.Fragment;
 import kr.sswu.croquischallenge.R;
 
-
 public class WebView2Fragment extends Fragment {
 
     WebView webView;
@@ -17,7 +16,7 @@ public class WebView2Fragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
-        View view =  inflater.inflate(R.layout.fragment_web_view2, container, false);
+        View view = inflater.inflate(R.layout.fragment_web_view2, container, false);
 
         webView = view.findViewById(R.id.webView2);
         webView.loadUrl("https://www.characterdesigns.com/");
