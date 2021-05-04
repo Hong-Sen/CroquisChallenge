@@ -145,7 +145,6 @@ public class FeedFragment extends Fragment {
                     FeedModel feedModel = new FeedModel(upload_time, img, title, description, date, category);
 
                     feedList.add(feedModel);
-
                     adapter = new FeedAdapter(getActivity(), feedList);
                     recyclerView.setAdapter(adapter);
                 }
@@ -153,7 +152,7 @@ public class FeedFragment extends Fragment {
 
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
-                Toast.makeText(getActivity(), ""+ error.getMessage(), Toast.LENGTH_SHORT).show();
+                Toast.makeText(getActivity(), "" + error.getMessage(), Toast.LENGTH_SHORT).show();
             }
         });
     }
@@ -174,7 +173,7 @@ public class FeedFragment extends Fragment {
 
                     FeedModel feedModel = new FeedModel(upload_time, img, title, description, date, category);
 
-                    if(feedModel.getCategory().contains(c))
+                    if (feedModel.getCategory().contains(c))
                         feedList.add(feedModel);
 
                     adapter = new FeedAdapter(getActivity(), feedList);
@@ -184,7 +183,7 @@ public class FeedFragment extends Fragment {
 
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
-                Toast.makeText(getActivity(), ""+ error.getMessage(), Toast.LENGTH_SHORT).show();
+                Toast.makeText(getActivity(), "" + error.getMessage(), Toast.LENGTH_SHORT).show();
             }
         });
     }

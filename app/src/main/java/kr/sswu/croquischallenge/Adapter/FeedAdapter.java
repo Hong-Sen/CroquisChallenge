@@ -1,6 +1,7 @@
 package kr.sswu.croquischallenge.Adapter;
 
 import android.content.Context;
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,6 +17,7 @@ import com.squareup.picasso.Picasso;
 
 import java.util.List;
 
+import kr.sswu.croquischallenge.FeedActivity;
 import kr.sswu.croquischallenge.Model.FeedModel;
 import kr.sswu.croquischallenge.R;
 
@@ -37,8 +39,10 @@ public class FeedAdapter extends RecyclerView.Adapter<FeedAdapter.FeedViewHolder
 
     @Override
     public void onBindViewHolder(@NonNull FeedViewHolder holder, int position) {
-        String fImg = feedList.get(position).getImage();
-        String fTitle = feedList.get(position).getTitle();
+        FeedModel tmp = feedList.get(position);
+
+        String fImg = tmp.getImage();
+        String fTitle = tmp.getTitle();
 
         holder.fTitle.setText(fTitle);
 
@@ -48,14 +52,20 @@ public class FeedAdapter extends RecyclerView.Adapter<FeedAdapter.FeedViewHolder
 
         }
 
-        holder.moreBtn.setOnClickListener(new View.OnClickListener() {
+        holder.fImage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Toast.makeText(ctx, "More" , Toast.LENGTH_SHORT).show();
+                Intent intent = new Intent(ctx, FeedActivity.class);
+                intent.putExtra("image", fImg);
+                intent.putExtra("title", fTitle);
+                intent.putExtra("description", tmp.getDescription());
+            //    intent.putExtra("category", tmp.getCategory());
+                intent.putExtra("uTime", tmp.getUpload_time());
+                intent.putExtra("date", tmp.getDate());
+
+                ctx.startActivity(intent);
             }
         });
-
-
     }
 
     @Override
@@ -66,7 +76,6 @@ public class FeedAdapter extends RecyclerView.Adapter<FeedAdapter.FeedViewHolder
     class FeedViewHolder extends RecyclerView.ViewHolder {
         ImageView fImage;
         TextView fTitle, fTime;
-        ImageButton moreBtn;
 
         public FeedViewHolder(View itemView) {
             super(itemView);
@@ -74,7 +83,6 @@ public class FeedAdapter extends RecyclerView.Adapter<FeedAdapter.FeedViewHolder
             fImage = itemView.findViewById(R.id.fImage);
             fTitle = itemView.findViewById(R.id.fTitle);
             fTime = itemView.findViewById(R.id.fTime);
-            moreBtn = itemView.findViewById(R.id.moreBtn);
         }
     }
 
