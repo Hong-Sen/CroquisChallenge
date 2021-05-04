@@ -180,6 +180,7 @@ public class PostActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 EditText edit = new EditText(PostActivity.this);
+                edit.setPadding(70,30,70,30);
                 edit.setSingleLine();
                 edit.setText(edit_title.getText().toString());
                 AlertDialog.Builder builder = new AlertDialog.Builder(PostActivity.this);
@@ -207,6 +208,7 @@ public class PostActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 EditText edit = new EditText(PostActivity.this);
+                edit.setPadding(70,30,70,30);
                 edit.setText(edit_description.getText().toString());
                 AlertDialog.Builder builder = new AlertDialog.Builder(PostActivity.this);
                 builder.setTitle("Description");

@@ -2,21 +2,29 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="kr.sswu.croquischallenge">
 
-    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
-    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.CAMERA" />
     <uses-permission android:name="android.permission.INTERNET" />
-    <uses-feature android:name="android.hardware.camera"
-        android:required="true"/>
+
+    <uses-feature
+        android:name="android.hardware.camera"
+        android:required="true" />
+
+    <queries>
+        <package android:name="com.facebook.katana" />
+    </queries>
 
     <application
-        android:name="kr.sswu.croquischallenge.application.CroquisChallengeApplication"
+        android:name=".application.CroquisChallengeApplication"
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.CroquisChallenge">
+        <activity android:name=".FeedActivity"></activity>
+
         <meta-data
             android:name="com.facebook.sdk.ApplicationId"
             android:value="@string/facebook_app_id" />
@@ -27,9 +35,7 @@
         <activity
             android:name="com.facebook.FacebookActivity"
             android:configChanges="keyboard|keyboardHidden|screenLayout|screenSize|orientation"
-            android:label="@string/app_name">
-        </activity>
-
+            android:label="@string/app_name"></activity>
         <activity
             android:name="com.facebook.CustomTabActivity"
             android:exported="true">
@@ -42,16 +48,15 @@
                 <data android:scheme="@string/fb_login_protocol_scheme" />
             </intent-filter>
         </activity>
-
         <activity android:name=".login.activity.LoginActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-
         <activity android:name=".MainActivity" />
-        <activity android:name=".TimerActivity"/>
+        <activity android:name=".TimerActivity" />
         <activity android:name=".PostActivity" />
         <activity
             android:name=".likeActivity"
@@ -63,10 +68,9 @@
             </intent-filter>
         </service>
 
-        //take photo
         <provider
-            android:authorities="kr.sswu.croquischallenge.fileprovider"
             android:name="androidx.core.content.FileProvider"
+            android:authorities="kr.sswu.croquischallenge.fileprovider"
             android:exported="false"
             android:grantUriPermissions="true">
             <meta-data
@@ -74,12 +78,9 @@
                 android:resource="@xml/external" />
         </provider>
 
-        // crop image
-        <activity android:name="com.theartofdev.edmodo.cropper.CropImageActivity"
-            android:theme="@style/Base.Theme.AppCompat"/>
-
+        <activity
+            android:name="com.theartofdev.edmodo.cropper.CropImageActivity"
+            android:theme="@style/Base.Theme.AppCompat" />
     </application>
-    <queries>
-        <package android:name="com.facebook.katana" />
-    </queries>
+
 </manifest>
