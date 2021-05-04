@@ -40,7 +40,6 @@ public class FeedFragment extends Fragment {
     //category menu
     private NavigationView navigationView;
     private DrawerLayout drawerLayout;
-    private Fragment selectedFragment = null;
 
     //feed upload btn
     private FloatingActionButton fab;
@@ -61,6 +60,7 @@ public class FeedFragment extends Fragment {
         fab = view.findViewById(R.id.fab);
         drawerLayout = view.findViewById(R.id.drawer_layout);
         navigationView = view.findViewById(R.id.nav_view);
+
 
         recyclerView = view.findViewById(R.id.feed_recyclerview);
         LinearLayoutManager layoutManager = new LinearLayoutManager(getActivity());
