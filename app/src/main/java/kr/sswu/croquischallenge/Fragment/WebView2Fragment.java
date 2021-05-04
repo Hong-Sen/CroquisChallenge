@@ -20,7 +20,7 @@ public class WebView2Fragment extends Fragment {
         View view =  inflater.inflate(R.layout.fragment_web_view2, container, false);
 
         webView = view.findViewById(R.id.webView2);
-        webView.loadUrl("https://vimeo.com/croquiscafe");
+        webView.loadUrl("https://www.characterdesigns.com/");
 
         return view;
     }
