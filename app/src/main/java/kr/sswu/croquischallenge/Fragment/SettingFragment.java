@@ -58,10 +58,13 @@ public class SettingFragment extends Fragment {
                 getString(R.string.text1, username)
         );
 
+
+        //푸시 알림 onoff 스위치 추가
+        //토픽으로 제어
         sw = (Switch) view.findViewById(R.id.sw);
         sharedPreferences = getActivity().getSharedPreferences(" ",MODE_PRIVATE);
         final SharedPreferences.Editor editor = sharedPreferences.edit();
-        sw.setChecked(sharedPreferences.getBoolean(ex,false));
+        sw.setChecked(sharedPreferences.getBoolean(ex,true));
 
         sw.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
