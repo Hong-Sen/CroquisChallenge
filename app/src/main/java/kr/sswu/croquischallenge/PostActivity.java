@@ -243,8 +243,9 @@ public class PostActivity extends AppCompatActivity {
                 DatePickerDialog datePickerDialog = new DatePickerDialog(PostActivity.this, new DatePickerDialog.OnDateSetListener() {
                     @Override
                     public void onDateSet(DatePicker datePicker, int y, int m, int d) {
+                        int month = m + 1;
                         edit_date.setTextColor(Color.DKGRAY);
-                        edit_date.setText(y + "-" + m + "-" + d);
+                        edit_date.setText(y + "-" + month + "-" + d);
                     }}, year, month, day);
                 datePickerDialog.show();
             }
