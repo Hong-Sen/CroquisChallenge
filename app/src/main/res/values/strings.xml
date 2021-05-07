@@ -38,15 +38,6 @@
     <string name="refWeb3">Quickposes</string>
     <string name="refWeb4">Bodies in Motion</string>
 
-    <!-- Calendar -->
-    <string name="mon">월</string>
-    <string name="tues">화</string>
-    <string name="wed">수</string>
-    <string name="thurs">목</string>
-    <string name="fri">금</string>
-    <string name="sat">토</string>
-    <string name="sun">일</string>
-
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>

@@ -32,14 +32,14 @@ public class CalendarAdapter extends RecyclerView.Adapter {
     }
 
     @Override
-    public int getItemViewType(int position) {
+    public int getItemViewType(int position) { //뷰타입 나누기
         Object item = mCalendarList.get(position);
         if (item instanceof Long) {
-            return HEADER_TYPE; // month type
+            return HEADER_TYPE; //날짜 타입
         } else if (item instanceof String) {
-            return EMPTY_TYPE; // empty day type
+            return EMPTY_TYPE; // 비어있는 일자 타입
         } else {
-            return DAY_TYPE; // day type
+            return DAY_TYPE; // 일자 타입
 
         }
     }
@@ -52,23 +52,23 @@ public class CalendarAdapter extends RecyclerView.Adapter {
 
         LayoutInflater inflater = LayoutInflater.from(parent.getContext());
 
-        // month type
+        // 날짜 타입
         if (viewType == HEADER_TYPE) {
 
             HeaderViewHolder viewHolder = new HeaderViewHolder(inflater.inflate(R.layout.calendar_header_item, parent, false));
 
             StaggeredGridLayoutManager.LayoutParams params = (StaggeredGridLayoutManager.LayoutParams)viewHolder.itemView.getLayoutParams();
-            params.setFullSpan(true);
+            params.setFullSpan(true); //Span을 하나로 통합하기
             viewHolder.itemView.setLayoutParams(params);
 
             return viewHolder;
 
-        // empty day type
+            //비어있는 일자 타입
         } else if (viewType == EMPTY_TYPE) {
             return new EmptyViewHolder(inflater.inflate(R.layout.calendar_day_empty_item, parent, false));
 
         }
-        // day type
+        // 일자 타입
         else {
             return new DayViewHolder(inflater.inflate(R.layout.calendar_day_item, parent, false));
 
@@ -76,12 +76,13 @@ public class CalendarAdapter extends RecyclerView.Adapter {
 
     }
 
-    // 데이터 넣기
+    // 데이터 넣어서 완성시키는것
     @Override
     public void onBindViewHolder(@NonNull RecyclerView.ViewHolder viewHolder, int position) {
         int viewType = getItemViewType(position);
 
-        /** month 꾸미기*/
+        /**날짜 타입 꾸미기*/
+        /** EX : 2018년 8월*/
         if (viewType == HEADER_TYPE) {
             HeaderViewHolder holder = (HeaderViewHolder) viewHolder;
             Object item = mCalendarList.get(position);
@@ -89,26 +90,28 @@ public class CalendarAdapter extends RecyclerView.Adapter {
 
             // long type의 현재시간
             if (item instanceof Long) {
-                // 현재시간 넣으면 model에 데이터들어감
+                // 현재시간 넣으면, 2017년 7월 같이 패턴에 맞게 model에 데이터들어감.
                 model.setHeader((Long) item);
             }
             // view에 표시하기
             holder.bind(model);
         }
-        /** empty day type 꾸미기 */
+        /** 비어있는 날짜 타입 꾸미기 */
+        /** EX : empty */
         else if (viewType == EMPTY_TYPE) {
             EmptyViewHolder holder = (EmptyViewHolder) viewHolder;
             EmptyDay model = new EmptyDay();
             holder.bind(model);
         }
-        /** day type 꾸미기 */
+        /** 일자 타입 꾸미기 */
+        /** EX : 22 */
         else if (viewType == DAY_TYPE) {
             DayViewHolder holder = (DayViewHolder) viewHolder;
             Object item = mCalendarList.get(position);
             Day model = new Day();
             if (item instanceof Calendar) {
 
-                // Model에 Calendar 값을 넣어서 몇 일인지 데이터 넣기
+                // Model에 Calendar값을 넣어서 몇일인지 데이터 넣기
                 model.setCalendar((Calendar) item);
             }
             // Model의 데이터를 View에 표현하기
