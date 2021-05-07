@@ -9,7 +9,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import kr.sswu.croquischallenge.R;
 import kr.sswu.croquischallenge.Calendar.model.Day;
 
-public class DayViewHolder extends RecyclerView.ViewHolder {// 요일 입 ViewHolder
+public class DayViewHolder extends RecyclerView.ViewHolder {
 
     TextView itemDay;
 
