@@ -15,6 +15,14 @@
       },
       "oauth_client": [
         {
+          "client_id": "215002492680-ak0j61ua4un9o03o78bhrrquuif35jne.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "kr.sswu.croquischallenge",
+            "certificate_hash": "12fd16a52b59b21b8aac8dd526b638bee63545c5"
+          }
+        },
+        {
           "client_id": "215002492680-keasn2a988jmq13li2jbr8mtiljpaj0c.apps.googleusercontent.com",
           "client_type": 3
         }

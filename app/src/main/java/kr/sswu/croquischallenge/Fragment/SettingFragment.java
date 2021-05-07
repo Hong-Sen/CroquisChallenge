@@ -20,6 +20,8 @@ import androidx.fragment.app.Fragment;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.iid.FirebaseInstanceId;
 import com.google.firebase.iid.InstanceIdResult;
 import com.google.firebase.messaging.FirebaseMessaging;
@@ -32,6 +34,9 @@ import kr.sswu.croquischallenge.login.UserProfileConstants;
 import kr.sswu.croquischallenge.login.activity.LoginActivity;
 
 public class SettingFragment extends Fragment {
+
+    private FirebaseAuth firebaseAuth;
+    private String uEmail;
 
     Button btnLogout;
     Button btnRemove;
@@ -49,13 +54,16 @@ public class SettingFragment extends Fragment {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_setting, container, false);
 
+        firebaseAuth = FirebaseAuth.getInstance();
+        checkUser();
+
         // 닉네임 shared preference로 부터 가져옴
         // 값이 없으면 로그인 안했다는 뜻이므로 "로그인 필요" 표시
         SharedPreferences preference = getActivity().getSharedPreferences(UserProfileConstants.PREFERENCE_KEY, Context.MODE_PRIVATE);
         String username =  preference.getString(UserProfileConstants.USER_NAME, "로그인 필요");
         myAccount = (TextView) view.findViewById(R.id.myAccount);
         myAccount.setText(
-                getString(R.string.text1, username)
+                getString(R.string.text1, uEmail)
         );
 
 
@@ -115,12 +123,14 @@ public class SettingFragment extends Fragment {
         btnLogout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                SharedPreferences.Editor editor = preference.edit();
+                firebaseAuth.signOut();
+                checkUser();
+            /*    SharedPreferences.Editor editor = preference.edit();
                 editor.clear();
                 editor.apply();
                 Toast.makeText(getContext(), "로그아웃 완료", Toast.LENGTH_SHORT).show();
                 Intent intent = new Intent(requireContext(), LoginActivity.class);
-                startActivity(intent);
+                startActivity(intent); */
             }
         });
 
@@ -128,5 +138,14 @@ public class SettingFragment extends Fragment {
         imt.setText(" 개발자 성신여자대학교 정시공 에이틴");
 
         return view;
+    }
+
+    private void checkUser() {
+        FirebaseUser user = firebaseAuth.getCurrentUser();
+        if(user == null) {
+            startActivity(new Intent(requireContext(), LoginActivity.class));
+        } else {
+            uEmail = user.getEmail();
+        }
     }
 }
