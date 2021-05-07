@@ -42,7 +42,6 @@ public class CalendarFragment extends Fragment {
                              Bundle savedInstanceState) {
 
         View view =  inflater.inflate(R.layout.fragment_calendar, container, false);
-
         timer = view.findViewById(R.id.toolbar_timer);
         timer.setOnClickListener(new View.OnClickListener() {
             @Override

@@ -9,6 +9,8 @@ import androidx.recyclerview.widget.RecyclerView;
 import kr.sswu.croquischallenge.R;
 import kr.sswu.croquischallenge.Calendar.model.CalendarHeader;
 
+import static kr.sswu.croquischallenge.R.id.item_header_title;
+
 public class HeaderViewHolder extends RecyclerView.ViewHolder { //날짜 타입 ViewHolder
 
     TextView itemHeaderTitle;
@@ -22,7 +24,7 @@ public class HeaderViewHolder extends RecyclerView.ViewHolder { //날짜 타입 
 
     public void initView(View v){
 
-        itemHeaderTitle = (TextView)v.findViewById(R.id.item_header_title);
+        itemHeaderTitle = (TextView)v.findViewById(item_header_title);
 
     }
 
