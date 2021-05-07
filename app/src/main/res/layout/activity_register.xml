@@ -7,32 +7,35 @@
     android:layout_margin="10dp"
     tools:context=".RegisterActivity">
 
-    <TextView
+    <LinearLayout
         android:id="@+id/title"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:layout_marginVertical="50dp"
-        android:text="Croquis Challenge"
-        android:textColor="@color/grey_dark"
-        android:textSize="25sp"
-        android:layout_centerHorizontal="true"/>
-<!--
-    <ImageView
-        android:id="@+id/image"
-        android:layout_width="200dp"
-        android:layout_height="200dp"
-        android:layout_below="@+id/title"
-        android:layout_centerInParent="true"
-        android:src="@drawable/babysally" /> -->
+        android:layout_marginVertical="30dp"
+        android:orientation="vertical">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:text="Join Croquis Challenge" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:text="Create your account"
+            android:textColor="@color/grey_dark"
+            android:textSize="25sp" />
+    </LinearLayout>
 
     <LinearLayout
         android:id="@+id/input"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@+id/title"
-        android:layout_marginVertical="20dp"
         android:layout_marginHorizontal="50dp"
+        android:layout_marginVertical="20dp"
         android:orientation="vertical">
 
         <com.google.android.material.textfield.TextInputLayout
@@ -45,7 +48,6 @@
                 android:id="@+id/edit_email"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:inputType="textEmailAddress"
                 android:hint="Email address" />
         </com.google.android.material.textfield.TextInputLayout>
 
@@ -53,52 +55,31 @@
             style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginVertical="5dp" >
+            android:layout_marginVertical="5dp"
+            app:passwordToggleEnabled="true">
 
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/edit_pw"
-                android:inputType="textPassword"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:hint="Password" />
         </com.google.android.material.textfield.TextInputLayout>
 
         <TextView
-            android:id="@+id/txt_recoverPw"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Forgot password?"
-            android:textSize="13sp"
-            android:textColor="@color/grey_dark"
-            android:layout_gravity="right"/>
+            android:text="Make sure it's at least 8 characters"
+            android:textSize="13sp" />
 
         <Button
-            android:id="@+id/btn_signIn"
+            android:id="@+id/btn_create"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="40dp"
             android:backgroundTint="#D6D6D6"
-            android:text="Sign in"
+            android:text="Create account"
             android:textColor="@color/grey_dark" />
     </LinearLayout>
-
-    <TextView
-        android:id="@+id/line"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_centerHorizontal="true"
-        android:layout_marginBottom="20dp"
-        android:text="--------------------------- OR ---------------------------"
-        android:textSize="17sp"
-        android:layout_below="@id/input"/>
-
-    <com.google.android.gms.common.SignInButton
-        android:id="@+id/google_login_btn"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginHorizontal="50dp"
-        android:layout_below="@+id/line"
-        android:layout_centerInParent="true" />
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -111,29 +92,15 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="New to Croquis Challenge?" />
+            android:text="Already have an account?" />
 
         <TextView
-            android:id="@+id/txt_create"
+            android:id="@+id/txt_signIn"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginHorizontal="10dp"
-            android:text="Create account"
+            android:text="Sign in"
             android:textColor="@color/grey_dark"
             android:textSize="17sp" />
     </LinearLayout>
-</RelativeLayout><!--
-    <Button
-        android:id="@+id/naver_login_button"
-        android:layout_width="280dp"
-        android:layout_height="50dp"
-        android:layout_gravity="center_horizontal"
-        android:drawableLeft="@drawable/naver_login"
-        android:paddingLeft="0dp" />
-
-    <TextView
-        android:id="@+id/userNameTxt"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center_horizontal" />
-    -->
+</RelativeLayout>
