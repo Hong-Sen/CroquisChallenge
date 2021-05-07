@@ -47,6 +47,7 @@ dependencies {
     implementation 'com.google.firebase:firebase-database:19.7.0'
     implementation 'com.google.firebase:firebase-auth:20.0.4'
 
+
     // naveridlogin dependencies
     def android_x_version = "1.0.0"
     implementation "androidx.appcompat:appcompat:$android_x_version"
@@ -54,6 +55,9 @@ dependencies {
     implementation "androidx.browser:browser:$android_x_version"
     implementation "androidx.legacy:legacy-support-v4:$android_x_version"
 
+
+    // Google Play services library
+    implementation 'com.google.android.gms:play-services-auth:19.0.0'
 
     //feed fragment & post activity
     //bottom_sheet

@@ -3,32 +3,38 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
-    android:layout_marginBottom="20dp">
+    android:layout_marginBottom="20dp"
+    android:orientation="vertical">
 
     <ImageView
         android:layout_width="200dp"
         android:layout_height="200dp"
         android:layout_gravity="center_horizontal"
-        android:src="@drawable/babysally"
         android:layout_marginTop="100dp"
         android:layout_marginBottom="150dp"
-        />
+        android:src="@drawable/babysally" />
 
+<!--
     <Button
         android:id="@+id/naver_login_button"
         android:layout_width="280dp"
         android:layout_height="50dp"
-        android:drawableLeft="@drawable/naver_login"
         android:layout_gravity="center_horizontal"
-        android:paddingLeft="0dp"
-         />
+        android:drawableLeft="@drawable/naver_login"
+        android:paddingLeft="0dp" />
 
     <TextView
         android:id="@+id/userNameTxt"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_gravity="center_horizontal"
-        />
+        android:layout_gravity="center_horizontal" />
+    -->
+
+    <com.google.android.gms.common.SignInButton
+        android:id="@+id/google_login_btn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"/>
+
 
 </LinearLayout>
