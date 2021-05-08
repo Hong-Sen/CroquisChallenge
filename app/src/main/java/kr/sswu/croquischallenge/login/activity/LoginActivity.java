@@ -35,6 +35,10 @@ import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.GoogleAuthProvider;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+
+import java.util.HashMap;
 
 import kr.sswu.croquischallenge.MainActivity;
 import kr.sswu.croquischallenge.R;
@@ -46,7 +50,7 @@ public class LoginActivity extends AppCompatActivity {
 
     private TextInputEditText edit_email, edit_pw;
     private Button btn_signIn;
-    private TextView txt_recoverPw,txt_create;
+    private TextView txt_recoverPw, txt_create;
 
     private ProgressDialog progressDialog;
 
@@ -191,11 +195,10 @@ public class LoginActivity extends AppCompatActivity {
                 String email = edit_email.getText().toString().trim();
                 String pw = edit_pw.getText().toString().trim();
 
-                if(!Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
+                if (!Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
                     edit_email.setError("Invalid Email");
                     edit_email.setFocusable(true);
-                }
-                else {
+                } else {
                     loginUser(email, pw);
                 }
             }
@@ -245,7 +248,7 @@ public class LoginActivity extends AppCompatActivity {
         edit_email.setMinEms(30);
 
         linearLayout.addView(edit_email);
-        linearLayout.setPadding(10, 10,10,10);
+        linearLayout.setPadding(10, 10, 10, 10);
 
         builder.setView(linearLayout);
 
@@ -286,7 +289,7 @@ public class LoginActivity extends AppCompatActivity {
             @Override
             public void onFailure(@NonNull Exception e) {
                 progressDialog.dismiss();
-                Toast.makeText(getApplicationContext(), ""+e.getMessage(), Toast.LENGTH_SHORT).show();
+                Toast.makeText(getApplicationContext(), "" + e.getMessage(), Toast.LENGTH_SHORT).show();
             }
         });
     }
@@ -298,7 +301,7 @@ public class LoginActivity extends AppCompatActivity {
                 .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
-                        if(task.isSuccessful()) {
+                        if (task.isSuccessful()) {
                             progressDialog.dismiss();
                             Log.d(TAG, "signInWithEmail : success");
                             FirebaseUser user = firebaseAuth.getCurrentUser();
@@ -314,7 +317,7 @@ public class LoginActivity extends AppCompatActivity {
             @Override
             public void onFailure(@NonNull Exception e) {
                 progressDialog.dismiss();
-                Toast.makeText(getApplicationContext(), ""+e.getMessage(), Toast.LENGTH_SHORT).show();
+                Toast.makeText(getApplicationContext(), "" + e.getMessage(), Toast.LENGTH_SHORT).show();
             }
         });
     }
@@ -351,33 +354,41 @@ public class LoginActivity extends AppCompatActivity {
     private void firebaseAuthWithGoogle(String idToken) {
         AuthCredential credential = GoogleAuthProvider.getCredential(idToken, null);
         firebaseAuth.signInWithCredential(credential)
-                .addOnSuccessListener(new OnSuccessListener<AuthResult>() {
+                .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
                     @Override
-                    public void onSuccess(AuthResult authResult) {
-                        Log.d(TAG, "onSuccess : Logged in");
+                    public void onComplete(@NonNull Task<AuthResult> task) {
+                        if (task.isSuccessful()) {
 
-                        FirebaseUser user = firebaseAuth.getCurrentUser();
-                        String uid = user.getUid();
-                        String email = user.getEmail();
+                            FirebaseUser user = firebaseAuth.getCurrentUser();
 
-                        if (authResult.getAdditionalUserInfo().isNewUser()) {
-                            Log.d(TAG, "onSuccess : Account created..\n" + email);
-                            Toast.makeText(getApplicationContext(), "Account Created..", Toast.LENGTH_SHORT).show();
+                            if (task.getResult().getAdditionalUserInfo().isNewUser()) {
+                                String email = user.getEmail();
+                                String uid = user.getUid();
+
+                                HashMap<Object, String> hashMap = new HashMap<>();
+                                hashMap.put("email", email);
+                                hashMap.put("uid", uid);
+                                hashMap.put("name", "");
+
+                                FirebaseDatabase database = FirebaseDatabase.getInstance();
+                                DatabaseReference reference = database.getReference("Users");
+                                reference.child(uid).setValue(hashMap);
+                            }
+
+                            Toast.makeText(getApplicationContext(), "" + user.getEmail(), Toast.LENGTH_SHORT).show();
+
+                            startActivity(new Intent(LoginActivity.this, MainActivity.class));
+                            finish();
                         } else {
-                            Log.d(TAG, "onSuccess : Existing user..\n" + email);
-                            Toast.makeText(getApplicationContext(), "Existing user..", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(getApplicationContext(), "Login Failed..", Toast.LENGTH_SHORT).show();
                         }
-                        startActivity(new Intent(LoginActivity.this, MainActivity.class));
-                        finish();
-                }
-    }).
-
-    addOnFailureListener(new OnFailureListener() {
-        @Override
-        public void onFailure (@NonNull Exception e){
-            Log.e(TAG, e.getMessage());
-            //   Toast.makeText(getApplicationContext(), ""+e.getMessage(), Toast.LENGTH_SHORT).show();
-        }
-    });
-}
+                    }
+                }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+                Log.e(TAG, e.getMessage());
+                Toast.makeText(getApplicationContext(), ""+e.getMessage(), Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
 }
