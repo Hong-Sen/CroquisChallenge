@@ -206,6 +206,7 @@ public class SettingFragment extends Fragment {
             public void onClick(View view) {
                 firebaseAuth.signOut();
                 checkUser();
+                getActivity().onBackPressed();
             /*    SharedPreferences.Editor editor = preference.edit();
                 editor.clear();
                 editor.apply();
