@@ -16,7 +16,7 @@ public class CalendarHeader extends ViewModel {
 
     public void setHeader(long time) {
 
-        String value = DateUtil.getDate(time, DateUtil.CALENDAR_HEADER_FORMAT);
+        String value = DateUtil.getDate(time, DateUtil.YEAR_FORMAT + "년 " + DateUtil.MONTH_FORMAT + "월 ");
         this.header = value;
 
     }

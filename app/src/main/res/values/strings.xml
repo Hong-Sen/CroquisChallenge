@@ -26,7 +26,7 @@
     <string name="menu_scenery">Scenery</string>
 
     <!-- setting fragment -->
-    <string name="text1">안녕하세요! %s님!</string>
+    <string name="text1">%s</string>
     <string name="btn1">로그아웃</string>
     <string name="btn2">서비스 탈퇴</string>
     <string name="btn3">좋아요 리스트</string>
@@ -37,6 +37,15 @@
     <string name="refWeb2">Character Designs</string>
     <string name="refWeb3">Quickposes</string>
     <string name="refWeb4">Bodies in Motion</string>
+
+    <!-- Calendar -->
+    <string name="mon">월</string>
+    <string name="tues">화</string>
+    <string name="wed">수</string>
+    <string name="thurs">목</string>
+    <string name="fri">금</string>
+    <string name="sat">토</string>
+    <string name="sun">일</string>
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>

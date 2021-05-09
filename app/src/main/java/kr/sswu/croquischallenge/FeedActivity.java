@@ -13,8 +13,8 @@ import com.squareup.picasso.Picasso;
 public class FeedActivity extends AppCompatActivity {
 
     ImageView imageView;
-    TextView title, description, date, uTime;//, category;
-    ImageButton like, like_stroke;
+    TextView name, title, description, txtLike;//, category;
+    ImageButton like, like_stroke, imageSrc;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -22,26 +22,32 @@ public class FeedActivity extends AppCompatActivity {
         setContentView(R.layout.activity_feed);
 
         imageView = (ImageView) findViewById(R.id.imageView);
+        name = (TextView) findViewById(R.id.uName);
         title = (TextView) findViewById(R.id.fTitle);
+        txtLike = (TextView) findViewById(R.id.txt_like);
         description = (TextView) findViewById(R.id.fDescription);
-        date = (TextView) findViewById(R.id.fDate);
-        uTime = (TextView) findViewById(R.id.uTime);
-        //    category = (TextView) findViewById(R.id.fCategory);
-        like = (ImageButton) findViewById(R.id.like);
+        like = (ImageButton) findViewById(R.id.like_fill);
         like_stroke = (ImageButton) findViewById(R.id.like_stroke);
+        imageSrc = (ImageButton) findViewById(R.id.btn_src);
 
         String img = getIntent().getStringExtra("image");
+        String uName = getIntent().getStringExtra("name");
+        String email = getIntent().getStringExtra("email");
         String ttl = getIntent().getStringExtra("title");
         String des = getIntent().getStringExtra("description");
         String dat = getIntent().getStringExtra("date");
         String time = getIntent().getStringExtra("uTime");
-        //    String cat = getIntent().getStringExtra("category");
 
         try {
             Picasso.get().load(img).into(imageView);
         } catch (Exception e) {
 
         }
+
+        if (uName.contentEquals(""))
+            name.setText(email);
+        else
+            name.setText(uName);
 
         if (ttl.contentEquals(""))
             title.setVisibility(View.GONE);
@@ -52,19 +58,6 @@ public class FeedActivity extends AppCompatActivity {
             description.setVisibility(View.GONE);
         else
             description.setText(des);
-
-        if (dat.contentEquals("Date")) {
-            date.setVisibility(View.GONE);
-        } else {
-            date.setText(dat);
-        }
-
-    /*     if(cat.contentEquals(""))
-             category.setVisibility(View.GONE);
-         else
-             category.setText(cat); */
-
-        uTime.setText(time);
 
         like_stroke.setOnClickListener(new View.OnClickListener() {
             @Override

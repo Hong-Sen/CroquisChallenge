@@ -9,40 +9,25 @@
     tools:context=".FeedActivity">
 
     <LinearLayout
-        android:id="@+id/linearLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:layout_margin="7dp"
-        android:orientation="horizontal">
+        android:layout_gravity="right"
+        android:layout_margin="10dp"
+        android:orientation="vertical">
 
-        <ImageView
-            android:id="@+id/uImg"
-            android:layout_width="31dp"
-            android:layout_height="31dp"
-            android:layout_gravity="center"
-            android:src="@drawable/setting" />
-
-        <LinearLayout
-            android:layout_width="match_parent"
+        <TextView
+            android:id="@+id/fTitle"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="right"
-            android:layout_marginLeft="20dp"
-            android:orientation="vertical">
-
-            <TextView
-                android:id="@+id/uName"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="uName" />
-
-            <TextView
-                android:id="@+id/uTime"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="0000-00-00 00:00"
-                android:textSize="13sp" />
-        </LinearLayout>
+            android:layout_marginTop="5dp"
+            android:text="Title"
+            android:textSize="21sp" />
+        <TextView
+            android:id="@+id/uName"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="uName"
+            android:textColor="@color/grey_dark" />
     </LinearLayout>
 
 
@@ -69,45 +54,54 @@
         android:gravity="right"
         android:orientation="vertical">
 
-        <LinearLayout
-            android:layout_width="wrap_content"
+        <RelativeLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_gravity="right"
             android:layout_marginVertical="3dp">
 
-            <ImageButton
+            <FrameLayout
                 android:id="@+id/like"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:background="@null"
-                android:src="@drawable/ic_favorite"
-                android:visibility="gone" />
+                android:layout_height="wrap_content">
 
-            <ImageButton
-                android:id="@+id/like_stroke"
+                <ImageButton
+                    android:id="@+id/like_fill"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@null"
+                    android:src="@drawable/ic_favorite"
+                    android:visibility="gone" />
+
+                <ImageButton
+                    android:id="@+id/like_stroke"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@null"
+                    android:src="@drawable/ic_favorite_border" />
+            </FrameLayout>
+
+            <TextView
+                android:id="@+id/txt_like"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginLeft="7dp"
+                android:layout_toRightOf="@+id/like" />
+
+            <ImageButton
+                android:id="@+id/btn_src"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
                 android:background="@null"
-                android:src="@drawable/ic_favorite_border" />
-        </LinearLayout>
-
-        <TextView
-            android:id="@+id/fTitle"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="title"
-            android:textSize="20sp" />
-
-        <TextView
-            android:id="@+id/fDate"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="0000-00-00" />
+                android:src="@drawable/ic_src" />
+        </RelativeLayout>
 
         <TextView
             android:id="@+id/fDescription"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:layout_gravity="left"
             android:text="description" />
     </LinearLayout>
 </LinearLayout>

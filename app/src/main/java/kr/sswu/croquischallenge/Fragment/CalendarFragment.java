@@ -42,7 +42,6 @@ public class CalendarFragment extends Fragment {
                              Bundle savedInstanceState) {
 
         View view =  inflater.inflate(R.layout.fragment_calendar, container, false);
-
         timer = view.findViewById(R.id.toolbar_timer);
         timer.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -63,7 +62,7 @@ public class CalendarFragment extends Fragment {
 
     public void initView(View v){
 
-        textView = (TextView)v.findViewById(R.id.title);
+        textView = (TextView)v.findViewById(R.id.item_header_title);
         recyclerView = (RecyclerView)v.findViewById(R.id.calendar);
 
     }
@@ -87,7 +86,7 @@ public class CalendarFragment extends Fragment {
 
         manager = new StaggeredGridLayoutManager(7, StaggeredGridLayoutManager.VERTICAL);
 
-        mAdapter = new CalendarAdapter(mCalendarList);
+        mAdapter = new CalendarAdapter(getContext(), mCalendarList);
 
         mAdapter.setCalendarList(mCalendarList);
         recyclerView.setLayoutManager(manager);
@@ -104,15 +103,15 @@ public class CalendarFragment extends Fragment {
 
         for (int i = -300; i < 300; i++) {
             try {
-                GregorianCalendar calendar = new GregorianCalendar(cal.get(Calendar.YEAR), cal.get(Calendar.MONTH) + i, 1, 0, 0, 0);
+                GregorianCalendar calendar = new GregorianCalendar(cal.get(Calendar.YEAR), cal.get(Calendar.MONTH) + i, 1);
                 if (i == 0) {
                     mCenterPosition = calendarList.size();
                 }
 
-                // 타이틀인듯
+                // 타이틀
                 calendarList.add(calendar.getTimeInMillis());
 
-                int dayOfWeek = calendar.get(Calendar.DAY_OF_WEEK) - 1; //해당 월에 시작하는 요일 -1 을 하면 빈칸을 구할 수 있겠죠 ?
+                int dayOfWeek = calendar.get(Calendar.DAY_OF_WEEK) - 1; //빈칸은 해당 월에 시작하는 요일 -1
                 int max = calendar.getActualMaximum(Calendar.DAY_OF_MONTH); // 해당 월에 마지막 요일
 
                 // EMPTY 생성
@@ -123,7 +122,7 @@ public class CalendarFragment extends Fragment {
                     calendarList.add(new GregorianCalendar(calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH), j));
                 }
 
-                // TODO : 결과값 넣을떄 여기다하면될듯
+                // TODO : 결과 값 넣을 때 여기에 하기
 
             } catch (Exception e) {
                 e.printStackTrace();

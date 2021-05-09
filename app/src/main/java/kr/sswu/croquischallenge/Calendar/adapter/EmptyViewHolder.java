@@ -7,7 +7,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import kr.sswu.croquischallenge.Calendar.model.EmptyDay;
 
-public class EmptyViewHolder extends RecyclerView.ViewHolder { // 비어있는 요일 타입 ViewHolder
+public class EmptyViewHolder extends RecyclerView.ViewHolder {
 
 
     public EmptyViewHolder(@NonNull View itemView) {

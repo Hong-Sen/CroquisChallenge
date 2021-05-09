@@ -26,7 +26,6 @@ import com.google.firebase.database.ValueEventListener;
 import java.util.ArrayList;
 
 import kr.sswu.croquischallenge.Adapter.FeedAdapter;
-import kr.sswu.croquischallenge.MainActivity;
 import kr.sswu.croquischallenge.Model.FeedModel;
 import kr.sswu.croquischallenge.PostActivity;
 import kr.sswu.croquischallenge.R;
@@ -133,16 +132,18 @@ public class FeedFragment extends Fragment {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 feedList.clear();
-                String uTime, fImg, fTitle, fDescription, fDate, fCategory;
+
                 for (DataSnapshot d : snapshot.getChildren()) {
-                    String upload_time = d.child("upload_time").getValue().toString();
                     String img = d.child("image").getValue().toString();
+                    String name = d.child("uName").getValue().toString();
+                    String email = d.child("email").getValue().toString();
                     String title = d.child("title").getValue().toString();
                     String description = d.child("description").getValue().toString();
                     String date = d.child("date").getValue().toString();
                     String category = d.child("category").getValue().toString();
+                    String upload_time = d.child("upload_time").getValue().toString();
 
-                    FeedModel feedModel = new FeedModel(upload_time, img, title, description, date, category);
+                    FeedModel feedModel = new FeedModel(img, name, email, title, description, date, category, upload_time);
 
                     feedList.add(feedModel);
                     adapter = new FeedAdapter(getActivity(), feedList);
@@ -163,15 +164,18 @@ public class FeedFragment extends Fragment {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 feedList.clear();
+
                 for (DataSnapshot d : snapshot.getChildren()) {
-                    String upload_time = d.child("upload_time").getValue().toString();
                     String img = d.child("image").getValue().toString();
+                    String name = d.child("name").getValue().toString();
+                    String email = d.child("email").getValue().toString();
                     String title = d.child("title").getValue().toString();
                     String description = d.child("description").getValue().toString();
                     String date = d.child("date").getValue().toString();
                     String category = d.child("category").getValue().toString();
+                    String upload_time = d.child("upload_time").getValue().toString();
 
-                    FeedModel feedModel = new FeedModel(upload_time, img, title, description, date, category);
+                    FeedModel feedModel = new FeedModel(img, name, email, title, description, date, category, upload_time);
 
                     if (feedModel.getCategory().contains(c))
                         feedList.add(feedModel);
@@ -188,4 +192,3 @@ public class FeedFragment extends Fragment {
         });
     }
 }
-

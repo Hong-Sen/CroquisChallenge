@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -10,27 +10,21 @@
     <include layout="@layout/custom_toolbar"/>
 
     <!--header-->
-    <LinearLayout
+    <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:animateLayoutChanges="true"
         android:orientation="horizontal">
 
-        <TextView
-            android:id="@+id/title"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:padding="16dp"
-            android:textSize="18sp" />
+    <include layout="@layout/calendar_header_item"/>
 
-    </LinearLayout>
+    </FrameLayout>
 
     <!--day-->
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="20dp"
-        android:background="#eaeae9"
+        android:background="#E3D2BC"
         android:orientation="horizontal">
 
         <TextView
@@ -38,62 +32,63 @@
             android:layout_height="match_parent"
             android:layout_weight="1"
             android:gravity="center"
-            android:text="일"
-            android:textSize="9sp" />
+            android:text="@string/sun"
+            android:textColor="#C0392B"
+            android:textSize="12sp" />
 
         <TextView
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1"
             android:gravity="center"
-            android:text="월"
+            android:text="@string/mon"
             android:textColor="@color/black"
-            android:textSize="9sp" />
+            android:textSize="12sp" />
 
         <TextView
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1"
             android:gravity="center"
-            android:text="화"
+            android:text="@string/tues"
             android:textColor="@color/black"
-            android:textSize="9sp" />
+            android:textSize="12sp" />
 
         <TextView
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1"
             android:gravity="center"
-            android:text="수"
+            android:text="@string/wed"
             android:textColor="@color/black"
-            android:textSize="9sp" />
+            android:textSize="12sp" />
 
         <TextView
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1"
             android:gravity="center"
-            android:text="목"
+            android:text="@string/thurs"
             android:textColor="@color/black"
-            android:textSize="9sp" />
+            android:textSize="12sp" />
 
         <TextView
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1"
             android:gravity="center"
-            android:text="금"
+            android:text="@string/fri"
             android:textColor="@color/black"
-            android:textSize="9sp" />
+            android:textSize="12sp" />
 
         <TextView
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1"
             android:gravity="center"
-
-            android:text="토"
-            android:textSize="9sp" />
+            android:text="@string/sat"
+            android:textColor="#2980B9"
+            android:textSize="12sp" />
     </LinearLayout>
 
     <!--recyclerview-->
@@ -102,4 +97,4 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
 
-</FrameLayout>
+</LinearLayout>

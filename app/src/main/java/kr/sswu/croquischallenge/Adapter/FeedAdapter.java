@@ -5,10 +5,8 @@ import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
@@ -60,9 +58,11 @@ public class FeedAdapter extends RecyclerView.Adapter<FeedAdapter.FeedViewHolder
             public void onClick(View view) {
                 Intent intent = new Intent(ctx, FeedActivity.class);
                 intent.putExtra("image", fImg);
+                intent.putExtra("name", tmp.getName());
+                intent.putExtra("email", tmp.getEmail());
                 intent.putExtra("title", fTitle);
                 intent.putExtra("description", tmp.getDescription());
-                //    intent.putExtra("category", tmp.getCategory());
+                intent.putExtra("category", tmp.getCategory());
                 intent.putExtra("uTime", tmp.getUpload_time());
                 intent.putExtra("date", tmp.getDate());
 
@@ -87,6 +87,4 @@ public class FeedAdapter extends RecyclerView.Adapter<FeedAdapter.FeedViewHolder
             fTitle = itemView.findViewById(R.id.fTitle);
         }
     }
-
 }
-
