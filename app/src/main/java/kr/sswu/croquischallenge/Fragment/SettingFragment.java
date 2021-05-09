@@ -104,6 +104,8 @@ public class SettingFragment extends Fragment {
 
         //사용자 이름 default = 이메일 주소
         //사용자 이름 변경한 경우 setting 기본 화면 상단에 변경된 이름 출력
+        uEmail = user.getEmail();
+        
         Query query = reference.orderByChild("email").equalTo(user.getEmail());
         query.addValueEventListener(new ValueEventListener() {
             @Override
