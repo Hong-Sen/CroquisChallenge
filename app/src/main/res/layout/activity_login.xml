@@ -40,7 +40,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             app:startIconDrawable="@drawable/ic_email"
-            android:layout_marginVertical="5dp">
+            android:layout_marginVertical="3dp">
 
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/edit_email"
@@ -55,7 +55,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             app:startIconDrawable="@drawable/ic_pw"
-            android:layout_marginVertical="5dp">
+            android:layout_marginVertical="3dp">
 
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/edit_pw"
@@ -69,16 +69,17 @@
             android:id="@+id/txt_recoverPw"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="right"
+            android:layout_marginTop="5dp"
             android:text="Forgot password?"
-            android:textColor="#52729A"
-            android:textSize="13sp" />
+            android:textSize="13sp"
+            android:textColor="#00569A"
+            android:layout_gravity="right"/>
 
         <Button
             android:id="@+id/btn_signIn"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="40dp"
+            android:layout_marginTop="20dp"
             android:backgroundTint="#D6D6D6"
             android:text="Sign in"
             android:textColor="@color/grey_dark" />
@@ -102,6 +103,16 @@
         android:layout_centerInParent="true"
         android:layout_marginHorizontal="50dp" />
 
+    <TextView
+        android:id="@+id/txt_message"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="60dp"
+        android:textColor="#F85959"
+        android:layout_below="@+id/google_login_btn"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="20dp" />
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -124,7 +135,8 @@
             android:textColor="@color/grey_dark"
             android:textSize="17sp" />
     </LinearLayout>
-</RelativeLayout><!--
+</RelativeLayout>
+    <!--
     <Button
         android:id="@+id/naver_login_button"
         android:layout_width="280dp"
