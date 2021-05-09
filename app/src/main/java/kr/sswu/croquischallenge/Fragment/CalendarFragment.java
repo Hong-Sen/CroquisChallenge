@@ -86,7 +86,7 @@ public class CalendarFragment extends Fragment {
 
         manager = new StaggeredGridLayoutManager(7, StaggeredGridLayoutManager.VERTICAL);
 
-        mAdapter = new CalendarAdapter(mCalendarList);
+        mAdapter = new CalendarAdapter(getContext(), mCalendarList);
 
         mAdapter.setCalendarList(mCalendarList);
         recyclerView.setLayoutManager(manager);
