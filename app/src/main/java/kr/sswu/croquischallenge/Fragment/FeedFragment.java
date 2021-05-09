@@ -167,7 +167,7 @@ public class FeedFragment extends Fragment {
 
                 for (DataSnapshot d : snapshot.getChildren()) {
                     String img = d.child("image").getValue().toString();
-                    String name = d.child("name").getValue().toString();
+                    String name = d.child("uName").getValue().toString();
                     String email = d.child("email").getValue().toString();
                     String title = d.child("title").getValue().toString();
                     String description = d.child("description").getValue().toString();
