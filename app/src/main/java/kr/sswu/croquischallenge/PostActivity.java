@@ -38,13 +38,20 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.FileProvider;
+import androidx.fragment.app.DialogFragment;
 
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.Query;
+import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.OnProgressListener;
@@ -60,10 +67,20 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
 
+import kr.sswu.croquischallenge.login.activity.LoginActivity;
+
 public class PostActivity extends AppCompatActivity {
+
+    final private static String TAG = "";
 
     private static final int GALLERY_ACTION_CODE = 1;
     private static final int CAMERA_ACTION_CODE = 2;
+
+    private FirebaseAuth firebaseAuth;
+    private FirebaseDatabase firebaseDatabase;
+    private DatabaseReference reference;
+
+    private String name, email, uid;
 
     private TextView toolBarTitle;
     private ImageView buttonClose, imageView;
@@ -84,12 +101,7 @@ public class PostActivity extends AppCompatActivity {
 
     private Button buttonUpload;
 
-    private FirebaseStorage storage = FirebaseStorage.getInstance();
-    private StorageReference reference = storage.getReference();
-    private FirebaseFirestore db = FirebaseFirestore.getInstance();
     private Uri imageUri;
-
-    final private static String TAG = "";
     String mCurrentPhotoPath;
 
     @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN_MR1)
@@ -97,6 +109,29 @@ public class PostActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_post);
+
+        //get user info
+        firebaseAuth = FirebaseAuth.getInstance();
+        checkUser();
+
+        firebaseDatabase = FirebaseDatabase.getInstance();
+        reference = firebaseDatabase.getReference("Users");
+        Query query = reference.orderByChild("email").equalTo(email);
+        query.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                for (DataSnapshot ds : snapshot.getChildren()) {
+                    name = ds.child("name").getValue().toString();
+                    email = ds.child("email").getValue().toString();
+                    uid = ds.child("uid").getValue().toString();
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
 
         toolBarTitle = (TextView) findViewById(R.id.toolbar_title);
         buttonClose = (ImageView)findViewById(R.id.close_button);
@@ -242,9 +277,8 @@ public class PostActivity extends AppCompatActivity {
                 DatePickerDialog datePickerDialog = new DatePickerDialog(PostActivity.this, new DatePickerDialog.OnDateSetListener() {
                     @Override
                     public void onDateSet(DatePicker datePicker, int y, int m, int d) {
-                        int month = m + 1;
                         edit_date.setTextColor(Color.DKGRAY);
-                        edit_date.setText(y + "-" + month + "-" + d);
+                        edit_date.setText(y + "-" + m + "-" + d);
                     }}, year, month, day);
                 datePickerDialog.show();
             }
@@ -260,6 +294,30 @@ public class PostActivity extends AppCompatActivity {
                 }
             }
         });
+    }
+
+    @Override
+    protected void onStart () {
+        super.onStart();
+        checkUser();
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        checkUser();
+    }
+
+    private void checkUser() {
+        FirebaseUser user = firebaseAuth.getCurrentUser();
+
+        if (user != null) {
+            email = user.getEmail();
+            uid = user.getUid();
+        } else {
+            startActivity(new Intent(getApplicationContext(), LoginActivity.class));
+            finish();
+        }
     }
 
     @Override
@@ -386,6 +444,9 @@ public class PostActivity extends AppCompatActivity {
 
                         if(uriTask.isSuccessful()) {
                             HashMap<String, Object> feed = new HashMap<>();
+                            feed.put("uid", uid);
+                            feed.put("uName", name);
+                            feed.put("email", email);
                             feed.put("upload_time", fTime);
                             feed.put("image", downloadUri);
                             feed.put("title", edit_title.getText().toString());
@@ -422,13 +483,7 @@ public class PostActivity extends AppCompatActivity {
                         Toast.makeText(PostActivity.this, e.getMessage(), Toast.LENGTH_SHORT).show();
                     }
                 });
-         //feed upload 후 Feed 메인 회면으로 전환
+        //feed upload 후 Feed 메인 회면으로 전환
         startActivity(new Intent(PostActivity.this, MainActivity.class));
-    }
-
-    private String getFileExtension(Uri uri) {
-        ContentResolver cr = getContentResolver();
-        MimeTypeMap mime = MimeTypeMap.getSingleton();
-        return mime.getExtensionFromMimeType(cr.getType(uri));
     }
 }

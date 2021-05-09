@@ -1,25 +1,20 @@
 package kr.sswu.croquischallenge.Model;
 
 public class FeedModel {
-    private String upload_time, image, title, description, date, category;
+    private String image, name, email, title, description, date, category, upload_time;
 
-    public FeedModel() { }
+    public FeedModel() {
+    }
 
-    public FeedModel(String upload_time, String image, String title, String description, String date, String category) {
-        this.upload_time = upload_time;
+    public FeedModel(String image, String name, String email, String title, String description, String date, String category, String upload_time) {
         this.image = image;
+        this.name = name;
+        this.email = email;
         this.title = title;
         this.description = description;
         this.date = date;
         this.category = category;
-    }
-
-    public void setUpload_time(String upload_time) {
         this.upload_time = upload_time;
-    }
-
-    public String getUpload_time() {
-        return upload_time;
     }
 
     public void setImage(String image) {
@@ -30,6 +25,22 @@ public class FeedModel {
         return image;
     }
 
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
     public void setTitle(String title) {
         this.title = title;
     }
@@ -38,7 +49,6 @@ public class FeedModel {
         return title;
     }
 
-
     public void setDescription(String description) {
         this.description = description;
     }
@@ -46,7 +56,6 @@ public class FeedModel {
     public String getDescription() {
         return description;
     }
-
 
     public void setDate(String date) {
         this.date = date;
@@ -64,4 +73,11 @@ public class FeedModel {
         return category;
     }
 
+    public void setUpload_time(String upload_time) {
+        this.upload_time = upload_time;
+    }
+
+    public String getUpload_time() {
+        return upload_time;
+    }
 }
