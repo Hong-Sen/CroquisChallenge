@@ -42,7 +42,8 @@
             style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginVertical="5dp">
+            android:layout_marginVertical="3dp"
+            app:startIconDrawable="@drawable/ic_email">
 
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/edit_email"
@@ -55,8 +56,9 @@
             style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginVertical="5dp"
-            app:passwordToggleEnabled="true">
+            android:layout_marginVertical="3dp"
+            app:startIconDrawable="@drawable/ic_pw"
+            app:passwordToggleEnabled="true" >
 
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/edit_pw"
@@ -69,13 +71,14 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Make sure it's at least 8 characters"
+            android:layout_gravity="right"
             android:textSize="13sp" />
 
         <Button
             android:id="@+id/btn_create"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="40dp"
+            android:layout_marginTop="20dp"
             android:backgroundTint="#D6D6D6"
             android:text="Create account"
             android:textColor="@color/grey_dark" />

@@ -46,7 +46,7 @@ public class LoginActivity extends AppCompatActivity {
 
     private TextInputEditText edit_email, edit_pw;
     private Button btn_signIn;
-    private TextView txt_recoverPw,txt_create;
+    private TextView txt_recoverPw,txt_create, txt_message;
 
     private ProgressDialog progressDialog;
 
@@ -177,6 +177,7 @@ public class LoginActivity extends AppCompatActivity {
         txt_recoverPw = (TextView) findViewById(R.id.txt_recoverPw);
         btn_signIn = (Button) findViewById(R.id.btn_signIn);
         txt_create = (TextView) findViewById(R.id.txt_create);
+        txt_message = (TextView) findViewById(R.id.txt_message);
 
         txt_recoverPw.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -307,14 +308,15 @@ public class LoginActivity extends AppCompatActivity {
                         } else {
                             progressDialog.dismiss();
                             Log.w(TAG, "signInWithEmail : failure", task.getException());
-                            Toast.makeText(getApplicationContext(), "Authentication failed", Toast.LENGTH_SHORT).show();
+                        //    Toast.makeText(getApplicationContext(), "Authentication failed", Toast.LENGTH_SHORT).show();
                         }
                     }
                 }).addOnFailureListener(new OnFailureListener() {
             @Override
             public void onFailure(@NonNull Exception e) {
                 progressDialog.dismiss();
-                Toast.makeText(getApplicationContext(), ""+e.getMessage(), Toast.LENGTH_SHORT).show();
+                txt_message.setText(e.getMessage());
+            //    Toast.makeText(getApplicationContext(), "" + e.getMessage(), Toast.LENGTH_SHORT).show();
             }
         });
     }
