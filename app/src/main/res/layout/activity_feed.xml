@@ -8,6 +8,7 @@
     android:orientation="vertical"
     tools:context=".FeedActivity">
 
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -16,18 +17,27 @@
         android:orientation="vertical">
 
         <TextView
-            android:id="@+id/fTitle"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="5dp"
-            android:text="Title"
-            android:textSize="21sp" />
-        <TextView
             android:id="@+id/uName"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="uName"
-            android:textColor="@color/grey_dark" />
+            android:textColor="@color/grey_dark"
+            android:textSize="19sp" />
+
+        <TextView
+            android:id="@+id/fTitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="7dp"
+            android:textColor="@color/grey"
+            android:textSize="21sp" />
+
+        <TextView
+            android:id="@+id/fDate"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="1dp"
+            android:textColor="@color/grey"
+            android:textSize="17sp" />
     </LinearLayout>
 
 
@@ -96,12 +106,16 @@
                 android:src="@drawable/ic_src" />
         </RelativeLayout>
 
-        <TextView
-            android:id="@+id/fDescription"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
-            android:layout_gravity="left"
-            android:text="description" />
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginVertical="10dp" >
+            <TextView
+                android:id="@+id/fDescription"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="left"
+                android:lineSpacingMultiplier="1.2" />
+        </ScrollView>
     </LinearLayout>
 </LinearLayout>

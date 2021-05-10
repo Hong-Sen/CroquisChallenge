@@ -13,7 +13,7 @@ import com.squareup.picasso.Picasso;
 public class FeedActivity extends AppCompatActivity {
 
     ImageView imageView;
-    TextView name, title, description, txtLike;//, category;
+    TextView name, title, date, description, txtLike;//, category;
     ImageButton like, like_stroke, imageSrc;
 
     @Override
@@ -24,6 +24,7 @@ public class FeedActivity extends AppCompatActivity {
         imageView = (ImageView) findViewById(R.id.imageView);
         name = (TextView) findViewById(R.id.uName);
         title = (TextView) findViewById(R.id.fTitle);
+        date = (TextView) findViewById(R.id.fDate);
         txtLike = (TextView) findViewById(R.id.txt_like);
         description = (TextView) findViewById(R.id.fDescription);
         like = (ImageButton) findViewById(R.id.like_fill);
@@ -53,6 +54,11 @@ public class FeedActivity extends AppCompatActivity {
             title.setVisibility(View.GONE);
         else
             title.setText(ttl);
+
+        if (dat.contentEquals("Date"))
+            date.setVisibility(View.GONE);
+        else
+            date.setText(dat);
 
         if (des.contentEquals(""))
             description.setVisibility(View.GONE);
