@@ -27,7 +27,7 @@ import java.util.ArrayList;
 
 import kr.sswu.croquischallenge.Adapter.FeedAdapter;
 import kr.sswu.croquischallenge.Model.FeedModel;
-import kr.sswu.croquischallenge.PostActivity;
+import kr.sswu.croquischallenge.PostImageActivity;
 import kr.sswu.croquischallenge.R;
 import kr.sswu.croquischallenge.TimerActivity;
 
@@ -91,7 +91,7 @@ public class FeedFragment extends Fragment {
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(getContext(), PostActivity.class);
+                Intent intent = new Intent(getContext(), PostImageActivity.class);
                 startActivity(intent);
             }
         });
@@ -135,6 +135,7 @@ public class FeedFragment extends Fragment {
 
                 for (DataSnapshot d : snapshot.getChildren()) {
                     String img = d.child("image").getValue().toString();
+                    String ref = d.child("ref").getValue().toString();
                     String name = d.child("uName").getValue().toString();
                     String email = d.child("email").getValue().toString();
                     String title = d.child("title").getValue().toString();
@@ -143,7 +144,7 @@ public class FeedFragment extends Fragment {
                     String category = d.child("category").getValue().toString();
                     String upload_time = d.child("upload_time").getValue().toString();
 
-                    FeedModel feedModel = new FeedModel(img, name, email, title, description, date, category, upload_time);
+                    FeedModel feedModel = new FeedModel(img, ref, name, email, title, description, date, category, upload_time);
 
                     feedList.add(feedModel);
                     adapter = new FeedAdapter(getActivity(), feedList);
@@ -167,7 +168,8 @@ public class FeedFragment extends Fragment {
 
                 for (DataSnapshot d : snapshot.getChildren()) {
                     String img = d.child("image").getValue().toString();
-                    String name = d.child("name").getValue().toString();
+                    String ref = d.child("ref").getValue().toString();
+                    String name = d.child("uName").getValue().toString();
                     String email = d.child("email").getValue().toString();
                     String title = d.child("title").getValue().toString();
                     String description = d.child("description").getValue().toString();
@@ -175,7 +177,7 @@ public class FeedFragment extends Fragment {
                     String category = d.child("category").getValue().toString();
                     String upload_time = d.child("upload_time").getValue().toString();
 
-                    FeedModel feedModel = new FeedModel(img, name, email, title, description, date, category, upload_time);
+                    FeedModel feedModel = new FeedModel(img, ref, name, email, title, description, date, category, upload_time);
 
                     if (feedModel.getCategory().contains(c))
                         feedList.add(feedModel);

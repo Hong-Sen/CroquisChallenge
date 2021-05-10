@@ -1,13 +1,14 @@
 package kr.sswu.croquischallenge.Model;
 
 public class FeedModel {
-    private String image, name, email, title, description, date, category, upload_time;
+    private String image, ref, name, email, title, description, date, category, upload_time;
 
     public FeedModel() {
     }
 
-    public FeedModel(String image, String name, String email, String title, String description, String date, String category, String upload_time) {
+    public FeedModel(String image, String ref, String name, String email, String title, String description, String date, String category, String upload_time) {
         this.image = image;
+        this.ref = ref;
         this.name = name;
         this.email = email;
         this.title = title;
@@ -23,6 +24,14 @@ public class FeedModel {
 
     public String getImage() {
         return image;
+    }
+
+    public void setRef(String ref) {
+        this.ref = ref;
+    }
+
+    public String getRef() {
+        return ref;
     }
 
     public void setName(String name) {

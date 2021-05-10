@@ -58,6 +58,7 @@ public class FeedAdapter extends RecyclerView.Adapter<FeedAdapter.FeedViewHolder
             public void onClick(View view) {
                 Intent intent = new Intent(ctx, FeedActivity.class);
                 intent.putExtra("image", fImg);
+                intent.putExtra("ref", tmp.getRef());
                 intent.putExtra("name", tmp.getName());
                 intent.putExtra("email", tmp.getEmail());
                 intent.putExtra("title", fTitle);
