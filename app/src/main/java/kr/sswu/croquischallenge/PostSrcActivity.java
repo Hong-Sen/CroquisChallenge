@@ -78,7 +78,6 @@ public class PostSrcActivity extends AppCompatActivity {
     private String name, email, uid;
 
     private ImageView back, imageView;
-    private TextView toolBarTitle;
     private Button next;
 
     private BottomSheetDialog bottomSheetDialog;
@@ -117,14 +116,12 @@ public class PostSrcActivity extends AppCompatActivity {
             }
         });
 
-        toolBarTitle = (TextView) findViewById(R.id.toolbar_title);
         back = (ImageView) findViewById(R.id.btn_back);
         next = (Button) findViewById(R.id.btn_next);
 
         imageView = (ImageView) findViewById(R.id.add_photo);
         progressBar = (ProgressBar) findViewById(R.id.progressBar);
         progressBar.setVisibility(View.INVISIBLE);
-        toolBarTitle.setText("References");
         back.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

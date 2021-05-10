@@ -26,13 +26,28 @@
                 android:layout_centerVertical="true"
                 android:src="@drawable/back" />
 
-            <TextView
-                android:id="@+id/toolbar_title"
+            <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_centerInParent="true"
                 android:gravity="center"
-                android:textSize="23sp" />
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/toolbar_title"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:text="References"
+                    android:textSize="19sp" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Optional"
+                    android:textColor="#0068BA"
+                    android:textSize="13sp" />
+            </LinearLayout>
 
             <Button
                 android:id="@+id/btn_next"
@@ -61,14 +76,5 @@
         android:layout_height="wrap_content"
         android:max="100"
         android:progress="29" />
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="This is optional"
-        android:textColor="#F44336"
-        android:textSize="17sp"
-        android:layout_marginRight="15dp"
-        android:layout_gravity="right"/>
 
 </LinearLayout>
