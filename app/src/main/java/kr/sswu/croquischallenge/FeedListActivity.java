@@ -1,18 +1,16 @@
 package kr.sswu.croquischallenge;
 
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
-
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.Toast;
 
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -22,7 +20,6 @@ import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 
-import kr.sswu.croquischallenge.Adapter.FeedAdapter;
 import kr.sswu.croquischallenge.Adapter.PostAdapter;
 import kr.sswu.croquischallenge.Model.FeedModel;
 
@@ -71,6 +68,7 @@ public class FeedListActivity extends AppCompatActivity {
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 for (DataSnapshot ds : snapshot.getChildren()) {
                     String img = ds.child("image").getValue().toString();
+                    String ref = ds.child("ref").getValue().toString();
                     String name = ds.child("uName").getValue().toString();
                     String email = ds.child("email").getValue().toString();
                     String title = ds.child("title").getValue().toString();
@@ -79,7 +77,7 @@ public class FeedListActivity extends AppCompatActivity {
                     String category = ds.child("category").getValue().toString();
                     String upload_time = ds.child("upload_time").getValue().toString();
 
-                    FeedModel feedModel = new FeedModel(img, name, email, title, description, date, category, upload_time);
+                    FeedModel feedModel = new FeedModel(img, ref, name, email, title, description, date, category, upload_time);
 
                     feedList.add(feedModel);
 

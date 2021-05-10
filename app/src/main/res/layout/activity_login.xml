@@ -84,7 +84,7 @@
             android:text="Sign in"
             android:textColor="@color/grey_dark" />
     </LinearLayout>
-
+<!--
     <TextView
         android:id="@+id/line"
         android:layout_width="wrap_content"
@@ -92,8 +92,9 @@
         android:layout_below="@id/input"
         android:layout_centerHorizontal="true"
         android:layout_marginBottom="20dp"
-        android:text="--------------------------- OR ---------------------------"
+        android:text="OR"
         android:textSize="17sp" />
+
 
     <com.google.android.gms.common.SignInButton
         android:id="@+id/google_login_btn"
@@ -102,14 +103,14 @@
         android:layout_below="@+id/line"
         android:layout_centerInParent="true"
         android:layout_marginHorizontal="50dp" />
-
+-->
     <TextView
         android:id="@+id/txt_message"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginHorizontal="60dp"
         android:textColor="#F85959"
-        android:layout_below="@+id/google_login_btn"
+        android:layout_below="@+id/input"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="20dp" />
 
