@@ -139,8 +139,8 @@ public class PostActivity extends AppCompatActivity {
         ArrayAdapter arrayAdapter = new ArrayAdapter(this, R.layout.dropdown_item, category);
         autoCompleteTextView.setAdapter(arrayAdapter);
 
-
         imageView.setImageURI(Uri.parse(imageUri));
+
 
         btn_title.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -153,14 +153,14 @@ public class PostActivity extends AppCompatActivity {
                 builder.setTitle("Title");
                 builder.setMessage("Enter the title of the work");
                 builder.setView(edit);
-                builder.setPositiveButton("입력",
+                builder.setPositiveButton("Ok",
                         new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int which) {
                                 edit_title.setText(edit.getText().toString());
                                 edit_title.setTextColor(Color.DKGRAY);
                             }
                         });
-                builder.setNegativeButton("취소",
+                builder.setNegativeButton("Cancel",
                         new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int which) {
 
@@ -180,14 +180,14 @@ public class PostActivity extends AppCompatActivity {
                 builder.setTitle("Description");
                 builder.setMessage("Enter the description of the work");
                 builder.setView(edit);
-                builder.setPositiveButton("입력",
+                builder.setPositiveButton("Ok",
                         new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int which) {
                                 edit_description.setText(edit.getText().toString());
                                 edit_description.setTextColor(Color.DKGRAY);
                             }
                         });
-                builder.setNegativeButton("취소",
+                builder.setNegativeButton("Cancel",
                         new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int which) {
 
@@ -222,6 +222,7 @@ public class PostActivity extends AppCompatActivity {
         buttonUpload.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+
                 if (imageRefUri.equals("null"))
                     uploadToFirebase(Uri.parse(imageUri));
                 else

@@ -114,9 +114,9 @@ public class SettingFragment extends Fragment {
                     String name = ds.child("name").getValue().toString();
 
                     if(name.equals(""))
-                        uName.setText(getString(R.string.text1, uEmail));
+                        uName.setText(uEmail);
                     else
-                        uName.setText(getString(R.string.text1, name));
+                        uName.setText(name);
 
                 }
             }
