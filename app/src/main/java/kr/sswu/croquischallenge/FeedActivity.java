@@ -15,7 +15,7 @@ import com.squareup.picasso.Picasso;
 
 public class FeedActivity extends AppCompatActivity {
 
-    ImageView imageView;
+    ImageView back,imageView;
     TextView name, title, date, description, txtLike;//, category;
     ImageButton like, like_stroke, imageSrc;
 
@@ -24,6 +24,7 @@ public class FeedActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_feed);
 
+        back = (ImageView) findViewById(R.id.btn_back);
         imageView = (ImageView) findViewById(R.id.imageView);
         name = (TextView) findViewById(R.id.uName);
         title = (TextView) findViewById(R.id.fTitle);
@@ -42,6 +43,13 @@ public class FeedActivity extends AppCompatActivity {
         String des = getIntent().getStringExtra("description");
         String dat = getIntent().getStringExtra("date");
         String time = getIntent().getStringExtra("uTime");
+
+        back.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                finish();
+            }
+        });
 
         try {
             Picasso.get().load(img).into(imageView);
