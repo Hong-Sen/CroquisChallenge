@@ -275,6 +275,7 @@ public class PostActivity extends AppCompatActivity {
                         if (uriTask.isSuccessful()) {
                             HashMap<String, Object> feed = new HashMap<>();
                             feed.put("uid", uid);
+                            feed.put("fid", timeStamp);
                             feed.put("uName", name);
                             feed.put("email", email);
                             feed.put("upload_time", fTime);
@@ -357,6 +358,7 @@ public class PostActivity extends AppCompatActivity {
                                             if (uriTask.isSuccessful()) {
                                                 HashMap<String, Object> feed = new HashMap<>();
                                                 feed.put("uid", uid);
+                                                feed.put("fid", timeStamp);
                                                 feed.put("uName", name);
                                                 feed.put("email", email);
                                                 feed.put("upload_time", fTime);
