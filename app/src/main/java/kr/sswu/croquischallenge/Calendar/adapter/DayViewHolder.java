@@ -1,10 +1,12 @@
 package kr.sswu.croquischallenge.Calendar.adapter;
 
 import android.graphics.Color;
+import android.net.Uri;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -23,6 +25,7 @@ import kr.sswu.croquischallenge.Calendar.model.Day;
 public class DayViewHolder extends RecyclerView.ViewHolder {
 
     TextView itemDay;
+    ImageView previewImage;
 
     public DayViewHolder(@NonNull View itemView) {
         super(itemView);
@@ -34,10 +37,11 @@ public class DayViewHolder extends RecyclerView.ViewHolder {
     public void initView(View v){
 
         itemDay = (TextView)v.findViewById(R.id.item_day);
+        previewImage = v.findViewById(R.id.iv_preview_image);
 
     }
 
-    public void bind(Day model){
+    public void bind(Day model, String imagePath){
 
         //Log.i("today","today!");
 
@@ -46,6 +50,8 @@ public class DayViewHolder extends RecyclerView.ViewHolder {
 
         // 일자 값 View에 보이게하기
         itemDay.setText(day);
-
+        if (!imagePath.isEmpty()) {
+            previewImage.setImageURI(Uri.parse(imagePath));
+        }
     };
 }

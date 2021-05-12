@@ -33,7 +33,7 @@ public class CalendarFragment extends Fragment {
 
     public TextView textView;
     public RecyclerView recyclerView;
-    private CalendarAdapter mAdapter;
+    public CalendarAdapter mAdapter;
     private StaggeredGridLayoutManager manager;
 
 
