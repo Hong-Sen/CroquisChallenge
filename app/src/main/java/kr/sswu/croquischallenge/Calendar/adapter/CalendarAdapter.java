@@ -2,38 +2,26 @@ package kr.sswu.croquischallenge.Calendar.adapter;
 
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.Bitmap;
-import android.graphics.Color;
-import android.graphics.ImageDecoder;
+import android.content.SharedPreferences;
 import android.net.Uri;
-import android.os.Build;
-import android.os.Environment;
-import android.provider.MediaStore;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.core.content.FileProvider;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.recyclerview.widget.StaggeredGridLayoutManager;
 
 import com.google.android.material.bottomsheet.BottomSheetDialog;
-import com.theartofdev.edmodo.cropper.CropImage;
-import com.theartofdev.edmodo.cropper.CropImageView;
 
-import java.io.File;
-import java.io.IOException;
-import java.text.SimpleDateFormat;
 import java.util.Calendar;
-import java.util.Date;
 import java.util.List;
 
+import kr.sswu.croquischallenge.AddPhotoCalendarActivity;
 import kr.sswu.croquischallenge.Calendar.model.CalendarHeader;
 import kr.sswu.croquischallenge.Calendar.model.Day;
 import kr.sswu.croquischallenge.Calendar.model.EmptyDay;
+import kr.sswu.croquischallenge.ShowPhotoCalendarActivity;
 import kr.sswu.croquischallenge.R;
 
 public class CalendarAdapter extends RecyclerView.Adapter {
@@ -129,37 +117,55 @@ public class CalendarAdapter extends RecyclerView.Adapter {
         /** day type 꾸미기 */
         else if (viewType == DAY_TYPE) {
             DayViewHolder holder = (DayViewHolder) viewHolder;
+
             Object item = mCalendarList.get(position);
             Day model = new Day();
             if (item instanceof Calendar) {
 
                 // Model에 Calendar 값을 넣어서 몇 일인지 데이터 넣기
                 model.setCalendar((Calendar) item);
-                viewHolder.itemView.setOnLongClickListener(new View.OnLongClickListener() {
+                viewHolder.itemView.setOnClickListener(new View.OnClickListener() {
                     @Override
-                    public boolean onLongClick(View v) {
+                    public void onClick(View v) {
                         bottomSheetDialog = new BottomSheetDialog(mContext, R.style.BottomSheetTheme);
 
                         View sheetView = LayoutInflater.from(mContext).inflate(R.layout.calendar_bottom_sheet,
                                 null);
-                        sheetView.findViewById(R.id.btn_camera).setOnClickListener(it -> {
+                        sheetView.findViewById(R.id.btn_addPhoto).setOnClickListener(it -> {
+                            Intent intent = new Intent(mContext, AddPhotoCalendarActivity.class);
+                            intent.putExtra("date", ((Calendar) item).getTimeInMillis());
+                            mContext.startActivity(intent);
+                            bottomSheetDialog.dismiss();
+                            // save
+                            // uri(photo) -> uri.tostring() -> file:///data/user/0/kr.sswu.croquischallenge/cache/cropped7692266798634543379.jpg(path)
+                            // path -> sharedpreference[]
+
+                            // restore
+                            // sharedpreference[] -> read -> file:///data/user/0/kr.sswu.croquischallenge/cache/cropped7692266798634543379.jpg
+                            // imageview -> show
 
 
                         });
-                        sheetView.findViewById(R.id.btn_gallery).setOnClickListener(it -> {
+                        sheetView.findViewById(R.id.btn_showPhoto).setOnClickListener(it -> {
+                            Intent intent = new Intent(mContext, ShowPhotoCalendarActivity.class);
+                            intent.putExtra("date", ((Calendar) item).getTimeInMillis());
+                            mContext.startActivity(intent);
+                            bottomSheetDialog.dismiss();
 
                         });
-                        sheetView.findViewById(R.id.btn_edit).setOnClickListener(it -> {
 
-                        });
                         bottomSheetDialog.setContentView(sheetView);
                         bottomSheetDialog.show();
-                        return false;
+
                     }
                 });
             }
-            // Model의 데이터를 View에 표현하기
-            holder.bind(model);
+
+            SharedPreferences settings = mContext.getSharedPreferences("calendar", 0);
+            if (item instanceof Calendar) {
+                // Model의 데이터를 View에 표현하기
+                holder.bind(model, settings.getString(""+((Calendar) item).getTimeInMillis()+"image", ""));
+            }
         }
 
     }

@@ -20,6 +20,8 @@ import kr.sswu.croquischallenge.Fragment.SettingFragment;
 
 public class MainActivity extends AppCompatActivity {
 
+    static MainActivity instance;
+
     BottomNavigationView bottomNavigationView;
     Fragment selectedFragment = null;
 
@@ -28,6 +30,7 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        instance = this;
         // splash
         Intent intent = new Intent(this, SplashActivity.class);
         startActivity(intent);
