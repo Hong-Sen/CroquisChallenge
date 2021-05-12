@@ -151,8 +151,7 @@ public class CalendarAdapter extends RecyclerView.Adapter {
                             intent.putExtra("date", ((Calendar) item).getTimeInMillis());
                             mContext.startActivity(intent);
                             bottomSheetDialog.dismiss();
-//                            Uri.parse(settings.getString(""+((Calendar) item).getTimeInMillis(), "none"));
-//                            Log.d("AddPhoto", settings.getString(""+((Calendar) item).getTimeInMillis(), "none"));
+
                         });
 
                         bottomSheetDialog.setContentView(sheetView);
@@ -165,8 +164,7 @@ public class CalendarAdapter extends RecyclerView.Adapter {
             SharedPreferences settings = mContext.getSharedPreferences("calendar", 0);
             if (item instanceof Calendar) {
                 // Model의 데이터를 View에 표현하기
-                holder.bind(model, settings.getString(""+((Calendar) item).getTimeInMillis(), ""));
-               // showPt.getImageView("" + settings.getString(""+((Calendar) item).getTimeInMillis(), ""));
+                holder.bind(model, settings.getString(""+((Calendar) item).getTimeInMillis()+"image", ""));
             }
         }
 

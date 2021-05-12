@@ -91,7 +91,8 @@ public class AddPhotoCalendarActivity extends AppCompatActivity {
                 // 1620834507-image -> image
                 // 1620834507-text -> text
               //  editor.putString(""+date+"text", imagePath);
-                editor.putString(""+date, imagePath);
+                editor.putString(""+date+"image", imagePath);
+                editor.putString(""+date+"text", editText.getText().toString());
                 editor.apply();
 
                 Fragment fragment = MainActivity.instance.selectedFragment;
