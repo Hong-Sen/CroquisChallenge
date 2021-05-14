@@ -161,6 +161,7 @@ public class SettingFragment extends Fragment {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(getContext(), likeActivity.class);
+                intent.putExtra("uid", user.getUid());
                 startActivity(intent);
             }
         });

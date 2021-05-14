@@ -25,6 +25,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.squareup.picasso.Picasso;
 
+import java.util.HashMap;
 import java.util.List;
 
 import kr.sswu.croquischallenge.Model.FeedModel;
@@ -40,8 +41,6 @@ public class FeedAdapter extends RecyclerView.Adapter<FeedAdapter.FeedViewHolder
     private DatabaseReference feedRef;
 
     private boolean processLike = false;
-
-    private Dialog dialog;
 
     public FeedAdapter(Context ctx, List<FeedModel> feedList) {
         this.ctx = ctx;
@@ -115,7 +114,6 @@ public class FeedAdapter extends RecyclerView.Adapter<FeedAdapter.FeedViewHolder
                 return false;
             }
         });
-
 
         holder.btnInfo.setOnClickListener(new View.OnClickListener() {
             @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
@@ -201,17 +199,17 @@ public class FeedAdapter extends RecyclerView.Adapter<FeedAdapter.FeedViewHolder
                     @Override
                     public void onDataChange(@NonNull DataSnapshot snapshot) {
                         if (processLike) {
-                            if (snapshot.child(fid).hasChild(mUid)) {
+                            if (snapshot.child(mUid).hasChild(fid)) {
                                 feedRef.child(fid).child("likes").setValue(likes - 1);
-                                likeRef.child(fid).child(mUid).removeValue();
+                                likeRef.child(mUid).child(fid).removeValue();
                                 tmp.setLikes(Integer.toString(likes - 1));
-                                processLike = false;
                             } else {
                                 feedRef.child(fid).child("likes").setValue(likes + 1);
-                                likeRef.child(fid).child(mUid).setValue("liked");
+                                likeRef.child(mUid).child(fid).setValue("liked");
                                 tmp.setLikes(Integer.toString(likes + 1));
-                                processLike = false;
                             }
+
+                            processLike = false;
 
                             if (likes == 0)
                                 holder.txtLike.setText("");
@@ -236,7 +234,7 @@ public class FeedAdapter extends RecyclerView.Adapter<FeedAdapter.FeedViewHolder
         likeRef.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
-                if (snapshot.child(fid).hasChild(mUid)) {
+                if (snapshot.child(mUid).hasChild(fid)) {
                     holder.btnLike.setImageResource(R.drawable.ic_favorite);
                 } else {
                     holder.btnLike.setImageResource(R.drawable.ic_favorite_border);
