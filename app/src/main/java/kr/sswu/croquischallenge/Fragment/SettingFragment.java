@@ -170,7 +170,7 @@ public class SettingFragment extends Fragment {
         sharedPreferences = getActivity().getSharedPreferences(" ",MODE_PRIVATE);
         final SharedPreferences.Editor editor = sharedPreferences.edit();
         sw.setChecked(sharedPreferences.getBoolean(ex,true));
-
+        FirebaseMessaging.getInstance().subscribeToTopic("1");
         sw.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
@@ -284,3 +284,7 @@ public class SettingFragment extends Fragment {
             startActivity(new Intent(getContext(), LoginActivity.class));
     }
 }
+
+//푸시알람 코드 출처
+//https://m.blog.naver.com/PostView.nhn?blogId=tkddlf4209&logNo=221483174037&proxyReferer=https:%2F%2Fwww.google.com%2F
+//https://www.youtube.com/watch?v=mIE73hnu4I4
