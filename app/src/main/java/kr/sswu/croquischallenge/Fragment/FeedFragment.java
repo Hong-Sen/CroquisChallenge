@@ -144,8 +144,9 @@ public class FeedFragment extends Fragment {
                     String date = d.child("date").getValue().toString();
                     String category = d.child("category").getValue().toString();
                     String upload_time = d.child("upload_time").getValue().toString();
+                    String likes = d.child("likes").getValue().toString();
 
-                    FeedModel feedModel = new FeedModel(fid, img, ref, name, email, title, description, date, category, upload_time);
+                    FeedModel feedModel = new FeedModel(fid, img, ref, name, email, title, description, date, category, upload_time, likes);
 
                     feedList.add(feedModel);
                     adapter = new FeedAdapter(getActivity(), feedList);
@@ -178,8 +179,9 @@ public class FeedFragment extends Fragment {
                     String date = d.child("date").getValue().toString();
                     String category = d.child("category").getValue().toString();
                     String upload_time = d.child("upload_time").getValue().toString();
+                    String likes = d.child("likes").getValue().toString();
 
-                    FeedModel feedModel = new FeedModel(fid, img, ref, name, email, title, description, date, category, upload_time);
+                    FeedModel feedModel = new FeedModel(fid, img, ref, name, email, title, description, date, category, upload_time, likes);
 
                     if (feedModel.getCategory().contains(c))
                         feedList.add(feedModel);

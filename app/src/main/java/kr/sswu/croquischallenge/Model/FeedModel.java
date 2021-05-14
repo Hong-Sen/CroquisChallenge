@@ -1,12 +1,12 @@
 package kr.sswu.croquischallenge.Model;
 
 public class FeedModel {
-    private String image, fid, ref, name, email, title, description, date, category, upload_time;
+    private String image, fid, ref, name, email, title, description, date, category, upload_time, likes;
 
     public FeedModel() {
     }
 
-    public FeedModel(String fid, String image, String ref, String name, String email, String title, String description, String date, String category, String upload_time) {
+    public FeedModel(String fid, String image, String ref, String name, String email, String title, String description, String date, String category, String upload_time, String likes) {
         this.fid = fid;
         this.image = image;
         this.ref = ref;
@@ -17,6 +17,7 @@ public class FeedModel {
         this.date = date;
         this.category = category;
         this.upload_time = upload_time;
+        this.likes = likes;
     }
 
     public void setFid(String fid) {
@@ -97,5 +98,13 @@ public class FeedModel {
 
     public String getUpload_time() {
         return upload_time;
+    }
+
+    public void setLikes(String likes) {
+        this.likes = likes;
+    }
+
+    public String getLikes() {
+        return likes;
     }
 }

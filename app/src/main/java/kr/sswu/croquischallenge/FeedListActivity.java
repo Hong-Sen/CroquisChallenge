@@ -79,8 +79,9 @@ public class FeedListActivity extends AppCompatActivity {
                     String date = ds.child("date").getValue().toString();
                     String category = ds.child("category").getValue().toString();
                     String upload_time = ds.child("upload_time").getValue().toString();
+                    String likes = ds.child("likes").getValue().toString();
 
-                    FeedModel feedModel = new FeedModel(fid, img, ref, name, email, title, description, date, category, upload_time);
+                    FeedModel feedModel = new FeedModel(fid, img, ref, name, email, title, description, date, category, upload_time, likes);
 
                     feedList.add(feedModel);
 
