@@ -1,47 +1,53 @@
 package kr.sswu.croquischallenge.Fragment;
 
-import android.content.Intent;
+import android.content.Context;
+import android.os.Build;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import androidx.annotation.RequiresApi;
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-import androidx.recyclerview.widget.StaggeredGridLayoutManager;
 
+import java.time.LocalDate;
+import java.time.YearMonth;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.GregorianCalendar;
 
-import kr.sswu.croquischallenge.Calendar.adapter.CalendarAdapter;
-import kr.sswu.croquischallenge.Calendar.util.Keys;
+import kr.sswu.croquischallenge.Adapter.CalendarAdapter;
 import kr.sswu.croquischallenge.R;
-import kr.sswu.croquischallenge.TimerActivity;
-
-import static android.content.ContentValues.TAG;
 
 public class CalendarFragment extends Fragment {
+    /*
+        ImageView timer;
+        public int mCenterPosition;
+        private long mCurrentTime;
+        public ArrayList<Object> mCalendarList = new ArrayList<>();
 
-    ImageView timer;
-    public int mCenterPosition;
-    private long mCurrentTime;
-    public ArrayList<Object> mCalendarList = new ArrayList<>();
+        public TextView textView;
+        public RecyclerView recyclerView;
+        public CalendarAdapter mAdapter;
+        private StaggeredGridLayoutManager manager;
+    */
 
-    public TextView textView;
-    public RecyclerView recyclerView;
-    public CalendarAdapter mAdapter;
-    private StaggeredGridLayoutManager manager;
+    private ImageView back, forward;
+    private TextView monthYear;
+    private RecyclerView recyclerView;
+    private LocalDate selectedDate;
 
-
+    @RequiresApi(api = Build.VERSION_CODES.O)
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
-        View view =  inflater.inflate(R.layout.fragment_calendar, container, false);
+
+        View view = inflater.inflate(R.layout.fragment_calendar, container, false);
+        /*
         timer = view.findViewById(R.id.toolbar_timer);
         timer.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -56,18 +62,44 @@ public class CalendarFragment extends Fragment {
         initSet();
 
         setRecycler();
+        */
 
+        back = (ImageView) view.findViewById(R.id.btn_back);
+        monthYear = (TextView) view.findViewById(R.id.txt_monthYear);
+        forward = (ImageView) view.findViewById(R.id.btn_forward);
+        recyclerView = (RecyclerView) view.findViewById(R.id.calendarRecyclerView);
+
+        selectedDate = LocalDate.now();
+
+        back.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                selectedDate = selectedDate.minusMonths(1);
+                setMonthView();
+            }
+        });
+
+        forward.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                selectedDate = selectedDate.plusMonths(1);
+                setMonthView();
+            }
+        });
+
+        setMonthView();
         return view;
     }
 
-    public void initView(View v){
+    /*
+    public void initView(View v) {
 
-        textView = (TextView)v.findViewById(R.id.item_header_title);
-        recyclerView = (RecyclerView)v.findViewById(R.id.calendar);
+        textView = (TextView) v.findViewById(R.id.item_header_title);
+        recyclerView = (RecyclerView) v.findViewById(R.id.calendar);
 
     }
 
-    public void initSet(){
+    public void initSet() {
 
         initCalendarList();
 
@@ -130,5 +162,32 @@ public class CalendarFragment extends Fragment {
         }
 
         mCalendarList = calendarList;
+    }
+     */
+
+    @RequiresApi(api = Build.VERSION_CODES.O)
+    private void setMonthView() {
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy  MM");
+        monthYear.setText(selectedDate.format(formatter));
+
+        ArrayList<String> daysInMonthArray = new ArrayList<>();
+        YearMonth yearMonth = YearMonth.from(selectedDate);
+
+        int daysInMonth = yearMonth.lengthOfMonth();
+
+        LocalDate firstOfMonth = selectedDate.withDayOfMonth(1);
+        int dayOfWeek = firstOfMonth.getDayOfWeek().getValue();
+
+        for (int i = 1; i <= 42; i++) {
+            if (i <= dayOfWeek || i > daysInMonth + dayOfWeek)
+                daysInMonthArray.add("");
+            else
+                daysInMonthArray.add(String.valueOf(i - dayOfWeek));
+        }
+
+        CalendarAdapter adapter = new CalendarAdapter(getContext(), daysInMonthArray);
+        RecyclerView.LayoutManager layoutManager = new GridLayoutManager(getContext(), 7);
+        recyclerView.setLayoutManager(layoutManager);
+        recyclerView.setAdapter(adapter);
     }
 }

@@ -2,26 +2,41 @@
 <LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    android:layout_margin="10dp">
 
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
     <Button
         android:id="@+id/btn_close"
-        android:layout_width="30dp"
-        android:layout_height="30dp"
+        android:layout_width="20dp"
+        android:layout_height="20dp"
         android:background="@drawable/close"
         android:layout_margin="10dp"/>
+
+        <TextView
+            android:id="@+id/cal_date"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="2020-12-12"
+            android:textSize="19sp"
+            android:textColor="@color/grey_dark"
+            android:layout_centerInParent="true" />
+    </RelativeLayout>
 
     <ImageView
         android:id="@+id/iv_show_day_photo"
         android:layout_width="match_parent"
         android:layout_height="500dp"
-        android:layout_margin="20dp"/>
+        android:layout_marginTop="10dp"/>
 
     <TextView
         android:id="@+id/tv_memo"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_margin="20dp"
+        android:layout_margin="10dp"
         android:textSize="20dp"
         android:layout_gravity="center"/>
 

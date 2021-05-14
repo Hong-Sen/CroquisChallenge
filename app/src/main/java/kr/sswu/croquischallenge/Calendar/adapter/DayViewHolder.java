@@ -51,6 +51,7 @@ public class DayViewHolder extends RecyclerView.ViewHolder {
         // 일자 값 View에 보이게하기
         itemDay.setText(day);
         if (!imagePath.isEmpty()) {
+            itemDay.setVisibility(View.GONE);
             previewImage.setImageURI(Uri.parse(imagePath));
         }
     };

@@ -61,13 +61,24 @@
     </androidx.appcompat.widget.Toolbar>
 
 
-    <ImageView
-        android:id="@+id/add_photo"
+    <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="390dp"
-        android:background="@color/white"
-        android:scaleType="centerInside"
-        android:src="@drawable/upload" />
+        android:layout_height="wrap_content">
+
+        <ImageView
+            android:id="@+id/add_photo"
+            android:layout_width="match_parent"
+            android:layout_height="400dp"
+            android:background="@color/white"
+            android:src="@drawable/image_border"/>
+
+        <ImageView
+            android:id="@+id/img_add"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:src="@drawable/upload" />
+    </RelativeLayout>
 
     <ProgressBar
         android:id="@+id/progressBar"
@@ -76,5 +87,4 @@
         android:layout_height="wrap_content"
         android:max="100"
         android:progress="29" />
-
 </LinearLayout>
