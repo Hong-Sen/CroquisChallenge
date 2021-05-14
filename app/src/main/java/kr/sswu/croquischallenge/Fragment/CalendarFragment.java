@@ -1,11 +1,14 @@
 package kr.sswu.croquischallenge.Fragment;
 
+import android.app.DatePickerDialog;
 import android.content.Context;
 import android.os.Build;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.DatePicker;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -21,6 +24,7 @@ import java.util.ArrayList;
 
 import kr.sswu.croquischallenge.Adapter.CalendarAdapter;
 import kr.sswu.croquischallenge.R;
+import kr.sswu.croquischallenge.YearMonthPickerDialog;
 
 public class CalendarFragment extends Fragment {
     /*
@@ -70,6 +74,15 @@ public class CalendarFragment extends Fragment {
         recyclerView = (RecyclerView) view.findViewById(R.id.calendarRecyclerView);
 
         selectedDate = LocalDate.now();
+
+        monthYear.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View view) {
+                YearMonthPickerDialog pd = new YearMonthPickerDialog();
+                pd.setListener(d);
+                pd.show(getActivity().getSupportFragmentManager(), "YearMonthPickerTest");
+            }
+        });
 
         back.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -164,6 +177,17 @@ public class CalendarFragment extends Fragment {
         mCalendarList = calendarList;
     }
      */
+
+    DatePickerDialog.OnDateSetListener d = new DatePickerDialog.OnDateSetListener() {
+        @RequiresApi(api = Build.VERSION_CODES.O)
+        @Override
+        public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth){
+            Log.d("YearMonthPickerTest", "year = " + year + ", month = " + monthOfYear + ", day = " + dayOfMonth);
+            selectedDate = selectedDate.withYear(year);
+            selectedDate = selectedDate.withMonth(monthOfYear);
+            setMonthView();
+        }
+    };
 
     @RequiresApi(api = Build.VERSION_CODES.O)
     private void setMonthView() {
