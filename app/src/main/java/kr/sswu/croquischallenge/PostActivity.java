@@ -286,6 +286,7 @@ public class PostActivity extends AppCompatActivity {
                             feed.put("description", edit_description.getEditableText().toString());
                             feed.put("date", edit_date.getText().toString());
                             feed.put("category", autoCompleteTextView.getEditableText().toString());
+                            feed.put("likes", 0);
 
                             DatabaseReference ref = FirebaseDatabase.getInstance().getReference("Feeds");
                             ref.child(timeStamp).setValue(feed)
@@ -369,6 +370,7 @@ public class PostActivity extends AppCompatActivity {
                                                 feed.put("description", edit_description.getEditableText().toString());
                                                 feed.put("date", edit_date.getText().toString());
                                                 feed.put("category", autoCompleteTextView.getEditableText().toString());
+                                                feed.put("likes", "0");
 
                                                 DatabaseReference ref = FirebaseDatabase.getInstance().getReference("Feeds");
                                                 ref.child(timeStamp).setValue(feed)

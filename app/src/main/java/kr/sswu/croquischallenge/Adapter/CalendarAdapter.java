@@ -2,6 +2,7 @@ package kr.sswu.croquischallenge.Adapter;
 
 import android.content.Context;
 import android.content.Intent;
+
 import android.content.SharedPreferences;
 import android.net.Uri;
 import android.view.LayoutInflater;
@@ -45,7 +46,9 @@ public class CalendarAdapter extends RecyclerView.Adapter<CalendarAdapter.Calend
     public CalendarViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(ctx).inflate(R.layout.calendar_cell, parent, false);
         ViewGroup.LayoutParams layoutParams = view.getLayoutParams();
+
         layoutParams.height = (int) (parent.getHeight() * 0.1599);
+
         return new CalendarViewHolder(view);
     }
 
@@ -108,13 +111,12 @@ public class CalendarAdapter extends RecyclerView.Adapter<CalendarAdapter.Calend
 
         private TextView dayOfMonth;
         private ImageView dayOfMonthImage;
-
+      
         public CalendarViewHolder(@NonNull View itemView) {
             super(itemView);
             dayOfMonth = itemView.findViewById(R.id.txt_cellDay);
+
             dayOfMonthImage = itemView.findViewById(R.id.preview_image);
         }
     }
 }
-
-

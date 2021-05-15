@@ -52,6 +52,5 @@
             android:layout_margin="10dp"
             android:text="confirm"
             android:textAllCaps="false" />
-
     </LinearLayout>
 </LinearLayout>

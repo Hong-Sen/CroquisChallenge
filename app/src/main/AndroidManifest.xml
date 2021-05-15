@@ -27,7 +27,6 @@
         <activity android:name=".PostSrcActivity" />
         <activity android:name=".FeedListActivity" />
         <activity android:name=".RegisterActivity" />
-        <activity android:name=".FeedActivity" />
         <activity android:name=".AddPhotoCalendarActivity" />
 
         <meta-data

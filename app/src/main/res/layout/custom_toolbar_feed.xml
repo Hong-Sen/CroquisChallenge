@@ -26,7 +26,6 @@
             android:layout_height="wrap_content"
             android:text="@string/app_name"
             android:textSize="23sp"
-            android:textStyle="bold"
             android:gravity="center"
             android:layout_centerInParent="true"/>
 

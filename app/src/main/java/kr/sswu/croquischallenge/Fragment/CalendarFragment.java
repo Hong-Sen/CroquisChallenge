@@ -1,6 +1,7 @@
 package kr.sswu.croquischallenge.Fragment;
 
 import android.app.DatePickerDialog;
+
 import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
@@ -31,86 +32,86 @@ public class CalendarFragment extends Fragment {
     private TextView monthYear;
     private RecyclerView recyclerView;
     private LocalDate selectedDate;
+
     public CalendarAdapter adapter;
+
 
     @RequiresApi(api = Build.VERSION_CODES.O)
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+      
+      View view = inflater.inflate(R.layout.fragment_calendar, container, false);
+      
+      back = (ImageView) view.findViewById(R.id.btn_back);
+      monthYear = (TextView) view.findViewById(R.id.txt_monthYear);
+      forward = (ImageView) view.findViewById(R.id.btn_forward);
+      recyclerView = (RecyclerView) view.findViewById(R.id.calendarRecyclerView);
+      selectedDate = LocalDate.now();
 
-        View view = inflater.inflate(R.layout.fragment_calendar, container, false);
-
-        back = (ImageView) view.findViewById(R.id.btn_back);
-        monthYear = (TextView) view.findViewById(R.id.txt_monthYear);
-        forward = (ImageView) view.findViewById(R.id.btn_forward);
-        recyclerView = (RecyclerView) view.findViewById(R.id.calendarRecyclerView);
-
-        selectedDate = LocalDate.now();
-
-        monthYear.setOnClickListener(new View.OnClickListener(){
-            @Override
-            public void onClick(View view) {
-                YearMonthPickerDialog pd = new YearMonthPickerDialog();
-                pd.setListener(d);
-                pd.show(getActivity().getSupportFragmentManager(), "YearMonthPickerTest");
-            }
-        });
-
-        back.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                selectedDate = selectedDate.minusMonths(1);
-                setMonthView();
-            }
-        });
-
-        forward.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                selectedDate = selectedDate.plusMonths(1);
-                setMonthView();
-            }
-        });
-
-        setMonthView();
-
-        return view;
-    }
-
-    DatePickerDialog.OnDateSetListener d = new DatePickerDialog.OnDateSetListener() {
-        @RequiresApi(api = Build.VERSION_CODES.O)
+      monthYear.setOnClickListener(new View.OnClickListener(){ 
         @Override
-        public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth){
-            Log.d("YearMonthPickerTest", "year = " + year + ", month = " + monthOfYear + ", day = " + dayOfMonth);
-            selectedDate = selectedDate.withYear(year);
-            selectedDate = selectedDate.withMonth(monthOfYear);
-            setMonthView();
+        public void onClick(View view) {
+          YearMonthPickerDialog pd = new YearMonthPickerDialog();
+          pd.setListener(d);
+          pd.show(getActivity().getSupportFragmentManager(), "YearMonthPickerTest");
         }
-    };
+      });
+      
+      back.setOnClickListener(new View.OnClickListener() { 
+        @Override
+        public void onClick(View view) { 
+          selectedDate = selectedDate.minusMonths(1);
+          setMonthView();
+        }
+      });
 
+      forward.setOnClickListener(new View.OnClickListener() {
+        @Override 
+        public void onClick(View view) {
+          selectedDate = selectedDate.plusMonths(1);
+          setMonthView();
+        }
+      });
+      setMonthView();
+      
+      return view;
+    }
+  
+  DatePickerDialog.OnDateSetListener d = new DatePickerDialog.OnDateSetListener() {
     @RequiresApi(api = Build.VERSION_CODES.O)
-    private void setMonthView() {
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy  MM");
-        monthYear.setText(selectedDate.format(formatter));
+    @Override
+    public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth){
+      Log.d("YearMonthPickerTest", "year = " + year + ", month = " + monthOfYear + ", day = " + dayOfMonth);
+      selectedDate = selectedDate.withYear(year);
+      selectedDate = selectedDate.withMonth(monthOfYear);
+      setMonthView();
+    }
+  };
 
-        ArrayList<String> daysInMonthArray = new ArrayList<>();
-        YearMonth yearMonth = YearMonth.from(selectedDate);
+  @RequiresApi(api = Build.VERSION_CODES.O)
+  private void setMonthView() {
+    DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy  MM");
+    monthYear.setText(selectedDate.format(formatter));
 
-        int daysInMonth = yearMonth.lengthOfMonth();
+    ArrayList<String> daysInMonthArray = new ArrayList<>();
+    YearMonth yearMonth = YearMonth.from(selectedDate);
 
-        LocalDate firstOfMonth = selectedDate.withDayOfMonth(1);
-        int dayOfWeek = firstOfMonth.getDayOfWeek().getValue();
+    int daysInMonth = yearMonth.lengthOfMonth();
 
-        for (int i = 1; i <= 42; i++) {
-            if (i <= dayOfWeek || i > daysInMonth + dayOfWeek)
-                daysInMonthArray.add("");
-            else
-                daysInMonthArray.add(String.valueOf(i - dayOfWeek));
-        }
+    LocalDate firstOfMonth = selectedDate.withDayOfMonth(1);
+    int dayOfWeek = firstOfMonth.getDayOfWeek().getValue();
 
-        adapter = new CalendarAdapter(getContext(), daysInMonthArray, selectedDate.format(DateTimeFormatter.ofPattern("yyyyMM")));
-        RecyclerView.LayoutManager layoutManager = new GridLayoutManager(getContext(), 7);
-        recyclerView.setLayoutManager(layoutManager);
-        recyclerView.setAdapter(adapter);
+    for (int i = 1; i <= 42; i++) {
+      if (i <= dayOfWeek || i > daysInMonth + dayOfWeek)
+        daysInMonthArray.add("");
+      else
+        daysInMonthArray.add(String.valueOf(i - dayOfWeek));
+    }
+    
+    CalendarAdapter adapter = new CalendarAdapter(getContext(), daysInMonthArray);
+    RecyclerView.LayoutManager layoutManager = new GridLayoutManager(getContext(), 7);
+    recyclerView.setLayoutManager(layoutManager);
+    recyclerView.setAdapter(adapter);
     }
 }

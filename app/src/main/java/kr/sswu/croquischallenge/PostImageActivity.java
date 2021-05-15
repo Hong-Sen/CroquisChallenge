@@ -54,7 +54,7 @@ public class PostImageActivity extends AppCompatActivity {
     private static final int GALLERY_ACTION_CODE = 1;
     private static final int CAMERA_ACTION_CODE = 2;
 
-    private ImageView close, imageView;
+    private ImageView close, imageView, add;
     private TextView toolBarTitle;
     private Button next;
 
@@ -75,6 +75,7 @@ public class PostImageActivity extends AppCompatActivity {
         next = (Button) findViewById(R.id.btn_next);
 
         imageView = (ImageView)findViewById(R.id.add_photo);
+        add = (ImageView) findViewById(R.id.img_add);
         progressBar = (ProgressBar)findViewById(R.id.progressBar);
         progressBar.setVisibility(View.INVISIBLE);
         toolBarTitle = (TextView) findViewById(R.id.toolbar_title);
@@ -89,7 +90,6 @@ public class PostImageActivity extends AppCompatActivity {
         next.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
                 if (imageUri != null) {
                     Intent intent = new Intent(getApplicationContext(), PostSrcActivity.class);
                     intent.putExtra("image", imageUri.toString());
@@ -207,11 +207,11 @@ public class PostImageActivity extends AppCompatActivity {
                 imageUri = result.getUri();
                 imageView.setBackgroundColor(Color.WHITE);
                 imageView.setImageURI(imageUri);
+                add.setVisibility(View.GONE);
             } else if (resultCode == CropImage.CROP_IMAGE_ACTIVITY_RESULT_ERROR_CODE) {
                 Exception error = result.getError();
             }
         }
-
     }
 
     private void dispatchTakePhotoIntent() {

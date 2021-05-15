@@ -49,3 +49,6 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
         }
     }
 }
+
+
+//출처:https://blog.naver.com/ndb796/221553341369
