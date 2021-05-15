@@ -108,8 +108,8 @@ public class CalendarFragment extends Fragment {
       else
         daysInMonthArray.add(String.valueOf(i - dayOfWeek));
     }
-    
-    CalendarAdapter adapter = new CalendarAdapter(getContext(), daysInMonthArray);
+
+    adapter = new CalendarAdapter(getContext(), daysInMonthArray, selectedDate.format(DateTimeFormatter.ofPattern("yyyyMM")));
     RecyclerView.LayoutManager layoutManager = new GridLayoutManager(getContext(), 7);
     recyclerView.setLayoutManager(layoutManager);
     recyclerView.setAdapter(adapter);
