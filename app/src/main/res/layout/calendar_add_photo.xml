@@ -27,12 +27,12 @@
                 android:src="@drawable/close" />
 
             <TextView
-                android:id="@+id/toolbar_title"
+                android:id="@+id/add_toolbar_title"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_centerInParent="true"
                 android:gravity="center"
-                android:textSize="23sp"
+                android:textSize="19sp"
                 android:text="ADD PHOTO"/>
 
         </RelativeLayout>
@@ -63,6 +63,7 @@
 <!--                app:layout_constraintTop_toBottomOf="@+id/toolbar_close" />-->
 
             <ImageView
+                android:id="@+id/add"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:src="@drawable/upload"

@@ -1,12 +1,5 @@
 package kr.sswu.croquischallenge;
 
-import androidx.annotation.Nullable;
-import androidx.annotation.RequiresApi;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.app.ActivityCompat;
-import androidx.core.content.FileProvider;
-import androidx.fragment.app.Fragment;
-
 import android.Manifest;
 import android.app.Activity;
 import android.content.Intent;
@@ -28,9 +21,18 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.Nullable;
+import androidx.annotation.RequiresApi;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.FileProvider;
+import androidx.fragment.app.Fragment;
+
 import com.google.android.material.bottomsheet.BottomSheetDialog;
+import com.google.firebase.auth.FirebaseAuth;
 import com.theartofdev.edmodo.cropper.CropImage;
 import com.theartofdev.edmodo.cropper.CropImageView;
 
@@ -45,10 +47,12 @@ public class AddPhotoCalendarActivity extends AppCompatActivity {
 
     final private static String TAG = "";
 
+    private String uid, date;
     private static final int GALLERY_ACTION_CODE = 1;
     private static final int CAMERA_ACTION_CODE = 2;
 
-    private ImageView close, imageView;
+    private TextView toolbar;
+    private ImageView close, imageView, add;
     private EditText editText;
     private Button save;
 
@@ -57,19 +61,24 @@ public class AddPhotoCalendarActivity extends AppCompatActivity {
     private Uri imageUri;
     String mCurrentPhotoPath;
 
-    private long date;
 
     @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN_MR1)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.calendar_add_photo);
-        date = getIntent().getLongExtra("date",0L);
 
+        uid = FirebaseAuth.getInstance().getCurrentUser().getUid();
+        date = getIntent().getStringExtra("date");
+
+        toolbar = (TextView) findViewById(R.id.add_toolbar_title);
         close = (ImageView)findViewById(R.id.btn_close);
         imageView = (ImageView)findViewById(R.id.imageView);
+        add = (ImageView) findViewById(R.id.add);
         save = (Button)findViewById(R.id.btn_save);
         editText = (EditText)findViewById(R.id.editText);
+
+        toolbar.setText(date);
 
         close.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -83,6 +92,7 @@ public class AddPhotoCalendarActivity extends AppCompatActivity {
             public void onClick(View v) {
                 String imagePath;
                 imagePath = imageUri.toString();
+
                 SharedPreferences settings = getSharedPreferences("calendar", 0);
                 SharedPreferences.Editor editor = settings.edit();
                 Log.d("AddPhoto", imagePath);
@@ -90,14 +100,14 @@ public class AddPhotoCalendarActivity extends AppCompatActivity {
                 // ""+date+"image" -> 1620834507image
                 // 1620834507-image -> image
                 // 1620834507-text -> text
-              //  editor.putString(""+date+"text", imagePath);
-                editor.putString(""+date+"image", imagePath);
-                editor.putString(""+date+"text", editText.getText().toString());
+                //  editor.putString(""+date+"text", imagePath);
+                editor.putString(uid + date + "image", imagePath);
+                editor.putString(uid + date + "text", editText.getText().toString());
                 editor.apply();
 
                 Fragment fragment = MainActivity.instance.selectedFragment;
                 if(fragment instanceof CalendarFragment) {
-                    ((CalendarFragment)fragment).mAdapter.notifyDataSetChanged();
+                    ((CalendarFragment)fragment).adapter.notifyDataSetChanged();
                 }
                 finish();
             }
@@ -208,6 +218,7 @@ public class AddPhotoCalendarActivity extends AppCompatActivity {
                 imageUri = result.getUri();
                 imageView.setBackgroundColor(Color.WHITE);
                 imageView.setImageURI(imageUri);
+                add.setVisibility(View.GONE);
             } else if (resultCode == CropImage.CROP_IMAGE_ACTIVITY_RESULT_ERROR_CODE) {
                 Exception error = result.getError();
             }
@@ -249,4 +260,3 @@ public class AddPhotoCalendarActivity extends AppCompatActivity {
         return image;
     }
 }
-
