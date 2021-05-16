@@ -5,6 +5,7 @@ import android.content.Intent;
 
 import android.content.SharedPreferences;
 import android.net.Uri;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -81,14 +82,18 @@ public class CalendarAdapter extends RecyclerView.Adapter<CalendarAdapter.Calend
                         // sharedpreference[] -> read -> file:///data/user/0/kr.sswu.croquischallenge/cache/cropped7692266798634543379.jpg
                         // imageview -> show
 
-
                     });
                     sheetView.findViewById(R.id.btn_showPhoto).setOnClickListener(it -> {
                         Intent intent = new Intent(ctx, ShowPhotoCalendarActivity.class);
                         intent.putExtra("date", monthYear + item);
-                        ctx.startActivity(intent);
+                        SharedPreferences settings = ctx.getSharedPreferences("calendar", 0);
+                        if(settings.getString(uid + monthYear + item + "image", "") == ""){
+                            Toast.makeText(ctx,"No Photo",Toast.LENGTH_SHORT).show();
+                        }
+                        else{
+                            ctx.startActivity(intent);
+                        }
                         bottomSheetDialog.dismiss();
-
                     });
 
                     bottomSheetDialog.setContentView(sheetView);
