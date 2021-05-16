@@ -49,9 +49,9 @@ public class MainActivity extends AppCompatActivity {
                     case R.id.bottom_calendar:
                         selectedFragment = new CalendarFragment();
                         break;
-                    case R.id.bottom_add:
-                        selectedFragment = new AddFragment();
-                        break;
+//                    case R.id.bottom_add:
+//                        selectedFragment = new AddFragment();
+//                        break;
                     case R.id.bottom_setting:
                         selectedFragment = new SettingFragment();
                         break;
