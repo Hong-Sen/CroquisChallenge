@@ -3,11 +3,11 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/white" >
+    android:background="#CCBA91" >
 
     <ImageView
         android:layout_width="match_parent"
         android:layout_height="500px"
         android:layout_gravity="center"
-        android:src="@drawable/main_logo" />
+        android:src="@drawable/splash_logo" />
 </LinearLayout>

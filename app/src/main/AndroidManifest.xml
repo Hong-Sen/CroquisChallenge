@@ -82,6 +82,7 @@
                 android:resource="@xml/external" />
         </provider>
 
+
         <activity
             android:name="com.theartofdev.edmodo.cropper.CropImageActivity"
             android:theme="@style/Base.Theme.AppCompat" />
@@ -89,6 +90,8 @@
         <activity android:name=".SplashActivity"
             android:theme="@android:style/Theme.NoTitleBar.Fullscreen" />
         <activity android:name=".ShowPhotoCalendarActivity" />
+
+
     </application>
 
 </manifest>
