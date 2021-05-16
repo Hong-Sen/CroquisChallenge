@@ -4,9 +4,11 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.net.Uri;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.DialogFragment;
@@ -150,6 +152,7 @@ public class CalendarAdapter extends RecyclerView.Adapter {
 
                         });
                         sheetView.findViewById(R.id.btn_showPhoto).setOnClickListener(it -> {
+
                             Intent intent = new Intent(mContext, ShowPhotoCalendarActivity.class);
                             intent.putExtra("date", ((Calendar) item).getTimeInMillis());
                             mContext.startActivity(intent);
