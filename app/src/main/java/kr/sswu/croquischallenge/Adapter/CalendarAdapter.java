@@ -111,11 +111,11 @@ public class CalendarAdapter extends RecyclerView.Adapter<CalendarAdapter.Calend
 
         private TextView dayOfMonth;
         private ImageView dayOfMonthImage;
-      
+
         public CalendarViewHolder(@NonNull View itemView) {
             super(itemView);
             dayOfMonth = itemView.findViewById(R.id.txt_cellDay);
-
+            
             dayOfMonthImage = itemView.findViewById(R.id.preview_image);
         }
     }

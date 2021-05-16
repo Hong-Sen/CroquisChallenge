@@ -95,6 +95,9 @@ public class FeedAdapter extends RecyclerView.Adapter<FeedAdapter.FeedViewHolder
             @Override
             public boolean onLongClick(View view) {
                 ImageView img = new ImageView(ctx);
+                img.setMinimumWidth(1000);
+                img.setMinimumHeight(1000);
+                img.setScaleType(ImageView.ScaleType.FIT_CENTER);
                 try {
                     Picasso.get().load(fImg).into(img);
                 } catch (Exception e) {
