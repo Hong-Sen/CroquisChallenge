@@ -54,48 +54,6 @@
         android:layout_marginHorizontal="15dp"
         android:gravity="right"
         android:orientation="vertical">
-        <!--
-                <RelativeLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginVertical="3dp">
-
-                    <FrameLayout
-                        android:id="@+id/like"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content">
-
-                        <ImageButton
-                            android:id="@+id/like_fill"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:background="@null"
-                            android:src="@drawable/ic_favorite"
-                            android:visibility="gone" />
-
-                        <ImageButton
-                            android:id="@+id/like_stroke"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:background="@null"
-                            android:src="@drawable/ic_favorite_border" />
-                    </FrameLayout>
-
-                    <TextView
-                        android:id="@+id/txt_like"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginLeft="7dp"
-                        android:layout_toRightOf="@+id/like" />
-
-                    <ImageButton
-                        android:id="@+id/btn_src"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_alignParentRight="true"
-                        android:background="@null"
-                        android:src="@drawable/ic_src" />
-                </RelativeLayout>-->
 
         <ScrollView
             android:layout_width="match_parent"
