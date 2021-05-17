@@ -12,10 +12,9 @@ import androidx.fragment.app.FragmentTransaction;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
-import kr.sswu.croquischallenge.Fragment.AddFragment;
 import kr.sswu.croquischallenge.Fragment.CalendarFragment;
 import kr.sswu.croquischallenge.Fragment.FeedFragment;
-import kr.sswu.croquischallenge.Fragment.SearchFragment;
+import kr.sswu.croquischallenge.Fragment.ReferencesFragment;
 import kr.sswu.croquischallenge.Fragment.SettingFragment;
 
 public class MainActivity extends AppCompatActivity {
@@ -43,14 +42,11 @@ public class MainActivity extends AppCompatActivity {
                     case R.id.bottom_feed:
                         selectedFragment = new FeedFragment();
                         break;
-                    case R.id.bottom_search:
-                        selectedFragment = new SearchFragment();
+                    case R.id.bottom_references:
+                        selectedFragment = new ReferencesFragment();
                         break;
                     case R.id.bottom_calendar:
                         selectedFragment = new CalendarFragment();
-                        break;
-                    case R.id.bottom_add:
-                        selectedFragment = new AddFragment();
                         break;
                     case R.id.bottom_setting:
                         selectedFragment = new SettingFragment();

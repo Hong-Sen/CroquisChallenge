@@ -18,13 +18,13 @@
             android:layout_centerVertical="true"
             android:src="@drawable/close" />
 
+        <!--
         <TextView
             android:id="@+id/toolbar_title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textSize="23sp"
-            android:textStyle="bold"
             android:gravity="center"
-            android:layout_centerInParent="true"/>
+            android:layout_centerInParent="true"/> -->
     </RelativeLayout>
 </androidx.appcompat.widget.Toolbar>

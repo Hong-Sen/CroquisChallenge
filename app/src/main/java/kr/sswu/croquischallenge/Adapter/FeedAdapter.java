@@ -220,8 +220,8 @@ public class FeedAdapter extends RecyclerView.Adapter<FeedAdapter.FeedViewHolder
                                 holder.txtLike.setText(fLikes + " like");
                             else if (likes > 1)
                                 holder.txtLike.setText(fLikes + " likes");
-
                         }
+                        notifyDataSetChanged();
                     }
 
                     @Override
