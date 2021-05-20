@@ -1,11 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+xmlns:app="http://schemas.android.com/apk/res-auto"
+android:layout_width="match_parent"
+android:layout_height="wrap_content"
+android:layout_margin="11dp"
+app:cardCornerRadius="3dp"
+app:cardElevation="3dp">
+
+<LinearLayout
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:layout_margin="10dp"
-    android:maxHeight="500dp"
+    android:layout_height="match_parent"
+    android:layout_margin="7dp"
     android:orientation="vertical">
 
     <ImageView
@@ -19,52 +24,39 @@
     <ImageView
         android:id="@+id/imageView"
         android:layout_width="match_parent"
-        android:layout_height="290dp"
+        android:layout_height="230dp"
         android:scaleType="fitCenter" />
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center_horizontal"
-        android:layout_marginHorizontal="15dp"
-        android:layout_marginVertical="10dp"
-        android:orientation="vertical">
-
-        <TextView
-            android:id="@+id/fTitle"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="right"
-            android:textColor="@color/grey_dark"
-            android:textSize="21sp" />
-
-        <TextView
-            android:id="@+id/fDate"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="right"
-            android:layout_marginLeft="1dp"
-            android:textSize="17sp" />
-    </LinearLayout>
 
     <LinearLayout
         android:id="@+id/content"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginHorizontal="15dp"
-        android:gravity="right"
+        android:layout_marginTop="15dp"
         android:orientation="vertical">
 
-        <ScrollView
+        <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="109dp">
+            android:layout_height="wrap_content"
+            android:layout_margin="5dp">
 
-            <TextView
-                android:id="@+id/fDescription"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+            <ImageButton
+                android:id="@+id/btn_src"
+                android:layout_width="17dp"
+                android:layout_height="15dp"
+                android:background="@null"
+                android:layout_marginRight="10dp"
+                android:src="@drawable/ic_source"
+                android:layout_toLeftOf="@+id/btn_info"
+                android:layout_centerVertical="true"/>
+
+            <ImageView
+                android:id="@+id/btn_info"
+                android:layout_width="19dp"
+                android:layout_height="19dp"
                 android:layout_gravity="right"
-                android:lineSpacingMultiplier="1.2" />
-        </ScrollView>
+                android:layout_alignParentRight="true"
+                android:src="@drawable/ic_info" />
+        </RelativeLayout>
     </LinearLayout>
 </LinearLayout>
+</androidx.cardview.widget.CardView>

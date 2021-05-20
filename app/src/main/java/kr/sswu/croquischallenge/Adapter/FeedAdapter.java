@@ -1,6 +1,5 @@
 package kr.sswu.croquischallenge.Adapter;
 
-import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.os.Build;
@@ -25,16 +24,14 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.squareup.picasso.Picasso;
 
-import java.util.HashMap;
 import java.util.List;
 
 import kr.sswu.croquischallenge.Model.FeedModel;
 import kr.sswu.croquischallenge.R;
 
 public class FeedAdapter extends RecyclerView.Adapter<FeedAdapter.FeedViewHolder> {
-    Context ctx;
-    List<FeedModel> feedList;
-
+    private Context ctx;
+    private List<FeedModel> feedList;
     private String mUid;
 
     private DatabaseReference likeRef;
@@ -104,9 +101,8 @@ public class FeedAdapter extends RecyclerView.Adapter<FeedAdapter.FeedViewHolder
 
                 }
                 androidx.appcompat.app.AlertDialog.Builder builder = new AlertDialog.Builder(ctx);
-                //   builder.setTitle("References");
                 builder.setView(img);
-                builder.setPositiveButton("OK",
+                builder.setPositiveButton("close",
                         new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int which) {
 
@@ -175,7 +171,7 @@ public class FeedAdapter extends RecyclerView.Adapter<FeedAdapter.FeedViewHolder
                     } catch (Exception e) {
 
                     }
-                    img.setPadding(50, 50, 50, 50);
+                    img.setPadding(10, 50, 10, 10);
                     androidx.appcompat.app.AlertDialog.Builder builder = new AlertDialog.Builder(ctx);
                     builder.setTitle("References");
                     builder.setView(img);

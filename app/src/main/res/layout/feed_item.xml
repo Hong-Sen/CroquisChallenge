@@ -61,19 +61,21 @@
 
                 <ImageButton
                     android:id="@+id/btn_src"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    android:layout_width="17dp"
+                    android:layout_height="15dp"
                     android:background="@null"
-                    android:layout_marginRight="5dp"
+                    android:layout_marginRight="9dp"
                     android:src="@drawable/ic_source"
-                    android:layout_toLeftOf="@+id/btn_info"/>
+                    android:layout_toLeftOf="@+id/btn_info"
+                    android:layout_centerVertical="true"/>
 
                 <ImageView
                     android:id="@+id/btn_info"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    android:layout_width="19dp"
+                    android:layout_height="19dp"
                     android:layout_gravity="right"
                     android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true"
                     android:src="@drawable/ic_info" />
             </RelativeLayout>
         </LinearLayout>

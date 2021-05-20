@@ -2,6 +2,7 @@ package kr.sswu.croquischallenge.Adapter;
 
 import android.app.ProgressDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.os.Build;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -9,6 +10,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.PopupMenu;
 import android.widget.TextView;
@@ -16,6 +18,7 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
+import androidx.appcompat.app.AlertDialog;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.gms.tasks.OnFailureListener;
@@ -61,9 +64,16 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.PostViewHolder
         String fid = tmp.getFid();
         String email = tmp.getEmail();
         String fImg = tmp.getImage();
+        String ref = tmp.getRef();
         String fTitle = tmp.getTitle();
         String fDate = tmp.getDate();
         String fDescription = tmp.getDescription();
+
+        try {
+            Picasso.get().load(fImg).into(holder.fImage);
+        } catch (Exception e) {
+
+        }
 
         holder.btnMore.setOnClickListener(new View.OnClickListener() {
             @RequiresApi(api = Build.VERSION_CODES.KITKAT)
@@ -73,26 +83,100 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.PostViewHolder
             }
         });
 
-        if (fTitle.equals(""))
-            holder.fTitle.setVisibility(View.GONE);
-        else
-            holder.fTitle.setText(fTitle);
+        holder.fImage.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View view) {
+                ImageView img = new ImageView(ctx);
+                img.setMinimumWidth(1000);
+                img.setMinimumHeight(1000);
+                img.setScaleType(ImageView.ScaleType.FIT_CENTER);
+                try {
+                    Picasso.get().load(fImg).into(img);
+                } catch (Exception e) {
 
-        if (fDescription.equals(""))
-            holder.fDescription.setVisibility(View.GONE);
-        else
-            holder.fDescription.setText(fDescription);
+                }
+                androidx.appcompat.app.AlertDialog.Builder builder = new AlertDialog.Builder(view.getRootView().getContext());
+                builder.setView(img);
+                builder.setPositiveButton("close",
+                        new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int which) {
 
-        if (fDate.contentEquals("Date"))
-            holder.fDate.setVisibility(View.GONE);
-        else
-            holder.fDate.setText(fDate);
+                            }
+                        });
+                builder.setCancelable(true);
+                builder.show();
+                return false;
+            }
+        });
 
-        try {
-            Picasso.get().load(fImg).into(holder.fImage);
-        } catch (Exception e) {
+        holder.btnInfo.setOnClickListener(new View.OnClickListener() {
+            @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
+            @Override
+            public void onClick(View view) {
+                AlertDialog.Builder builder = new AlertDialog.Builder(view.getRootView().getContext());
+                View dialogView = LayoutInflater.from(view.getRootView().getContext()).inflate(R.layout.info_dialog, null);
+                ImageView img;
+                TextView name, title, date, description;
+                img = dialogView.findViewById(R.id.fImg);
+                name = dialogView.findViewById(R.id.uName);
+                title = dialogView.findViewById(R.id.fTitle);
+                date = dialogView.findViewById(R.id.fDate);
+                description = dialogView.findViewById(R.id.fDescription);
 
-        }
+                try {
+                    Picasso.get().load(fImg).into(img);
+                } catch (Exception e) {
+                }
+
+
+                title.setText(fTitle);
+
+                if (fDate.equals("Date"))
+                    date.setText("");
+                else
+                    date.setText(fDate);
+
+                description.setText(fDescription);
+
+
+                builder.setView(dialogView);
+                builder.setPositiveButton("close",
+                        new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int which) {
+
+                            }
+                        });
+                builder.setCancelable(true);
+                builder.show();
+            }
+        });
+
+        holder.btnSrc.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (!ref.equals("")) {
+                    ImageView img = new ImageView(ctx);
+                    try {
+                        Picasso.get().load(ref).into(img);
+                    } catch (Exception e) {
+
+                    }
+                    img.setPadding(10, 50, 10, 10);
+                    androidx.appcompat.app.AlertDialog.Builder builder = new AlertDialog.Builder(view.getRootView().getContext());
+                    builder.setTitle("References");
+                    builder.setView(img);
+                    builder.setPositiveButton("close",
+                            new DialogInterface.OnClickListener() {
+                                public void onClick(DialogInterface dialog, int which) {
+
+                                }
+                            });
+                    builder.setCancelable(true);
+                    builder.show();
+                } else
+                    Toast.makeText(ctx, "No References" , Toast.LENGTH_SHORT).show();
+            }
+        });
     }
 
     @RequiresApi(api = Build.VERSION_CODES.KITKAT)
@@ -162,18 +246,16 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.PostViewHolder
     }
 
     class PostViewHolder extends RecyclerView.ViewHolder {
-        ImageView btnMore, fImage;
-        TextView fTitle, fDate, fDescription;
+        ImageView fImage, btnMore, btnInfo;
+        ImageButton btnSrc;
 
         public PostViewHolder(View itemView) {
             super(itemView);
 
             btnMore = itemView.findViewById(R.id.btn_more);
+            btnSrc = itemView.findViewById(R.id.btn_src);
+            btnInfo = itemView.findViewById(R.id.btn_info);
             fImage = itemView.findViewById(R.id.imageView);
-            fTitle = itemView.findViewById(R.id.fTitle);
-            //    tLike = itemView.findViewById(R.id.txt_like);
-            fDate = itemView.findViewById(R.id.fDate);
-            fDescription = itemView.findViewById(R.id.fDescription);
         }
     }
 }
