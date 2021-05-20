@@ -31,8 +31,8 @@ public class ReferencesFragment extends Fragment {
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_references, container, false);
 
-        timer = (ImageView)view.findViewById(R.id.toolbar_timer);
-        tabLayout = (TabLayout)view.findViewById(R.id.webView_tab);
+        timer = (ImageView) view.findViewById(R.id.toolbar_timer);
+        tabLayout = (TabLayout) view.findViewById(R.id.webView_tab);
         webView = (WebView) view.findViewById(R.id.webView_container);
         webView.setWebViewClient(new WebViewClient());
 
@@ -55,13 +55,13 @@ public class ReferencesFragment extends Fragment {
             public void onTabSelected(TabLayout.Tab tab) {
                 int position = tab.getPosition();
                 Fragment selectedFragment = null;
-                if(position == 0)
+                if (position == 0)
                     selectedFragment = new WebView1Fragment();
-                else if(position == 1)
+                else if (position == 1)
                     selectedFragment = new WebView2Fragment();
-                else if(position == 2)
+                else if (position == 2)
                     selectedFragment = new WebView3Fragment();
-                else if(position == 3)
+                else if (position == 3)
                     selectedFragment = new WebView4Fragment();
                 ((MainActivity) getActivity()).replaceFragment(R.id.webView_container, selectedFragment);
             }
