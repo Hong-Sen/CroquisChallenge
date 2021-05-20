@@ -25,37 +25,53 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
+            <ImageView
+                android:id="@+id/sub_category"
+                android:layout_width="40dp"
+                android:layout_height="20dp"
+                android:layout_marginLeft="31dp"
+                android:layout_centerVertical="true" />
+
             <TextView
                 android:id="@+id/sub_title"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="31dp"
+                android:layout_marginLeft="7dp"
                 android:layout_centerVertical="true"
+                android:layout_toRightOf="@+id/sub_category"
                 android:textColor="@color/grey"
                 android:textSize="15sp"
                 android:textStyle="bold"/>
 
-        <com.google.android.material.tabs.TabLayout
-            android:id="@+id/tab"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginHorizontal="5dp"
-            app:tabGravity="start"
-            app:tabTextAppearance="@style/tab_text"
-            android:layout_alignParentRight="true">
+            <SearchView
+                android:id="@+id/searchView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="19dp"
+                android:layout_marginRight="19dp"
+                />
 
-            <com.google.android.material.tabs.TabItem
-                android:id="@+id/tab_recent"
+            <com.google.android.material.tabs.TabLayout
+                android:id="@+id/tab"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Recent" />
+                android:layout_marginHorizontal="5dp"
+                app:tabGravity="start"
+                app:tabTextAppearance="@style/tab_text"
+                android:layout_alignParentRight="true">
 
-            <com.google.android.material.tabs.TabItem
-                android:id="@+id/tab_popularity"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Popularity" />
-        </com.google.android.material.tabs.TabLayout>
+                <com.google.android.material.tabs.TabItem
+                    android:id="@+id/tab_recent"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Recent" />
+
+                <com.google.android.material.tabs.TabItem
+                    android:id="@+id/tab_popularity"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Popularity" />
+            </com.google.android.material.tabs.TabLayout>
         </RelativeLayout>
 
         <!-- android:name="androidx.navigation.fragment.NavHostFragment"-->
