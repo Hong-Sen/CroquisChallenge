@@ -32,7 +32,7 @@
                 android:layout_centerInParent="true"
                 android:gravity="center"
                 android:textSize="19sp"
-                android:textColor="@color/grey"/>
+                android:textColor="@color/grey_dark"/>
 
         </RelativeLayout>
     </androidx.appcompat.widget.Toolbar>
@@ -40,20 +40,15 @@
     <ImageView
         android:id="@+id/iv_show_day_photo"
         android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="6.5"
-        android:layout_marginHorizontal="5dp"/>
+        android:layout_height="500dp"
+        android:layout_margin="20dp" />
 
-    <ScrollView
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="3.5">
     <TextView
         android:id="@+id/tv_memo"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_margin="15dp"
-        android:textSize="17dp" />
-    </ScrollView>
+        android:layout_margin="10dp"
+        android:textSize="20dp"
+        android:layout_gravity="center"/>
 
 </LinearLayout>

@@ -91,7 +91,7 @@ public class CalendarFragment extends Fragment {
 
   @RequiresApi(api = Build.VERSION_CODES.O)
   private void setMonthView() {
-    DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy - MM");
+    DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy  MM");
     monthYear.setText(selectedDate.format(formatter));
 
     ArrayList<String> daysInMonthArray = new ArrayList<>();
@@ -109,7 +109,7 @@ public class CalendarFragment extends Fragment {
         daysInMonthArray.add(String.valueOf(i - dayOfWeek));
     }
 
-    adapter = new CalendarAdapter(getContext(), daysInMonthArray, selectedDate.format(DateTimeFormatter.ofPattern("yyyy-MM")));
+    adapter = new CalendarAdapter(getContext(), daysInMonthArray, selectedDate.format(DateTimeFormatter.ofPattern("yyyyMM")));
     RecyclerView.LayoutManager layoutManager = new GridLayoutManager(getContext(), 7);
     recyclerView.setLayoutManager(layoutManager);
     recyclerView.setAdapter(adapter);
