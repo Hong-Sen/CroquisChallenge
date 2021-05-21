@@ -89,25 +89,28 @@ public class AddPhotoCalendarActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 String imagePath;
+                if (imageUri != null) {
                 imagePath = imageUri.toString();
 
-                SharedPreferences settings = getSharedPreferences("calendar", 0);
-                SharedPreferences.Editor editor = settings.edit();
-                Log.d("AddPhoto", imagePath);
-                // ""+date+"text" -> 1620834507text
-                // ""+date+"image" -> 1620834507image
-                // 1620834507-image -> image
-                // 1620834507-text -> text
-                //  editor.putString(""+date+"text", imagePath);
-                editor.putString(uid + date + "image", imagePath);
-                editor.putString(uid + date + "text", editText.getText().toString());
-                editor.apply();
+                    SharedPreferences settings = getSharedPreferences("calendar", 0);
+                    SharedPreferences.Editor editor = settings.edit();
+                    Log.d("AddPhoto", imagePath);
+                    // ""+date+"text" -> 1620834507text
+                    // ""+date+"image" -> 1620834507image
+                    // 1620834507-image -> image
+                    // 1620834507-text -> text
+                    //  editor.putString(""+date+"text", imagePath);
+                    editor.putString(uid + date + "image", imagePath);
+                    editor.putString(uid + date + "text", editText.getText().toString());
+                    editor.apply();
 
-                Fragment fragment = MainActivity.instance.selectedFragment;
-                if(fragment instanceof CalendarFragment) {
-                    ((CalendarFragment)fragment).adapter.notifyDataSetChanged();
-                }
-                finish();
+                    Fragment fragment = MainActivity.instance.selectedFragment;
+                    if (fragment instanceof CalendarFragment) {
+                        ((CalendarFragment) fragment).adapter.notifyDataSetChanged();
+                    }
+                    finish();
+                } else
+                    Toast.makeText(getApplicationContext(), "Select Image", Toast.LENGTH_SHORT).show();
             }
         });
 

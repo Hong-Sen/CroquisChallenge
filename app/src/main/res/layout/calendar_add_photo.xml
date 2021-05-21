@@ -48,7 +48,7 @@
             android:id="@+id/add_photo_click"
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:layout_weight="4">
+            android:layout_weight="6.5">
 
             <ImageView
                 android:id="@+id/imageView"
@@ -57,35 +57,34 @@
                 android:background="@color/white"
                 android:scaleType="centerInside"
                 android:src="@drawable/image_border"/>
-<!--                app:layout_constraintDimensionRatio="3:2"-->
-<!--                app:layout_constraintEnd_toEndOf="parent"-->
-<!--                app:layout_constraintHorizontal_bias="1.0"-->
-<!--                app:layout_constraintStart_toStartOf="parent"-->
-<!--                app:layout_constraintTop_toBottomOf="@+id/toolbar_close" />-->
 
             <ImageView
                 android:id="@+id/add"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_height="match_parent"
                 android:src="@drawable/upload"
                 android:layout_centerInParent="true"/>
 
         </RelativeLayout>
 
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="3.5">
         <EditText
             android:id="@+id/editText"
             android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="2"
+            android:layout_height="match_parent"
             android:padding="10dp"
             android:hint="내용을 입력하세요."/>
+        </ScrollView>
 
         <Button
             android:id="@+id/btn_save"
             android:layout_width="wrap_content"
-            android:layout_height="0dp"
-            android:layout_weight="0.5"
+            android:layout_height="wrap_content"
             android:layout_gravity="center"
+            android:layout_margin="5dp"
             android:backgroundTint="?android:windowBackground"
             android:text="ADD PHOTO"
             android:textColor="@color/grey_dark" />
