@@ -42,7 +42,6 @@ public class ShowPhotoCalendarActivity extends AppCompatActivity {
             }
         });
 
-
         SharedPreferences settings = getSharedPreferences("calendar", 0);
         imageView.setImageURI(Uri.parse(settings.getString(uid + date + "image", "")));
         memo.setText(settings.getString(uid + date + "text",""));
