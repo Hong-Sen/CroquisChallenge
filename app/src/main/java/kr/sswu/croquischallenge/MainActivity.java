@@ -1,10 +1,12 @@
 package kr.sswu.croquischallenge;
 
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
 import android.view.MenuItem;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
@@ -36,6 +38,7 @@ public class MainActivity extends AppCompatActivity {
 
         bottomNavigationView = findViewById(R.id.bottom_navigation);
         bottomNavigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
+            @RequiresApi(api = Build.VERSION_CODES.O)
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
                 switch (item.getItemId()) {
@@ -47,6 +50,10 @@ public class MainActivity extends AppCompatActivity {
                         break;
                     case R.id.bottom_calendar:
                         selectedFragment = new CalendarFragment();
+                        break;
+                    case R.id.bottom_addCalendar:
+                        Intent intent = new Intent(MainActivity.this, AddPhotoCalendarActivity.class);
+                        startActivity(intent);
                         break;
                     case R.id.bottom_setting:
                         selectedFragment = new SettingFragment();

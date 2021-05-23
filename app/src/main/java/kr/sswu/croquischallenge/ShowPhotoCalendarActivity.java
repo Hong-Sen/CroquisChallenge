@@ -1,16 +1,14 @@
 package kr.sswu.croquischallenge;
 
-import android.content.SharedPreferences;
-import android.net.Uri;
 import android.os.Bundle;
 import android.view.View;
-import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.firebase.auth.FirebaseAuth;
+import com.squareup.picasso.Picasso;
 
 public class ShowPhotoCalendarActivity extends AppCompatActivity {
 
@@ -19,6 +17,7 @@ public class ShowPhotoCalendarActivity extends AppCompatActivity {
     private ImageView close, imageView;
     private TextView cal_date, memo;
 
+    String image, description;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -26,8 +25,9 @@ public class ShowPhotoCalendarActivity extends AppCompatActivity {
         setContentView(R.layout.calendar_show_photo);
 
         uid = FirebaseAuth.getInstance().getCurrentUser().getUid();
-
         date = getIntent().getStringExtra("date");
+        image = getIntent().getStringExtra("image");
+        description = getIntent().getStringExtra("description");
 
         cal_date = (TextView) findViewById(R.id.cal_date);
         close = (ImageView) findViewById(R.id.btn_close);
@@ -42,9 +42,13 @@ public class ShowPhotoCalendarActivity extends AppCompatActivity {
             }
         });
 
-        SharedPreferences settings = getSharedPreferences("calendar", 0);
-        imageView.setImageURI(Uri.parse(settings.getString(uid + date + "image", "")));
-        memo.setText(settings.getString(uid + date + "text",""));
+        try {
+            Picasso.get().load(image).into(imageView);
+        } catch (Exception e) {
+
+        }
+
+        memo.setText(description);
     }
 
 }

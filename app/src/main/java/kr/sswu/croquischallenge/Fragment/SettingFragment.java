@@ -3,12 +3,9 @@ package kr.sswu.croquischallenge.Fragment;
 
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
-import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.graphics.Color;
-import android.os.Build;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.Log;
@@ -23,10 +20,8 @@ import android.widget.RelativeLayout;
 import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
-import android.widget.Toolbar;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -35,7 +30,6 @@ import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -46,24 +40,14 @@ import com.google.firebase.iid.FirebaseInstanceId;
 import com.google.firebase.iid.InstanceIdResult;
 import com.google.firebase.messaging.FirebaseMessaging;
 
-import org.w3c.dom.Text;
-
-import java.security.Key;
 import java.util.HashMap;
-import java.util.Iterator;
 
-import static android.content.Context.MODE_PRIVATE;
-import static android.graphics.Color.argb;
-import static android.graphics.Color.red;
-
-import kr.sswu.croquischallenge.Adapter.FeedAdapter;
 import kr.sswu.croquischallenge.FeedListActivity;
-import kr.sswu.croquischallenge.MainActivity;
-import kr.sswu.croquischallenge.Model.FeedModel;
 import kr.sswu.croquischallenge.R;
 import kr.sswu.croquischallenge.likeActivity;
-import kr.sswu.croquischallenge.login.UserProfileConstants;
 import kr.sswu.croquischallenge.login.activity.LoginActivity;
+
+import static android.content.Context.MODE_PRIVATE;
 
 public class SettingFragment extends Fragment {
 
@@ -83,7 +67,6 @@ public class SettingFragment extends Fragment {
     private RelativeLayout feedList, likeList;
     private Switch sw;
     SharedPreferences sharedPreferences;
-    private TextView information;
     private int exist;
 
     @Override
@@ -105,8 +88,6 @@ public class SettingFragment extends Fragment {
         likeList = (RelativeLayout) view.findViewById(R.id.layout_likeList);
         sw = (Switch) view.findViewById(R.id.sw);
         logout = (TextView) view.findViewById(R.id.txt_logout);
-        information = (TextView) view.findViewById(R.id.txt_information);
-        information.setText(" 개발자 성신여자대학교 정시공 에이틴");
 
         //사용자 이름 default = 이메일 주소
         //사용자 이름 변경한 경우 setting 기본 화면 상단에 변경된 이름 출력
@@ -132,17 +113,6 @@ public class SettingFragment extends Fragment {
 
             }
         });
-
-        /*
-        // 닉네임 shared preference로 부터 가져옴
-        // 값이 없으면 로그인 안했다는 뜻이므로 "로그인 필요" 표시
-        SharedPreferences preference = getActivity().getSharedPreferences(UserProfileConstants.PREFERENCE_KEY, MODE_PRIVATE);
-        String username =  preference.getString(UserProfileConstants.USER_NAME, "로그인 필요");
-        uName = (TextView) view.findViewById(R.id.txt_uName);
-        uName.setText(
-                getString(R.string.text1, uEmail)
-        );
-*/
 
         // 사용자 이름 수정
         editName.setOnClickListener(new View.OnClickListener() {
@@ -216,12 +186,6 @@ public class SettingFragment extends Fragment {
                 firebaseAuth.signOut();
                 checkUser();
                 getActivity().onBackPressed();
-            /*    SharedPreferences.Editor editor = preference.edit();
-                editor.clear();
-                editor.apply();
-                Toast.makeText(getContext(), "로그아웃 완료", Toast.LENGTH_SHORT).show();
-                Intent intent = new Intent(requireContext(), LoginActivity.class);
-                startActivity(intent); */
             }
         });
 

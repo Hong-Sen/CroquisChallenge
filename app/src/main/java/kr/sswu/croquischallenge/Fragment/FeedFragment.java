@@ -1,7 +1,6 @@
 package kr.sswu.croquischallenge.Fragment;
 
 import android.content.Intent;
-import android.media.Image;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
@@ -32,7 +31,7 @@ import java.util.ArrayList;
 
 import kr.sswu.croquischallenge.Adapter.FeedAdapter;
 import kr.sswu.croquischallenge.Model.FeedModel;
-import kr.sswu.croquischallenge.PostImageActivity;
+import kr.sswu.croquischallenge.PostActivity;
 import kr.sswu.croquischallenge.R;
 import kr.sswu.croquischallenge.TimerActivity;
 
@@ -190,7 +189,7 @@ public class FeedFragment extends Fragment {
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(getContext(), PostImageActivity.class);
+                Intent intent = new Intent(getContext(), PostActivity.class);
                 startActivity(intent);
             }
         });

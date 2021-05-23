@@ -3,6 +3,7 @@ package kr.sswu.croquischallenge.Adapter;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Build;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -36,6 +37,7 @@ import com.squareup.picasso.Picasso;
 import java.util.List;
 
 import kr.sswu.croquischallenge.Model.FeedModel;
+import kr.sswu.croquischallenge.PostActivity;
 import kr.sswu.croquischallenge.R;
 
 public class PostAdapter extends RecyclerView.Adapter<PostAdapter.PostViewHolder> {
@@ -114,11 +116,10 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.PostViewHolder
             @Override
             public void onClick(View view) {
                 AlertDialog.Builder builder = new AlertDialog.Builder(view.getRootView().getContext());
-                View dialogView = LayoutInflater.from(view.getRootView().getContext()).inflate(R.layout.info_dialog, null);
+                View dialogView = LayoutInflater.from(view.getRootView().getContext()).inflate(R.layout.my_info_dialog, null);
                 ImageView img;
-                TextView name, title, date, description;
+                TextView title, date, description;
                 img = dialogView.findViewById(R.id.fImg);
-                name = dialogView.findViewById(R.id.uName);
                 title = dialogView.findViewById(R.id.fTitle);
                 date = dialogView.findViewById(R.id.fDate);
                 description = dialogView.findViewById(R.id.fDescription);
@@ -127,7 +128,6 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.PostViewHolder
                     Picasso.get().load(fImg).into(img);
                 } catch (Exception e) {
                 }
-
 
                 title.setText(fTitle);
 
@@ -186,6 +186,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.PostViewHolder
 
         if (email.equals(mEmail)) {
             popupMenu.getMenu().add(Menu.NONE, 0, 0, "Delete");
+            popupMenu.getMenu().add(Menu.NONE, 1, 0, "Edit");
         }
 
         popupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
@@ -194,6 +195,12 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.PostViewHolder
                 int id = menuItem.getItemId();
                 if (id == 0) {
                     deletePost(fid, fImg);
+                } else if (id == 1) {
+                    Intent intent = new Intent(ctx, PostActivity.class);
+                    intent.putExtra("key", "edit");
+                    intent.putExtra("editFeedId", fid);
+                    intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                    ctx.startActivity(intent);
                 }
                 return false;
             }

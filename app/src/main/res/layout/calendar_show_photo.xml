@@ -2,16 +2,13 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
-    android:layout_margin="10dp">
+    android:orientation="vertical">
 
     <androidx.appcompat.widget.Toolbar
         android:id="@+id/toolbar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="?android:windowBackground"
-        android:paddingHorizontal="7dp"
-        android:paddingVertical="5dp">
+        android:background="?android:windowBackground">
 
         <RelativeLayout
             android:layout_width="match_parent"
@@ -42,12 +39,14 @@
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="6.5"
-        android:layout_marginHorizontal="5dp"/>
+        android:scaleType="fitCenter"
+        android:layout_marginHorizontal="15dp"/>
 
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight="3.5">
+        android:layout_weight="3.5"
+        android:layout_marginTop="23dp">
         <TextView
             android:id="@+id/tv_memo"
             android:layout_width="match_parent"

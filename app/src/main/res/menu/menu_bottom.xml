@@ -24,6 +24,13 @@
         android:title="@string/bottom_calendar" />
 
     <item
+        android:id="@+id/bottom_addCalendar"
+        app:showAsAction="ifRoom"
+        android:enabled="true"
+        android:icon="@drawable/add"
+        android:title="Add Calendar" />
+
+    <item
         android:id="@+id/bottom_setting"
         app:showAsAction="ifRoom"
         android:enabled="true"
