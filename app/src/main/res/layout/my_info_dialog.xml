@@ -27,14 +27,6 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="7dp"
-                android:text="Artist"
-                android:textColor="@color/grey_dark"
-                android:textSize="15sp" />
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="7dp"
                 android:text="Title"
                 android:textColor="@color/grey_dark"
                 android:textSize="15sp" />

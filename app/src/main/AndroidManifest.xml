@@ -24,8 +24,6 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.CroquisChallenge">
 
-        <activity android:name=".PostImageActivity" />
-        <activity android:name=".PostSrcActivity" />
         <activity android:name=".FeedListActivity" />
         <activity android:name=".RegisterActivity" />
         <activity android:name=".AddPhotoCalendarActivity" />

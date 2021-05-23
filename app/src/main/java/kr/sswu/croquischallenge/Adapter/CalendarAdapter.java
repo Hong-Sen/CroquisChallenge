@@ -2,14 +2,11 @@ package kr.sswu.croquischallenge.Adapter;
 
 import android.content.Context;
 import android.content.Intent;
-
-import android.content.SharedPreferences;
-import android.net.Uri;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -17,38 +14,33 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.material.bottomsheet.BottomSheetDialog;
-import com.google.firebase.auth.FirebaseAuth;
+import com.squareup.picasso.Picasso;
 
-import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 
 import kr.sswu.croquischallenge.AddPhotoCalendarActivity;
+import kr.sswu.croquischallenge.Model.DaysInMonthModel;
 import kr.sswu.croquischallenge.R;
 import kr.sswu.croquischallenge.ShowPhotoCalendarActivity;
 
 public class CalendarAdapter extends RecyclerView.Adapter<CalendarAdapter.CalendarViewHolder> {
 
     private Context ctx;
-    private ArrayList<String> daysOfMonth;
+    private ArrayList<DaysInMonthModel> daysOfMonth;
+
     private BottomSheetDialog bottomSheetDialog;
 
-    private String uid, monthYear;
-
-    public CalendarAdapter(Context ctx, ArrayList<String> daysOfMonth, String monthYear) {
+    public CalendarAdapter(Context ctx, ArrayList<DaysInMonthModel> daysOfMonth) { //, String monthYear) {
         this.ctx = ctx;
         this.daysOfMonth = daysOfMonth;
-        this.monthYear = monthYear;
-
-        uid = FirebaseAuth.getInstance().getCurrentUser().getUid();
     }
 
     @NonNull
     @Override
     public CalendarViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(ctx).inflate(R.layout.calendar_cell, parent, false);
-        ViewGroup.LayoutParams layoutParams = view.getLayoutParams();
+        View view = LayoutInflater.from(ctx).inflate(R.layout.calendar_item, parent, false);
 
+        ViewGroup.LayoutParams layoutParams = view.getLayoutParams();
         layoutParams.height = (int) (parent.getHeight() * 0.1599);
 
         return new CalendarViewHolder(view);
@@ -56,76 +48,79 @@ public class CalendarAdapter extends RecyclerView.Adapter<CalendarAdapter.Calend
 
     @Override
     public void onBindViewHolder(@NonNull CalendarViewHolder holder, int position) {
-        holder.dayOfMonth.setText(daysOfMonth.get(position));
+        DaysInMonthModel item = daysOfMonth.get(position);
 
-        String item = daysOfMonth.get(position);
+        holder.dayOfMonth.setText(item.getDay());
+        try {
+            Picasso.get().load(item.getImage()).into(holder.dayOfMonthImage);
+        } catch (Exception e) {
+
+        }
 
         holder.dayOfMonthImage.setOnClickListener(new View.OnClickListener() {
+            /*
             @Override
             public void onClick(View view) {
-                if (item.equals(""))
+                if (item.getDay().equals("")) {
                     Toast.makeText(ctx, "Invalid", Toast.LENGTH_SHORT).show();
-                else {
-                    bottomSheetDialog = new BottomSheetDialog(ctx, R.style.BottomSheetTheme);
-
-                    View sheetView = LayoutInflater.from(ctx).inflate(R.layout.calendar_bottom_sheet,
-                            null);
-                    sheetView.findViewById(R.id.btn_addPhoto).setOnClickListener(it -> {
-                        Intent intent = new Intent(ctx, AddPhotoCalendarActivity.class);
-                        if (item.length() < 2)
-                            intent.putExtra("date", monthYear + "-0" + item);
+                } else {
+                    Intent intent = new Intent(ctx, ShowPhotoCalendarActivity.class);
+                    if (item.getImage().equals("")) {
+                        Toast.makeText(ctx, "No Image", Toast.LENGTH_SHORT).show();
+                    } else {
+                        if (item.getDay().length() < 2)
+                            intent.putExtra("date", item.getMonthYear() + " 0" + item.getDay());
                         else
-                            intent.putExtra("date", monthYear + "-" + item);
+                            intent.putExtra("date", item.getMonthYear() + " " + item.getDay());
+                        intent.putExtra("image", item.getImage());
+                        intent.putExtra("description", item.getDescription());
                         ctx.startActivity(intent);
-                        bottomSheetDialog.dismiss();
-                        // save
-                        // uri(photo) -> uri.tostring() -> file:///data/user/0/kr.sswu.croquischallenge/cache/cropped7692266798634543379.jpg(path)
-                        // path -> sharedpreference[]
+                    }
+                }
+            }
 
-                        // restore
-                        // sharedpreference[] -> read -> file:///data/user/0/kr.sswu.croquischallenge/cache/cropped7692266798634543379.jpg
-                        // imageview -> show
+             */
+            @Override
+            public void onClick(View view) {
+                if (item.getDay().equals("")) {
+                    Toast.makeText(ctx, "Invalid", Toast.LENGTH_SHORT).show();
+                } else {
+                    if (item.getImage().equals("")) {
+                        Toast.makeText(ctx, "No Image", Toast.LENGTH_SHORT).show();
+                    } else {
+                        bottomSheetDialog = new BottomSheetDialog(ctx, R.style.BottomSheetTheme);
+                        View sheetView = LayoutInflater.from(ctx).inflate(R.layout.calendar_item__bottom_sheet,
+                                null);
 
-                    });
-                    sheetView.findViewById(R.id.btn_showPhoto).setOnClickListener(it -> {
-                        Intent intent = new Intent(ctx, ShowPhotoCalendarActivity.class);
-                        SharedPreferences settings = ctx.getSharedPreferences("calendar", 0);
+                        TextView date = sheetView.findViewById(R.id.cal_date);
+                        ImageView imageView = sheetView.findViewById(R.id.iv_show_day_photo);
+                        TextView caption = sheetView.findViewById(R.id.tv_memo);
 
-                        if (item.length() < 2) {
-                            intent.putExtra("date", monthYear + "-0" + item);
-                            if (settings.getString(uid + monthYear + "-0" + item + "image", "") == "")
-                                Toast.makeText(ctx, "No Photo", Toast.LENGTH_SHORT).show();
-                            else
-                                ctx.startActivity(intent);
+                        if (item.getDay().length() < 2)
+                            date.setText(item.getMonthYear() + " 0" + item.getDay());
+                        else
+                            date.setText(item.getMonthYear() + " " + item.getDay());
+
+                        try {
+                            Picasso.get().load(item.getImage()).into(imageView);
+                        } catch (Exception e) {
+
                         }
-                        else {
-                            intent.putExtra("date", monthYear + "-" + item);
-                            if (settings.getString(uid + monthYear + "-"+ item + "image", "") == "")
-                                Toast.makeText(ctx, "No Photo", Toast.LENGTH_SHORT).show();
-                            else
-                                ctx.startActivity(intent);
-                        }
-                        bottomSheetDialog.dismiss();
-                    });
+                        caption.setText(item.getDescription());
 
-                    bottomSheetDialog.setContentView(sheetView);
-                    bottomSheetDialog.show();
+
+                        bottomSheetDialog.setContentView(sheetView);
+                        bottomSheetDialog.show();
+                    }
                 }
             }
         });
-
-        SharedPreferences settings = ctx.getSharedPreferences("calendar", 0);
-        if (item.length() < 2)
-            holder.dayOfMonthImage.setImageURI(Uri.parse(settings.getString(uid + monthYear + "-0" + item + "image", "")));
-        else
-            holder.dayOfMonthImage.setImageURI(Uri.parse(settings.getString(uid + monthYear + "-" + item + "image", "")));
     }
 
     @Override
     public int getItemCount() {
         return daysOfMonth.size();
     }
-
 
     class CalendarViewHolder extends RecyclerView.ViewHolder {
 

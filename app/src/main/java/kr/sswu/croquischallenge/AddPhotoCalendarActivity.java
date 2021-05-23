@@ -1,8 +1,9 @@
 package kr.sswu.croquischallenge;
 
 import android.Manifest;
+import android.app.DatePickerDialog;
+import android.app.ProgressDialog;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.Color;
@@ -12,107 +13,95 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
+import android.text.format.DateFormat;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.FileProvider;
-import androidx.fragment.app.Fragment;
 
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.OnProgressListener;
+import com.google.firebase.storage.StorageReference;
+import com.google.firebase.storage.UploadTask;
 import com.theartofdev.edmodo.cropper.CropImage;
 import com.theartofdev.edmodo.cropper.CropImageView;
 
 import java.io.File;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.util.Calendar;
 import java.util.Date;
-
-import kr.sswu.croquischallenge.Fragment.CalendarFragment;
+import java.util.HashMap;
 
 public class AddPhotoCalendarActivity extends AppCompatActivity {
 
     final private static String TAG = "";
 
-    private String uid, date;
     private static final int GALLERY_ACTION_CODE = 1;
     private static final int CAMERA_ACTION_CODE = 2;
 
-    private TextView toolbar;
-    private ImageView close, imageView, add;
-    private EditText editText;
+    private LocalDate selectedDate;
+    private String uid, date, monthYear, day;
+
+    private TextView txt_date;
+    private ImageView close, imageView, add, calendar;
+    private EditText edit_Caption;
     private Button save;
 
     private BottomSheetDialog bottomSheetDialog;
 
     private Uri imageUri;
-    String mCurrentPhotoPath;
+    private String mCurrentPhotoPath;
 
+    private ProgressDialog progressDialog;
 
-    @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN_MR1)
+    @RequiresApi(api = Build.VERSION_CODES.O)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.calendar_add_photo);
 
         uid = FirebaseAuth.getInstance().getCurrentUser().getUid();
-        date = getIntent().getStringExtra("date");
 
-        toolbar = (TextView) findViewById(R.id.add_toolbar_title);
-        close = (ImageView)findViewById(R.id.btn_close);
-        imageView = (ImageView)findViewById(R.id.imageView);
+        selectedDate = LocalDate.now();
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+        date = selectedDate.format(formatter);
+        DateTimeFormatter formatterMY = DateTimeFormatter.ofPattern("yyyy MM");
+        monthYear = selectedDate.format(formatterMY);
+        DateTimeFormatter formatterDD = DateTimeFormatter.ofPattern("dd");
+        day = selectedDate.format(formatterDD);
+
+        close = (ImageView) findViewById(R.id.btn_close);
+        imageView = (ImageView) findViewById(R.id.imageView);
         add = (ImageView) findViewById(R.id.add);
-        save = (Button)findViewById(R.id.btn_save);
-        editText = (EditText)findViewById(R.id.editText);
+        txt_date = (TextView) findViewById(R.id.date);
+        calendar = (ImageView) findViewById(R.id.calendar);
+        save = (Button) findViewById(R.id.btn_save);
+        edit_Caption = (EditText) findViewById(R.id.editText);
 
-        toolbar.setText(date);
-
-        close.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                finish();
-            }
-        });
-
-        save.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                String imagePath;
-                if (imageUri != null) {
-                imagePath = imageUri.toString();
-
-                    SharedPreferences settings = getSharedPreferences("calendar", 0);
-                    SharedPreferences.Editor editor = settings.edit();
-                    Log.d("AddPhoto", imagePath);
-                    // ""+date+"text" -> 1620834507text
-                    // ""+date+"image" -> 1620834507image
-                    // 1620834507-image -> image
-                    // 1620834507-text -> text
-                    //  editor.putString(""+date+"text", imagePath);
-                    editor.putString(uid + date + "image", imagePath);
-                    editor.putString(uid + date + "text", editText.getText().toString());
-                    editor.apply();
-
-                    Fragment fragment = MainActivity.instance.selectedFragment;
-                    if (fragment instanceof CalendarFragment) {
-                        ((CalendarFragment) fragment).adapter.notifyDataSetChanged();
-                    }
-                    finish();
-                } else
-                    Toast.makeText(getApplicationContext(), "Select Image", Toast.LENGTH_SHORT).show();
-            }
-        });
+        progressDialog = new ProgressDialog(this);
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             if (checkSelfPermission(Manifest.permission.CAMERA) == PackageManager.PERMISSION_GRANTED
@@ -123,6 +112,34 @@ public class AddPhotoCalendarActivity extends AppCompatActivity {
                 ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.CAMERA, Manifest.permission.WRITE_EXTERNAL_STORAGE}, 1);
             }
         }
+
+        close.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(getApplicationContext(), MainActivity.class));
+                finish();
+            }
+        });
+
+        txt_date.setText(date);
+
+        calendar.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                DatePickerDialog dialog = new DatePickerDialog(AddPhotoCalendarActivity.this, listener, selectedDate.getYear(), selectedDate.getMonthValue(), selectedDate.getDayOfMonth());
+                dialog.show();
+            }
+        });
+
+        save.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (imageUri != null)
+                    uploadToFirebase(imageUri);
+                else
+                    Toast.makeText(getApplicationContext(), "Select Image", Toast.LENGTH_SHORT).show();
+            }
+        });
 
         imageView.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -156,6 +173,25 @@ public class AddPhotoCalendarActivity extends AppCompatActivity {
             }
         });
     }
+
+    private DatePickerDialog.OnDateSetListener listener = new DatePickerDialog.OnDateSetListener() {
+        @RequiresApi(api = Build.VERSION_CODES.O)
+        @Override
+        public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
+            selectedDate = selectedDate.withYear(year);
+            selectedDate = selectedDate.withMonth(monthOfYear);
+            selectedDate = selectedDate.withDayOfMonth(dayOfMonth);
+
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+            date = selectedDate.format(formatter);
+            DateTimeFormatter formatterMY = DateTimeFormatter.ofPattern("yyyy MM");
+            monthYear = selectedDate.format(formatterMY);
+            DateTimeFormatter formatterDD = DateTimeFormatter.ofPattern("dd");
+            day = selectedDate.format(formatterDD);
+
+            txt_date.setText(date);
+        }
+    };
 
     @Override
     public void onRequestPermissionsResult(int requestCode, String permissions[], int[] grantResults) {
@@ -259,5 +295,72 @@ public class AddPhotoCalendarActivity extends AppCompatActivity {
 
         mCurrentPhotoPath = image.getAbsolutePath();
         return image;
+    }
+
+    private void uploadToFirebase(Uri uri) {
+        String timeStamp = String.valueOf(System.currentTimeMillis());
+
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTimeInMillis(System.currentTimeMillis());
+        String fTime = DateFormat.format("yyyy-MM-dd hh:mm aa", calendar).toString();
+
+        String filePathName = "Calendars/" + uid + "_" + timeStamp;
+
+        StorageReference ref = FirebaseStorage.getInstance().getReference().child(filePathName);
+
+        ref.putFile(uri)
+                .addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+                    @Override
+                    public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                        Task<Uri> uriTask = taskSnapshot.getStorage().getDownloadUrl();
+                        while (!uriTask.isSuccessful()) ;
+
+                        String downloadUri = uriTask.getResult().toString();
+
+                        if (uriTask.isSuccessful()) {
+                            HashMap<String, Object> feed = new HashMap<>();
+                            feed.put("uid", uid);
+                            feed.put("fid", timeStamp);
+                            feed.put("upload_time", fTime);
+                            feed.put("image", downloadUri);
+                            feed.put("description", edit_Caption.getEditableText().toString());
+                            feed.put("date", date);
+                            feed.put("monthYear", monthYear);
+                            feed.put("day", day);
+
+                            DatabaseReference ref = FirebaseDatabase.getInstance().getReference("Calendars");
+                            ref.child(uid + date).setValue(feed)
+                                    .addOnSuccessListener(new OnSuccessListener<Void>() {
+                                        @Override
+                                        public void onSuccess(Void aVoid) {
+                                            progressDialog.dismiss();
+                                            Toast.makeText(AddPhotoCalendarActivity.this, "Added Successfully", Toast.LENGTH_SHORT).show();
+                                        }
+                                    })
+                                    .addOnFailureListener(new OnFailureListener() {
+                                        @Override
+                                        public void onFailure(@NonNull Exception e) {
+                                            progressDialog.dismiss();
+                                        }
+                                    });
+                        }
+                    }
+                })
+                .addOnProgressListener(new OnProgressListener<UploadTask.TaskSnapshot>() {
+                    @Override
+                    public void onProgress(@NonNull UploadTask.TaskSnapshot snapshot) {
+                        progressDialog.setMessage("Add..");
+                        progressDialog.show();
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        progressDialog.dismiss();
+                        Toast.makeText(AddPhotoCalendarActivity.this, e.getMessage(), Toast.LENGTH_SHORT).show();
+                    }
+                });
+        //feed upload 후 Feed 메인 회면으로 전환
+        startActivity(new Intent(getApplicationContext(), MainActivity.class));
     }
 }

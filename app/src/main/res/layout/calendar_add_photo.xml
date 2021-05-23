@@ -32,9 +32,9 @@
                 android:layout_height="wrap_content"
                 android:layout_centerInParent="true"
                 android:gravity="center"
-                android:textSize="19sp"
+                android:text="ADD CALENDAR"
                 android:textColor="@color/grey_dark"
-                android:text="ADD PHOTO"/>
+                android:textSize="17sp" />
 
         </RelativeLayout>
     </androidx.appcompat.widget.Toolbar>
@@ -55,28 +55,53 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:background="@color/white"
-                android:scaleType="centerInside"
-                android:src="@drawable/image_border"/>
+                android:scaleType="fitCenter"
+                android:src="@drawable/image_border" />
 
             <ImageView
                 android:id="@+id/add"
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:src="@drawable/upload"
-                android:layout_centerInParent="true"/>
+                android:layout_width="25dp"
+                android:layout_height="25dp"
+                android:layout_centerInParent="true"
+                android:src="@drawable/upload" />
 
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="21dp"
+            android:layout_marginTop="21dp"
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/date"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="2020-10-20"
+                android:textSize="17sp"/>
+
+            <ImageView
+                android:id="@+id/calendar"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:src="@drawable/ic_date" />
         </RelativeLayout>
 
         <ScrollView
             android:layout_width="match_parent"
             android:layout_height="0dp"
+            android:layout_marginTop="13dp"
             android:layout_weight="3.5">
-        <EditText
-            android:id="@+id/editText"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:padding="10dp"
-            android:hint="내용을 입력하세요."/>
+
+            <EditText
+                android:id="@+id/editText"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginHorizontal="17dp"
+                android:layout_marginVertical="10dp"
+                android:hint="Write a caption" />
         </ScrollView>
 
         <Button
@@ -84,12 +109,9 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:layout_margin="5dp"
+            android:layout_margin="10dp"
             android:backgroundTint="?android:windowBackground"
-            android:text="ADD PHOTO"
+            android:text="ADD"
             android:textColor="@color/grey_dark" />
     </LinearLayout>
-
-
-
 </LinearLayout>
