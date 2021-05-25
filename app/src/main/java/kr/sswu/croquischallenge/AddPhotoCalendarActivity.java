@@ -126,7 +126,7 @@ public class AddPhotoCalendarActivity extends AppCompatActivity {
         calendar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                DatePickerDialog dialog = new DatePickerDialog(AddPhotoCalendarActivity.this, listener, selectedDate.getYear(), selectedDate.getMonthValue(), selectedDate.getDayOfMonth());
+                DatePickerDialog dialog = new DatePickerDialog(AddPhotoCalendarActivity.this, listener, selectedDate.getYear(), selectedDate.getMonthValue() - 1, selectedDate.getDayOfMonth());
                 dialog.show();
             }
         });
@@ -179,7 +179,7 @@ public class AddPhotoCalendarActivity extends AppCompatActivity {
         @Override
         public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
             selectedDate = selectedDate.withYear(year);
-            selectedDate = selectedDate.withMonth(monthOfYear);
+            selectedDate = selectedDate.withMonth(monthOfYear + 1);
             selectedDate = selectedDate.withDayOfMonth(dayOfMonth);
 
             DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
