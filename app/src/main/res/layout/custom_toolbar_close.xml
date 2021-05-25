@@ -9,7 +9,7 @@
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginHorizontal="25dp">
+        android:layout_marginHorizontal="17dp">
 
         <ImageView
             android:id="@+id/close_button"
@@ -19,13 +19,11 @@
             android:layout_centerVertical="true"
             android:src="@drawable/close" />
 
-        <TextView
+        <ImageView
             android:id="@+id/toolbar_title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textSize="19sp"
-            android:gravity="center"
-            android:text="@string/app_name"
-            android:layout_centerInParent="true"/>
+            android:layout_centerInParent="true"
+            android:src="@drawable/logo"/>
     </RelativeLayout>
 </androidx.appcompat.widget.Toolbar>

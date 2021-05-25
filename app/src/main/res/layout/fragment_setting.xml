@@ -131,6 +131,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Developer"
+            android:textColor="#9A9C9E"
             android:layout_gravity="right"/>
 
         <TextView
@@ -138,7 +139,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="right"
-            android:textSize="13sp"
+            android:textSize="11sp"
             android:textColor="@color/grey"
             android:text="@string/developer_info" />
     </LinearLayout>
