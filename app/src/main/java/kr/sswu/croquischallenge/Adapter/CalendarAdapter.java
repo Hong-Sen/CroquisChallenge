@@ -1,12 +1,10 @@
 package kr.sswu.croquischallenge.Adapter;
 
 import android.content.Context;
-import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -18,10 +16,8 @@ import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 
-import kr.sswu.croquischallenge.AddPhotoCalendarActivity;
 import kr.sswu.croquischallenge.Model.DaysInMonthModel;
 import kr.sswu.croquischallenge.R;
-import kr.sswu.croquischallenge.ShowPhotoCalendarActivity;
 
 public class CalendarAdapter extends RecyclerView.Adapter<CalendarAdapter.CalendarViewHolder> {
 
@@ -58,28 +54,6 @@ public class CalendarAdapter extends RecyclerView.Adapter<CalendarAdapter.Calend
         }
 
         holder.dayOfMonthImage.setOnClickListener(new View.OnClickListener() {
-            /*
-            @Override
-            public void onClick(View view) {
-                if (item.getDay().equals("")) {
-                    Toast.makeText(ctx, "Invalid", Toast.LENGTH_SHORT).show();
-                } else {
-                    Intent intent = new Intent(ctx, ShowPhotoCalendarActivity.class);
-                    if (item.getImage().equals("")) {
-                        Toast.makeText(ctx, "No Image", Toast.LENGTH_SHORT).show();
-                    } else {
-                        if (item.getDay().length() < 2)
-                            intent.putExtra("date", item.getMonthYear() + " 0" + item.getDay());
-                        else
-                            intent.putExtra("date", item.getMonthYear() + " " + item.getDay());
-                        intent.putExtra("image", item.getImage());
-                        intent.putExtra("description", item.getDescription());
-                        ctx.startActivity(intent);
-                    }
-                }
-            }
-
-             */
             @Override
             public void onClick(View view) {
                 if (item.getDay().equals("")) {
@@ -106,8 +80,6 @@ public class CalendarAdapter extends RecyclerView.Adapter<CalendarAdapter.Calend
                         } catch (Exception e) {
 
                         }
-                        caption.setText(item.getDescription());
-
 
                         bottomSheetDialog.setContentView(sheetView);
                         bottomSheetDialog.show();
