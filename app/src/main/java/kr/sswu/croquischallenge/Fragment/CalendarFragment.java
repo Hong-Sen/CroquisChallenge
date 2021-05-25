@@ -46,7 +46,7 @@ public class CalendarFragment extends Fragment {
     private RecyclerView recyclerView;
 
     public CalendarAdapter adapter;
-    private ArrayList<CalendarModel> calList = new ArrayList<>();
+    private ArrayList<CalendarModel> calList;
 
     @RequiresApi(api = Build.VERSION_CODES.O)
     @Override
@@ -65,9 +65,9 @@ public class CalendarFragment extends Fragment {
         recyclerView = (RecyclerView) view.findViewById(R.id.calendarRecyclerView);
         recyclerView.setLayoutManager(layoutManager);
 
-        calList = loadCalendar();
+        calList = new ArrayList<>();
         selectedDate = LocalDate.now();
-        setMonthView();
+        loadCalendar();
 
         monthYear.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -109,7 +109,8 @@ public class CalendarFragment extends Fragment {
         }
     };
 
-    private ArrayList<CalendarModel> loadCalendar() {
+    @RequiresApi(api = Build.VERSION_CODES.O)
+    private void loadCalendar() {
         DatabaseReference ref = FirebaseDatabase.getInstance().getReference("Calendars");
         ref.orderByChild("uid").equalTo(curUid).addValueEventListener(new ValueEventListener() {
 
@@ -130,6 +131,7 @@ public class CalendarFragment extends Fragment {
 
                     calList.add(item);
                 }
+                setMonthView();
             }
 
             @Override
@@ -137,11 +139,11 @@ public class CalendarFragment extends Fragment {
                 Toast.makeText(getActivity(), "" + error.getMessage(), Toast.LENGTH_SHORT).show();
             }
         });
-        return calList;
     }
 
     @RequiresApi(api = Build.VERSION_CODES.O)
     private void setMonthView() {
+
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy MM");
         monthYear.setText(selectedDate.format(formatter));
 
@@ -155,25 +157,28 @@ public class CalendarFragment extends Fragment {
         for (int i = 1; i <= 42; i++) {
             DaysInMonthModel model = new DaysInMonthModel();
             model.setMonthYear(selectedDate.format(formatter));
+
             if (i <= dayOfWeek || i > daysInMonth + dayOfWeek) {
                 model.setDay("");
             } else {
                 model.setDay(String.valueOf(i - dayOfWeek));
-                for (int j = 0; j < calList.size(); j++)
-                    if (calList.get(j).getMonthYear().equals(model.getMonthYear()))
+                for (int j = 0; j < calList.size(); j++) {
+                    CalendarModel calendarModel = calList.get(j);
+                    if (calendarModel.getMonthYear().equals(model.getMonthYear()))
                         if (i - dayOfWeek < 10) {
-                            if (calList.get(j).getDay().equals("0" + String.valueOf(i - dayOfWeek))) {
+                            if (calendarModel.getDay().equals("0" + String.valueOf(i - dayOfWeek))) {
                                 model.setImage(calList.get(j).getImage());
                                 model.setDescription(calList.get(j).getDescription());
                                 break;
                             }
                         } else {
-                            if (calList.get(j).getDay().equals(String.valueOf(i - dayOfWeek))) {
+                            if (calendarModel.getDay().equals(String.valueOf(i - dayOfWeek))) {
                                 model.setImage(calList.get(j).getImage());
                                 model.setDescription(calList.get(j).getDescription());
                                 break;
                             }
                         }
+                }
             }
 
             if (model.getImage() == null) {
