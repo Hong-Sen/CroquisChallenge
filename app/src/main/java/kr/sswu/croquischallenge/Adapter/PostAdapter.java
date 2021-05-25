@@ -1,9 +1,13 @@
 package kr.sswu.croquischallenge.Adapter;
 
+import android.app.Activity;
+import android.app.AlertDialog;
+import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Build;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -11,7 +15,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageButton;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.PopupMenu;
 import android.widget.TextView;
@@ -19,7 +23,6 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
-import androidx.appcompat.app.AlertDialog;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.gms.tasks.OnFailureListener;
@@ -42,12 +45,15 @@ import kr.sswu.croquischallenge.R;
 
 public class PostAdapter extends RecyclerView.Adapter<PostAdapter.PostViewHolder> {
     Context ctx;
+    Activity activity;
+
     List<FeedModel> feedList;
 
     String mEmail;
 
-    public PostAdapter(Context ctx, List<FeedModel> feedList) {
+    public PostAdapter(Context ctx, Activity activity, List<FeedModel> feedList) {
         this.ctx = ctx;
+        this.activity = activity;
         this.feedList = feedList;
         mEmail = FirebaseAuth.getInstance().getCurrentUser().getEmail();
     }
@@ -97,7 +103,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.PostViewHolder
                 } catch (Exception e) {
 
                 }
-                androidx.appcompat.app.AlertDialog.Builder builder = new AlertDialog.Builder(view.getRootView().getContext());
+                AlertDialog.Builder builder = new AlertDialog.Builder(view.getRootView().getContext());
                 builder.setView(img);
                 builder.setPositiveButton("close",
                         new DialogInterface.OnClickListener() {
@@ -162,7 +168,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.PostViewHolder
 
                     }
                     img.setPadding(10, 50, 10, 10);
-                    androidx.appcompat.app.AlertDialog.Builder builder = new AlertDialog.Builder(view.getRootView().getContext());
+                    AlertDialog.Builder builder = new AlertDialog.Builder(view.getRootView().getContext());
                     builder.setTitle("References");
                     builder.setView(img);
                     builder.setPositiveButton("close",
@@ -174,7 +180,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.PostViewHolder
                     builder.setCancelable(true);
                     builder.show();
                 } else
-                    Toast.makeText(ctx, "No References" , Toast.LENGTH_SHORT).show();
+                    Toast.makeText(ctx, "No References", Toast.LENGTH_SHORT).show();
             }
         });
     }
@@ -194,13 +200,35 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.PostViewHolder
             public boolean onMenuItemClick(MenuItem menuItem) {
                 int id = menuItem.getItemId();
                 if (id == 0) {
-                    deletePost(fid, fImg);
+                    AlertDialog.Builder builder = new AlertDialog.Builder(activity);
+                    builder.setTitle("Delete Post?");
+                    builder.setMessage("This action cannot be undone");
+                    builder.setPositiveButton("Delete", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialogInterface, int i) {
+                            deletePost(fid, fImg);
+                        }
+                    });
+                    builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialogInterface, int i) {
+                            popupMenu.dismiss();
+                        }
+                    });
+
+                    AlertDialog dialog = builder.create();
+                    dialog.show();
+                    Button delete = dialog.getButton(Dialog.BUTTON_POSITIVE);
+                    delete.setTextColor(Color.RED);
+
                 } else if (id == 1) {
+
                     Intent intent = new Intent(ctx, PostActivity.class);
                     intent.putExtra("key", "edit");
                     intent.putExtra("editFeedId", fid);
                     intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                     ctx.startActivity(intent);
+
                 }
                 return false;
             }

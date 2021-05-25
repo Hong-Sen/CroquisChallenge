@@ -10,13 +10,12 @@
         android:id="@+id/toolbar"
         android:layout_width="match_parent"
         android:layout_height="?android:actionBarSize"
-        android:background="?android:windowBackground"
-        android:paddingHorizontal="7dp"
-        android:paddingVertical="5dp">
+        android:background="?android:windowBackground" >
 
         <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="25dp">
 
             <ImageView
                 android:id="@+id/btn_close"

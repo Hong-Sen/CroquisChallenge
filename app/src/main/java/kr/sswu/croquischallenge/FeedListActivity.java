@@ -85,7 +85,7 @@ public class FeedListActivity extends AppCompatActivity {
 
                     feedList.add(feedModel);
 
-                    adapter = new PostAdapter(getApplicationContext(), feedList);
+                    adapter = new PostAdapter(getApplicationContext(), FeedListActivity.this, feedList);
                     recyclerView.setAdapter(adapter);
                 }
             }
