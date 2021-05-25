@@ -1,134 +1,194 @@
 package kr.sswu.croquischallenge.Fragment;
 
-import android.content.Intent;
+import android.app.DatePickerDialog;
+import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.DatePicker;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.RequiresApi;
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-import androidx.recyclerview.widget.StaggeredGridLayoutManager;
 
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
+
+import java.time.LocalDate;
+import java.time.YearMonth;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.GregorianCalendar;
 
-import kr.sswu.croquischallenge.Calendar.adapter.CalendarAdapter;
-import kr.sswu.croquischallenge.Calendar.util.Keys;
+import kr.sswu.croquischallenge.Adapter.CalendarAdapter;
+import kr.sswu.croquischallenge.Model.CalendarModel;
+import kr.sswu.croquischallenge.Model.DaysInMonthModel;
 import kr.sswu.croquischallenge.R;
-import kr.sswu.croquischallenge.TimerActivity;
-
-import static android.content.ContentValues.TAG;
+import kr.sswu.croquischallenge.YearMonthPickerDialog;
 
 public class CalendarFragment extends Fragment {
 
-    ImageView timer;
-    public int mCenterPosition;
-    private long mCurrentTime;
-    public ArrayList<Object> mCalendarList = new ArrayList<>();
+    private String curUid;
+    private LocalDate selectedDate;
 
-    public TextView textView;
-    public RecyclerView recyclerView;
-    private CalendarAdapter mAdapter;
-    private StaggeredGridLayoutManager manager;
+    private ImageView back, forward;
+    private TextView monthYear;
+    private RecyclerView recyclerView;
 
+    public CalendarAdapter adapter;
+    private ArrayList<CalendarModel> calList;
 
+    @RequiresApi(api = Build.VERSION_CODES.O)
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
-        View view =  inflater.inflate(R.layout.fragment_calendar, container, false);
-        timer = view.findViewById(R.id.toolbar_timer);
-        timer.setOnClickListener(new View.OnClickListener() {
+        View view = inflater.inflate(R.layout.fragment_calendar, container, false);
+
+        curUid = FirebaseAuth.getInstance().getCurrentUser().getUid();
+
+        back = (ImageView) view.findViewById(R.id.btn_back);
+        monthYear = (TextView) view.findViewById(R.id.txt_monthYear);
+        forward = (ImageView) view.findViewById(R.id.btn_forward);
+
+        RecyclerView.LayoutManager layoutManager = new GridLayoutManager(getContext(), 7);
+        recyclerView = (RecyclerView) view.findViewById(R.id.calendarRecyclerView);
+        recyclerView.setLayoutManager(layoutManager);
+
+        calList = new ArrayList<>();
+        selectedDate = LocalDate.now();
+        loadCalendar();
+
+        monthYear.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(getActivity(), TimerActivity.class);
-                startActivity(intent);
+                YearMonthPickerDialog pd = new YearMonthPickerDialog();
+                pd.setListener(d);
+                pd.show(getActivity().getSupportFragmentManager(), "YearMonthPickerTest");
             }
         });
 
-        initView(view);
+        back.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                selectedDate = selectedDate.minusMonths(1);
+                setMonthView();
+            }
+        });
 
-        initSet();
-
-        setRecycler();
+        forward.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                selectedDate = selectedDate.plusMonths(1);
+                setMonthView();
+            }
+        });
 
         return view;
     }
 
-    public void initView(View v){
+    DatePickerDialog.OnDateSetListener d = new DatePickerDialog.OnDateSetListener() {
+        @RequiresApi(api = Build.VERSION_CODES.O)
+        @Override
+        public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
+            Log.d("YearMonthPickerTest", "year = " + year + ", month = " + monthOfYear + ", day = " + dayOfMonth);
+            selectedDate = selectedDate.withYear(year);
+            selectedDate = selectedDate.withMonth(monthOfYear);
 
-        textView = (TextView)v.findViewById(R.id.item_header_title);
-        recyclerView = (RecyclerView)v.findViewById(R.id.calendar);
-
-    }
-
-    public void initSet(){
-
-        initCalendarList();
-
-    }
-
-    public void initCalendarList() {
-        GregorianCalendar cal = new GregorianCalendar();
-        setCalendarList(cal);
-    }
-
-    private void setRecycler() {
-
-        if (mCalendarList == null) {
-            Log.w(TAG, "No Query, not initializing RecyclerView");
+            setMonthView();
         }
+    };
 
-        manager = new StaggeredGridLayoutManager(7, StaggeredGridLayoutManager.VERTICAL);
+    @RequiresApi(api = Build.VERSION_CODES.O)
+    private void loadCalendar() {
+        DatabaseReference ref = FirebaseDatabase.getInstance().getReference("Calendars");
+        ref.orderByChild("uid").equalTo(curUid).addValueEventListener(new ValueEventListener() {
 
-        mAdapter = new CalendarAdapter(getContext(), mCalendarList);
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                calList.clear();
 
-        mAdapter.setCalendarList(mCalendarList);
-        recyclerView.setLayoutManager(manager);
-        recyclerView.setAdapter(mAdapter);
+                for (DataSnapshot ds : snapshot.getChildren()) {
+                    String uid = ds.child("uid").getValue().toString();
+                    String fid = ds.child("fid").getValue().toString();
+                    String monthYear = ds.child("monthYear").getValue().toString();
+                    String day = ds.child("day").getValue().toString();
+                    String date = ds.child("date").getValue().toString();
+                    String img = ds.child("image").getValue().toString();
+                    String description = ds.child("description").getValue().toString();
 
-        if (mCenterPosition >= 0) {
-            recyclerView.scrollToPosition(mCenterPosition);
-        }
-    }
+                    CalendarModel item = new CalendarModel(uid, fid, monthYear, day, date, img, description);
 
-    public void setCalendarList(GregorianCalendar cal) {
-
-        ArrayList<Object> calendarList = new ArrayList<>();
-
-        for (int i = -300; i < 300; i++) {
-            try {
-                GregorianCalendar calendar = new GregorianCalendar(cal.get(Calendar.YEAR), cal.get(Calendar.MONTH) + i, 1);
-                if (i == 0) {
-                    mCenterPosition = calendarList.size();
+                    calList.add(item);
                 }
-
-                // 타이틀
-                calendarList.add(calendar.getTimeInMillis());
-
-                int dayOfWeek = calendar.get(Calendar.DAY_OF_WEEK) - 1; //빈칸은 해당 월에 시작하는 요일 -1
-                int max = calendar.getActualMaximum(Calendar.DAY_OF_MONTH); // 해당 월에 마지막 요일
-
-                // EMPTY 생성
-                for (int j = 0; j < dayOfWeek; j++) {
-                    calendarList.add(Keys.EMPTY);
-                }
-                for (int j = 1; j <= max; j++) {
-                    calendarList.add(new GregorianCalendar(calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH), j));
-                }
-
-                // TODO : 결과 값 넣을 때 여기에 하기
-
-            } catch (Exception e) {
-                e.printStackTrace();
+                setMonthView();
             }
-        }
 
-        mCalendarList = calendarList;
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+                Toast.makeText(getActivity(), "" + error.getMessage(), Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.O)
+    private void setMonthView() {
+
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy MM");
+        monthYear.setText(selectedDate.format(formatter));
+
+        YearMonth yearMonth = YearMonth.from(selectedDate);
+        int daysInMonth = yearMonth.lengthOfMonth();
+
+        LocalDate firstOfMonth = selectedDate.withDayOfMonth(1);
+        int dayOfWeek = firstOfMonth.getDayOfWeek().getValue();
+
+        ArrayList<DaysInMonthModel> daysInMonthArray = new ArrayList<>();
+        for (int i = 1; i <= 42; i++) {
+            DaysInMonthModel model = new DaysInMonthModel();
+            model.setMonthYear(selectedDate.format(formatter));
+
+            if (i <= dayOfWeek || i > daysInMonth + dayOfWeek) {
+                model.setDay("");
+            } else {
+                model.setDay(String.valueOf(i - dayOfWeek));
+                for (int j = 0; j < calList.size(); j++) {
+                    CalendarModel calendarModel = calList.get(j);
+                    if (calendarModel.getMonthYear().equals(model.getMonthYear()))
+                        if (i - dayOfWeek < 10) {
+                            if (calendarModel.getDay().equals("0" + String.valueOf(i - dayOfWeek))) {
+                                model.setImage(calList.get(j).getImage());
+                                model.setDescription(calList.get(j).getDescription());
+                                break;
+                            }
+                        } else {
+                            if (calendarModel.getDay().equals(String.valueOf(i - dayOfWeek))) {
+                                model.setImage(calList.get(j).getImage());
+                                model.setDescription(calList.get(j).getDescription());
+                                break;
+                            }
+                        }
+                }
+            }
+
+            if (model.getImage() == null) {
+                model.setImage("");
+                model.setDescription("");
+            }
+
+            daysInMonthArray.add(model);
+            adapter = new CalendarAdapter(getContext(), daysInMonthArray);
+            recyclerView.setAdapter(adapter);
+        }
     }
 }

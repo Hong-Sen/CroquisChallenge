@@ -1,8 +1,13 @@
 package kr.sswu.croquischallenge.Adapter;
 
+import android.app.Activity;
+import android.app.AlertDialog;
+import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
+import android.graphics.Color;
 import android.os.Build;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -10,6 +15,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.PopupMenu;
 import android.widget.TextView;
@@ -17,11 +23,11 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
-import androidx.appcompat.app.AlertDialog;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.FirebaseDatabase;
@@ -34,17 +40,22 @@ import com.squareup.picasso.Picasso;
 import java.util.List;
 
 import kr.sswu.croquischallenge.Model.FeedModel;
+import kr.sswu.croquischallenge.PostActivity;
 import kr.sswu.croquischallenge.R;
-
 
 public class PostAdapter extends RecyclerView.Adapter<PostAdapter.PostViewHolder> {
     Context ctx;
+    Activity activity;
+
     List<FeedModel> feedList;
+
     String mEmail;
 
-    public PostAdapter(Context ctx, List<FeedModel> feedList) {
+    public PostAdapter(Context ctx, Activity activity, List<FeedModel> feedList) {
         this.ctx = ctx;
+        this.activity = activity;
         this.feedList = feedList;
+        mEmail = FirebaseAuth.getInstance().getCurrentUser().getEmail();
     }
 
     @NonNull
@@ -58,10 +69,10 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.PostViewHolder
     public void onBindViewHolder(@NonNull PostViewHolder holder, int position) {
         FeedModel tmp = feedList.get(position);
 
+        String fid = tmp.getFid();
         String email = tmp.getEmail();
-        String fid = tmp.getImage();
         String fImg = tmp.getImage();
-        String fRef = tmp.getRef();
+        String ref = tmp.getRef();
         String fTitle = tmp.getTitle();
         String fDate = tmp.getDate();
         String fDescription = tmp.getDescription();
@@ -87,13 +98,12 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.PostViewHolder
                 img.setMinimumWidth(1000);
                 img.setMinimumHeight(1000);
                 img.setScaleType(ImageView.ScaleType.FIT_CENTER);
-
                 try {
                     Picasso.get().load(fImg).into(img);
                 } catch (Exception e) {
 
                 }
-                androidx.appcompat.app.AlertDialog.Builder builder = new AlertDialog.Builder(view.getRootView().getContext());
+                AlertDialog.Builder builder = new AlertDialog.Builder(view.getRootView().getContext());
                 builder.setView(img);
                 builder.setPositiveButton("close",
                         new DialogInterface.OnClickListener() {
@@ -101,8 +111,8 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.PostViewHolder
 
                             }
                         });
+                builder.setCancelable(true);
                 builder.show();
-
                 return false;
             }
         });
@@ -119,7 +129,6 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.PostViewHolder
                 title = dialogView.findViewById(R.id.fTitle);
                 date = dialogView.findViewById(R.id.fDate);
                 description = dialogView.findViewById(R.id.fDescription);
-
 
                 try {
                     Picasso.get().load(fImg).into(img);
@@ -148,36 +157,32 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.PostViewHolder
             }
         });
 
-        if (fRef.equals(""))
-            holder.btnRef.setVisibility(View.GONE);
-        else {
-            holder.btnRef.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-
-                    ImageView ref = new ImageView(ctx);
+        holder.btnSrc.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (!ref.equals("")) {
+                    ImageView img = new ImageView(ctx);
                     try {
-                        Picasso.get().load(fRef).into(ref);
+                        Picasso.get().load(ref).into(img);
                     } catch (Exception e) {
 
                     }
-                    ref.setPadding(10, 50, 10, 10);
-
+                    img.setPadding(10, 50, 10, 10);
                     AlertDialog.Builder builder = new AlertDialog.Builder(view.getRootView().getContext());
                     builder.setTitle("References");
-                    builder.setView(ref);
+                    builder.setView(img);
                     builder.setPositiveButton("close",
                             new DialogInterface.OnClickListener() {
-                                @Override
-                                public void onClick(DialogInterface dialogInterface, int i) {
+                                public void onClick(DialogInterface dialog, int which) {
 
                                 }
                             });
                     builder.setCancelable(true);
                     builder.show();
-                }
-            });
-        }
+                } else
+                    Toast.makeText(ctx, "No References", Toast.LENGTH_SHORT).show();
+            }
+        });
     }
 
     @RequiresApi(api = Build.VERSION_CODES.KITKAT)
@@ -187,15 +192,44 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.PostViewHolder
 
         if (email.equals(mEmail)) {
             popupMenu.getMenu().add(Menu.NONE, 0, 0, "Delete");
+            popupMenu.getMenu().add(Menu.NONE, 1, 0, "Edit");
         }
 
         popupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
             @Override
             public boolean onMenuItemClick(MenuItem menuItem) {
                 int id = menuItem.getItemId();
-                if (id == 0)
-                    deletePost(fid, fImg);
+                if (id == 0) {
+                    AlertDialog.Builder builder = new AlertDialog.Builder(activity);
+                    builder.setTitle("Delete Post?");
+                    builder.setMessage("This action cannot be undone");
+                    builder.setPositiveButton("Delete", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialogInterface, int i) {
+                            deletePost(fid, fImg);
+                        }
+                    });
+                    builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialogInterface, int i) {
+                            popupMenu.dismiss();
+                        }
+                    });
 
+                    AlertDialog dialog = builder.create();
+                    dialog.show();
+                    Button delete = dialog.getButton(Dialog.BUTTON_POSITIVE);
+                    delete.setTextColor(Color.RED);
+
+                } else if (id == 1) {
+
+                    Intent intent = new Intent(ctx, PostActivity.class);
+                    intent.putExtra("key", "edit");
+                    intent.putExtra("editFeedId", fid);
+                    intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                    ctx.startActivity(intent);
+
+                }
                 return false;
             }
         });
@@ -241,22 +275,20 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.PostViewHolder
                 });
     }
 
-
     @Override
     public int getItemCount() {
         return feedList.size();
     }
 
     class PostViewHolder extends RecyclerView.ViewHolder {
-
-        ImageView btnMore, btnInfo, btnRef, fImage;
+        ImageView fImage, btnMore, btnSrc, btnInfo;
 
         public PostViewHolder(View itemView) {
             super(itemView);
 
             btnMore = itemView.findViewById(R.id.btn_more);
+            btnSrc = itemView.findViewById(R.id.btn_src);
             btnInfo = itemView.findViewById(R.id.btn_info);
-            btnRef = itemView.findViewById(R.id.btn_ref);
             fImage = itemView.findViewById(R.id.imageView);
         }
     }

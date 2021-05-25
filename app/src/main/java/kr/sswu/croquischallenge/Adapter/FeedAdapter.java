@@ -1,6 +1,5 @@
 package kr.sswu.croquischallenge.Adapter;
 
-import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.os.Build;
@@ -31,17 +30,14 @@ import kr.sswu.croquischallenge.Model.FeedModel;
 import kr.sswu.croquischallenge.R;
 
 public class FeedAdapter extends RecyclerView.Adapter<FeedAdapter.FeedViewHolder> {
-    Context ctx;
-    List<FeedModel> feedList;
-
+    private Context ctx;
+    private List<FeedModel> feedList;
     private String mUid;
 
     private DatabaseReference likeRef;
     private DatabaseReference feedRef;
 
     private boolean processLike = false;
-
-    private Dialog dialog;
 
     public FeedAdapter(Context ctx, List<FeedModel> feedList) {
         this.ctx = ctx;
@@ -96,15 +92,17 @@ public class FeedAdapter extends RecyclerView.Adapter<FeedAdapter.FeedViewHolder
             @Override
             public boolean onLongClick(View view) {
                 ImageView img = new ImageView(ctx);
+                img.setMinimumWidth(1000);
+                img.setMinimumHeight(1000);
+                img.setScaleType(ImageView.ScaleType.FIT_CENTER);
                 try {
                     Picasso.get().load(fImg).into(img);
                 } catch (Exception e) {
 
                 }
                 androidx.appcompat.app.AlertDialog.Builder builder = new AlertDialog.Builder(ctx);
-                //   builder.setTitle("References");
                 builder.setView(img);
-                builder.setPositiveButton("OK",
+                builder.setPositiveButton("close",
                         new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int which) {
 
@@ -115,7 +113,6 @@ public class FeedAdapter extends RecyclerView.Adapter<FeedAdapter.FeedViewHolder
                 return false;
             }
         });
-
 
         holder.btnInfo.setOnClickListener(new View.OnClickListener() {
             @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
@@ -174,7 +171,7 @@ public class FeedAdapter extends RecyclerView.Adapter<FeedAdapter.FeedViewHolder
                     } catch (Exception e) {
 
                     }
-                    img.setPadding(50, 50, 50, 50);
+                    img.setPadding(10, 50, 10, 10);
                     androidx.appcompat.app.AlertDialog.Builder builder = new AlertDialog.Builder(ctx);
                     builder.setTitle("References");
                     builder.setView(img);
@@ -201,17 +198,17 @@ public class FeedAdapter extends RecyclerView.Adapter<FeedAdapter.FeedViewHolder
                     @Override
                     public void onDataChange(@NonNull DataSnapshot snapshot) {
                         if (processLike) {
-                            if (snapshot.child(fid).hasChild(mUid)) {
+                            if (snapshot.child(mUid).hasChild(fid)) {
                                 feedRef.child(fid).child("likes").setValue(likes - 1);
-                                likeRef.child(fid).child(mUid).removeValue();
+                                likeRef.child(mUid).child(fid).removeValue();
                                 tmp.setLikes(Integer.toString(likes - 1));
-                                processLike = false;
                             } else {
                                 feedRef.child(fid).child("likes").setValue(likes + 1);
-                                likeRef.child(fid).child(mUid).setValue("liked");
+                                likeRef.child(mUid).child(fid).setValue("liked");
                                 tmp.setLikes(Integer.toString(likes + 1));
-                                processLike = false;
                             }
+
+                            processLike = false;
 
                             if (likes == 0)
                                 holder.txtLike.setText("");
@@ -219,7 +216,6 @@ public class FeedAdapter extends RecyclerView.Adapter<FeedAdapter.FeedViewHolder
                                 holder.txtLike.setText(fLikes + " like");
                             else if (likes > 1)
                                 holder.txtLike.setText(fLikes + " likes");
-
                         }
                     }
 
@@ -236,7 +232,7 @@ public class FeedAdapter extends RecyclerView.Adapter<FeedAdapter.FeedViewHolder
         likeRef.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
-                if (snapshot.child(fid).hasChild(mUid)) {
+                if (snapshot.child(mUid).hasChild(fid)) {
                     holder.btnLike.setImageResource(R.drawable.ic_favorite);
                 } else {
                     holder.btnLike.setImageResource(R.drawable.ic_favorite_border);
@@ -256,9 +252,9 @@ public class FeedAdapter extends RecyclerView.Adapter<FeedAdapter.FeedViewHolder
     }
 
     class FeedViewHolder extends RecyclerView.ViewHolder {
-        ImageView fImage, btnInfo;
+        ImageView fImage, btnSrc, btnInfo;
         TextView uName, fTitle, fDate, fDescription, txtLike;
-        ImageButton btnSrc, btnLike;
+        ImageButton btnLike;
 
         public FeedViewHolder(View itemView) {
             super(itemView);

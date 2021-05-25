@@ -3,28 +3,27 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/toolbar"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
+    android:layout_height="?android:actionBarSize"
     android:background="?android:windowBackground" >
 
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="17dp">
 
         <ImageView
             android:id="@+id/close_button"
-            android:layout_width="20dp"
-            android:layout_height="20dp"
+            android:layout_width="13dp"
+            android:layout_height="13dp"
             android:layout_alignParentLeft="true"
             android:layout_centerVertical="true"
             android:src="@drawable/close" />
 
-        <TextView
+        <ImageView
             android:id="@+id/toolbar_title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textSize="23sp"
-            android:textStyle="bold"
-            android:gravity="center"
-            android:layout_centerInParent="true"/>
+            android:layout_centerInParent="true"
+            android:src="@drawable/logo"/>
     </RelativeLayout>
 </androidx.appcompat.widget.Toolbar>

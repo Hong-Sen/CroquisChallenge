@@ -7,64 +7,8 @@
     android:padding="15dp"
     android:orientation="vertical">
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:layout_marginTop="10dp"
-        android:text="ADD PHOTO"
-        android:textColor="@color/grey"
-        android:textSize="18sp"
-        android:textStyle="bold" />
-
     <LinearLayout
-        android:id="@+id/btn_camera"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:padding="8dp">
-
-        <ImageView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:src="@drawable/camera" />
-
-        <TextView
-            android:id="@+id/getCamera"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textColor="@color/grey_dark"
-            android:layout_gravity="center"
-            android:layout_marginLeft="23dp"
-            android:text="CAMERA"
-            android:textSize="16sp" />
-    </LinearLayout>
-
-    <LinearLayout
-        android:id="@+id/btn_gallery"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:padding="8dp">
-
-        <ImageView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:src="@drawable/album" />
-
-        <TextView
-            android:id="@+id/getGallery"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textColor="@color/grey_dark"
-            android:layout_gravity="center"
-            android:layout_marginLeft="23dp"
-            android:text="GALLERY"
-            android:textSize="16sp" />
-    </LinearLayout>
-
-    <LinearLayout
-        android:id="@+id/btn_edit"
+        android:id="@+id/btn_addPhoto"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
@@ -73,18 +17,38 @@
         <ImageView
             android:layout_width="25dp"
             android:layout_height="30dp"
-            android:src="@drawable/ic_edit_calendar"/>
+            android:src="@drawable/ic_edit_calendar" />
 
         <TextView
-            android:id="@+id/getEdit"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textColor="@color/grey_dark"
             android:layout_gravity="center"
             android:layout_marginLeft="23dp"
-            android:text="EDIT"
+            android:text="ADD PHOTO"
             android:textSize="16sp" />
     </LinearLayout>
 
+    <LinearLayout
+        android:id="@+id/btn_showPhoto"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:padding="8dp">
+
+        <ImageView
+            android:layout_width="25dp"
+            android:layout_height="30dp"
+            android:src="@drawable/ic_show_calendar" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/grey_dark"
+            android:layout_gravity="center"
+            android:layout_marginLeft="23dp"
+            android:text="SHOW PHOTO"
+            android:textSize="16sp" />
+    </LinearLayout>
 
 </LinearLayout>

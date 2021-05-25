@@ -41,6 +41,7 @@ import java.util.HashMap;
 import kr.sswu.croquischallenge.MainActivity;
 import kr.sswu.croquischallenge.R;
 import kr.sswu.croquischallenge.RegisterActivity;
+import kr.sswu.croquischallenge.SplashActivity;
 import kr.sswu.croquischallenge.databinding.ActivityLoginBinding;
 
 public class LoginActivity extends AppCompatActivity {
@@ -75,6 +76,10 @@ public class LoginActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         binding = ActivityLoginBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
+
+        // splash
+        Intent intent = new Intent(this, SplashActivity.class);
+        startActivity(intent);
 
         /*
         SharedPreferences preference = getSharedPreferences(UserProfileConstants.PREFERENCE_KEY, Context.MODE_PRIVATE);
@@ -327,6 +332,7 @@ public class LoginActivity extends AppCompatActivity {
         FirebaseUser firebaseUser = firebaseAuth.getCurrentUser();
         if (firebaseUser != null) {
             Log.d(TAG, "Already logged in");
+
             startActivity(new Intent(LoginActivity.this, MainActivity.class));
             finish();
         }

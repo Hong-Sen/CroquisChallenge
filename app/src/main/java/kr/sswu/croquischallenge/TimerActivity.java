@@ -16,7 +16,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import java.util.Locale;
 
 public class TimerActivity extends AppCompatActivity {
-    private TextView toolBarTitle;
+
     private ImageView buttonClose;
     private EditText mEditTextInput;
     private TextView mTextViewCountDown;
@@ -34,9 +34,7 @@ public class TimerActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_timer);
 
-        toolBarTitle = findViewById(R.id.toolbar_title);
         buttonClose = findViewById(R.id.close_button);
-        toolBarTitle.setText("Timer");
 
         buttonClose.setOnClickListener(new View.OnClickListener() {
             @Override

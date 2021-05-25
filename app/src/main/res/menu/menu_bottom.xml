@@ -10,11 +10,11 @@
         android:title="@string/bottom_feed" />
 
     <item
-        android:id="@+id/bottom_search"
+        android:id="@+id/bottom_references"
         app:showAsAction="ifRoom"
         android:enabled="true"
-        android:icon="@drawable/search"
-        android:title="@string/bottom_search" />
+        android:icon="@drawable/ref"
+        android:title="@string/bottom_references" />
 
     <item
         android:id="@+id/bottom_calendar"
@@ -24,11 +24,11 @@
         android:title="@string/bottom_calendar" />
 
     <item
-        android:id="@+id/bottom_add"
+        android:id="@+id/bottom_addCalendar"
         app:showAsAction="ifRoom"
         android:enabled="true"
         android:icon="@drawable/add"
-        android:title="@string/bottom_add" />
+        android:title="Add Calendar" />
 
     <item
         android:id="@+id/bottom_setting"

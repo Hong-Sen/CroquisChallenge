@@ -1,12 +1,7 @@
 package kr.sswu.croquischallenge;
 
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.ViewUtils;
-
 import android.app.ProgressDialog;
 import android.content.Intent;
-import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.util.Patterns;
@@ -15,10 +10,14 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
+
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.textfield.TextInputEditText;
+import com.google.android.material.textfield.TextInputLayout;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -32,9 +31,10 @@ import kr.sswu.croquischallenge.login.activity.LoginActivity;
 public class RegisterActivity extends AppCompatActivity {
 
     private static final String TAG = "GOOGLE_SIGN_UP_TAG";
+    TextInputLayout layout_email, layout_pw;
     TextInputEditText edit_email, edit_pw;
     Button btn_create;
-    TextView txt_signIn;
+    TextView txt_signIn, txt_errorMessage;
 
     private FirebaseAuth firebaseAuth;
     private ProgressDialog progressDialog;
@@ -44,10 +44,13 @@ public class RegisterActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_register);
 
+        layout_email = (TextInputLayout) findViewById(R.id.layout_email);
+        layout_pw = (TextInputLayout) findViewById(R.id.layout_pw);
         edit_email = (TextInputEditText) findViewById(R.id.edit_email);
         edit_pw = (TextInputEditText) findViewById(R.id.edit_pw);
         btn_create = (Button) findViewById(R.id.btn_create);
         txt_signIn = (TextView) findViewById(R.id.txt_signIn);
+        txt_errorMessage = (TextView) findViewById(R.id.txt_errorMessage);
 
         firebaseAuth = FirebaseAuth.getInstance();
         progressDialog = new ProgressDialog(this);
@@ -60,6 +63,7 @@ public class RegisterActivity extends AppCompatActivity {
                 String pw = edit_pw.getText().toString().trim();
 
                 if(!Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
+
                     edit_email.setError("Invalid Email");
                     edit_email.setFocusable(true);
                 }
@@ -113,14 +117,16 @@ public class RegisterActivity extends AppCompatActivity {
                         } else {
                             progressDialog.dismiss();
                             Log.w(TAG, "createUserWithEmail:failure", task.getException());
-                            Toast.makeText(getApplicationContext(), "Authentication failed", Toast.LENGTH_SHORT).show();
+                        //    Toast.makeText(getApplicationContext(), "Authentication failed", Toast.LENGTH_SHORT).show();
                         }
                     }
                 }).addOnFailureListener(new OnFailureListener() {
             @Override
             public void onFailure(@NonNull Exception e) {
                 progressDialog.dismiss();
-                Toast.makeText(getApplicationContext(), "" + e.getMessage(), Toast.LENGTH_SHORT).show();
+                txt_errorMessage.setText(e.getMessage());
+                edit_email.setFocusable(true);
+            //    Toast.makeText(getApplicationContext(), "" + e.getMessage(), Toast.LENGTH_SHORT).show();
             }
         });
     }

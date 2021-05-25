@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <item
+        android:id="@+id/popup_anatomy"
+        android:icon="@drawable/anatomy"
+        android:title="@string/menu_anatomy" />
+    <item
+        android:id="@+id/popup_animal"
+        android:icon="@drawable/animal"
+        android:title="@string/menu_animal" />
+    <item
+        android:id="@+id/popup_objects"
+        android:icon="@drawable/objects"
+        android:title="@string/menu_objects" />
+
+    <item
+        android:id="@+id/popup_scenery"
+        android:icon="@drawable/scenery"
+        android:title="@string/menu_scenery" />
+</menu>
