@@ -65,10 +65,9 @@ public class AddPhotoCalendarActivity extends AppCompatActivity {
     private LocalDate selectedDate;
     private String uid, date, monthYear, day;
 
-    private TextView txt_date;
+    private TextView txt_date, save;
     private ImageView close, imageView, add, calendar;
     private EditText edit_Caption;
-    private Button save;
 
     private BottomSheetDialog bottomSheetDialog;
 
@@ -98,8 +97,8 @@ public class AddPhotoCalendarActivity extends AppCompatActivity {
         add = (ImageView) findViewById(R.id.add);
         txt_date = (TextView) findViewById(R.id.date);
         calendar = (ImageView) findViewById(R.id.calendar);
-        save = (Button) findViewById(R.id.btn_save);
         edit_Caption = (EditText) findViewById(R.id.editText);
+        save = (TextView) findViewById(R.id.btn_save);
 
         progressDialog = new ProgressDialog(this);
 

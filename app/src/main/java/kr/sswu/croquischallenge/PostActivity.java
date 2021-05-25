@@ -55,6 +55,8 @@ import com.squareup.picasso.Picasso;
 import com.theartofdev.edmodo.cropper.CropImage;
 import com.theartofdev.edmodo.cropper.CropImageView;
 
+import org.w3c.dom.Text;
+
 import java.io.File;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
@@ -86,7 +88,7 @@ public class PostActivity extends AppCompatActivity {
     private String mCurrentPhotoPath;
     private Uri imageUri, imageRefUri;
 
-    private Button btn_upload;
+    private TextView btn_upload;
     private ImageView btn_close, imageView, add, imageView_ref, add_ref;
     private EditText edit_title, edit_description, edit_date, edit_category;
     private TextView tool_bar_title, txt_ref;
@@ -128,7 +130,7 @@ public class PostActivity extends AppCompatActivity {
 
         btn_close = (ImageView) findViewById(R.id.btn_close);
         tool_bar_title = (TextView) findViewById(R.id.toolbar_title);
-        btn_upload = (Button) findViewById(R.id.btn_upload);
+        btn_upload = (TextView) findViewById(R.id.btn_upload);
         imageView = (ImageView) findViewById(R.id.imageView);
         add = (ImageView) findViewById(R.id.img_add);
         imageView_ref = (ImageView) findViewById(R.id.imageView_ref);

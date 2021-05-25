@@ -14,22 +14,20 @@
 
         <ImageView
             android:id="@+id/drawer_menu"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="19dp"
+            android:layout_height="19dp"
             android:layout_centerVertical="true"
             android:layout_alignParentLeft="true"
             android:contentDescription="openDrawerBtn"
             android:src="@drawable/menu" />
 
-        <TextView
+        <ImageView
             android:id="@id/toolbar_title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/app_name"
-            android:textSize="21sp"
             android:gravity="center"
-            android:layout_toLeftOf="@+id/toolbar_timer"
-            android:layout_toRightOf="@+id/drawer_menu"/>
+            android:src="@drawable/logo"
+            android:layout_centerInParent="true"/>
 
         <ImageView
             android:id="@+id/toolbar_timer"
@@ -37,7 +35,7 @@
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
             android:layout_alignParentRight="true"
-            android:layout_marginRight="10dp"
+            android:layout_marginRight="13dp"
             android:contentDescription="timerBtn"
             android:src="@drawable/timer" />
     </RelativeLayout>

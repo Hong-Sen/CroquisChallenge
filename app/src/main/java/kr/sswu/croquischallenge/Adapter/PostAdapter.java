@@ -253,8 +253,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.PostViewHolder
     }
 
     class PostViewHolder extends RecyclerView.ViewHolder {
-        ImageView fImage, btnMore, btnInfo;
-        ImageButton btnSrc;
+        ImageView fImage, btnMore, btnSrc, btnInfo;
 
         public PostViewHolder(View itemView) {
             super(itemView);

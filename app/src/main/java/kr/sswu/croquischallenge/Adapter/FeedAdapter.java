@@ -252,9 +252,9 @@ public class FeedAdapter extends RecyclerView.Adapter<FeedAdapter.FeedViewHolder
     }
 
     class FeedViewHolder extends RecyclerView.ViewHolder {
-        ImageView fImage, btnInfo;
+        ImageView fImage, btnSrc, btnInfo;
         TextView uName, fTitle, fDate, fDescription, txtLike;
-        ImageButton btnSrc, btnLike;
+        ImageButton btnLike;
 
         public FeedViewHolder(View itemView) {
             super(itemView);

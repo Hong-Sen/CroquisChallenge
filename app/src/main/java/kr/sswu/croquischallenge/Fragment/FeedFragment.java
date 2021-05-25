@@ -138,7 +138,6 @@ public class FeedFragment extends Fragment {
             }
         });
 
-
         tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
             @Override
             public void onTabSelected(TabLayout.Tab tab) {
@@ -256,26 +255,28 @@ public class FeedFragment extends Fragment {
         ref.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
-                feedList.clear();
+                if (tabLayout.getSelectedTabPosition() == 0) {
+                    feedList.clear();
 
-                for (DataSnapshot d : snapshot.getChildren()) {
-                    String fid = d.child("fid").getValue().toString();
-                    String img = d.child("image").getValue().toString();
-                    String ref = d.child("ref").getValue().toString();
-                    String name = d.child("uName").getValue().toString();
-                    String email = d.child("email").getValue().toString();
-                    String title = d.child("title").getValue().toString();
-                    String description = d.child("description").getValue().toString();
-                    String date = d.child("date").getValue().toString();
-                    String category = d.child("category").getValue().toString();
-                    String upload_time = d.child("upload_time").getValue().toString();
-                    String likes = d.child("likes").getValue().toString();
+                    for (DataSnapshot d : snapshot.getChildren()) {
+                        String fid = d.child("fid").getValue().toString();
+                        String img = d.child("image").getValue().toString();
+                        String ref = d.child("ref").getValue().toString();
+                        String name = d.child("uName").getValue().toString();
+                        String email = d.child("email").getValue().toString();
+                        String title = d.child("title").getValue().toString();
+                        String description = d.child("description").getValue().toString();
+                        String date = d.child("date").getValue().toString();
+                        String category = d.child("category").getValue().toString();
+                        String upload_time = d.child("upload_time").getValue().toString();
+                        String likes = d.child("likes").getValue().toString();
 
-                    FeedModel feedModel = new FeedModel(fid, img, ref, name, email, title, description, date, category, upload_time, likes);
+                        FeedModel feedModel = new FeedModel(fid, img, ref, name, email, title, description, date, category, upload_time, likes);
 
-                    feedList.add(feedModel);
-                    adapter = new FeedAdapter(getActivity(), feedList);
-                    recyclerView.setAdapter(adapter);
+                        feedList.add(feedModel);
+                        adapter = new FeedAdapter(getActivity(), feedList);
+                        recyclerView.setAdapter(adapter);
+                    }
                 }
             }
 
@@ -292,26 +293,28 @@ public class FeedFragment extends Fragment {
         ref.orderByChild("likes").addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
-                feedList.clear();
+                if (tabLayout.getSelectedTabPosition() == 1) {
+                    feedList.clear();
 
-                for (DataSnapshot d : snapshot.getChildren()) {
-                    String fid = d.child("fid").getValue().toString();
-                    String img = d.child("image").getValue().toString();
-                    String ref = d.child("ref").getValue().toString();
-                    String name = d.child("uName").getValue().toString();
-                    String email = d.child("email").getValue().toString();
-                    String title = d.child("title").getValue().toString();
-                    String description = d.child("description").getValue().toString();
-                    String date = d.child("date").getValue().toString();
-                    String category = d.child("category").getValue().toString();
-                    String upload_time = d.child("upload_time").getValue().toString();
-                    String likes = d.child("likes").getValue().toString();
+                    for (DataSnapshot d : snapshot.getChildren()) {
+                        String fid = d.child("fid").getValue().toString();
+                        String img = d.child("image").getValue().toString();
+                        String ref = d.child("ref").getValue().toString();
+                        String name = d.child("uName").getValue().toString();
+                        String email = d.child("email").getValue().toString();
+                        String title = d.child("title").getValue().toString();
+                        String description = d.child("description").getValue().toString();
+                        String date = d.child("date").getValue().toString();
+                        String category = d.child("category").getValue().toString();
+                        String upload_time = d.child("upload_time").getValue().toString();
+                        String likes = d.child("likes").getValue().toString();
 
-                    FeedModel feedModel = new FeedModel(fid, img, ref, name, email, title, description, date, category, upload_time, likes);
+                        FeedModel feedModel = new FeedModel(fid, img, ref, name, email, title, description, date, category, upload_time, likes);
 
-                    feedList.add(feedModel);
-                    adapter = new FeedAdapter(getActivity(), feedList);
-                    recyclerView.setAdapter(adapter);
+                        feedList.add(feedModel);
+                        adapter = new FeedAdapter(getActivity(), feedList);
+                        recyclerView.setAdapter(adapter);
+                    }
                 }
             }
 
@@ -328,28 +331,30 @@ public class FeedFragment extends Fragment {
         ref.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
-                feedList.clear();
+                if (tabLayout.getSelectedTabPosition() == 0) {
+                    feedList.clear();
 
-                for (DataSnapshot d : snapshot.getChildren()) {
-                    String fid = d.child("fid").getValue().toString();
-                    String img = d.child("image").getValue().toString();
-                    String ref = d.child("ref").getValue().toString();
-                    String name = d.child("uName").getValue().toString();
-                    String email = d.child("email").getValue().toString();
-                    String title = d.child("title").getValue().toString();
-                    String description = d.child("description").getValue().toString();
-                    String date = d.child("date").getValue().toString();
-                    String category = d.child("category").getValue().toString();
-                    String upload_time = d.child("upload_time").getValue().toString();
-                    String likes = d.child("likes").getValue().toString();
+                    for (DataSnapshot d : snapshot.getChildren()) {
+                        String fid = d.child("fid").getValue().toString();
+                        String img = d.child("image").getValue().toString();
+                        String ref = d.child("ref").getValue().toString();
+                        String name = d.child("uName").getValue().toString();
+                        String email = d.child("email").getValue().toString();
+                        String title = d.child("title").getValue().toString();
+                        String description = d.child("description").getValue().toString();
+                        String date = d.child("date").getValue().toString();
+                        String category = d.child("category").getValue().toString();
+                        String upload_time = d.child("upload_time").getValue().toString();
+                        String likes = d.child("likes").getValue().toString();
 
-                    FeedModel feedModel = new FeedModel(fid, img, ref, name, email, title, description, date, category, upload_time, likes);
+                        FeedModel feedModel = new FeedModel(fid, img, ref, name, email, title, description, date, category, upload_time, likes);
 
-                    if (feedModel.getCategory().contains(c))
-                        feedList.add(feedModel);
+                        if (feedModel.getCategory().contains(c))
+                            feedList.add(feedModel);
 
-                    adapter = new FeedAdapter(getActivity(), feedList);
-                    recyclerView.setAdapter(adapter);
+                        adapter = new FeedAdapter(getActivity(), feedList);
+                        recyclerView.setAdapter(adapter);
+                    }
                 }
             }
 
@@ -366,28 +371,30 @@ public class FeedFragment extends Fragment {
         ref.orderByChild("likes").addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
-                feedList.clear();
+                if (tabLayout.getSelectedTabPosition() == 1) {
+                    feedList.clear();
 
-                for (DataSnapshot d : snapshot.getChildren()) {
-                    String fid = d.child("fid").getValue().toString();
-                    String img = d.child("image").getValue().toString();
-                    String ref = d.child("ref").getValue().toString();
-                    String name = d.child("uName").getValue().toString();
-                    String email = d.child("email").getValue().toString();
-                    String title = d.child("title").getValue().toString();
-                    String description = d.child("description").getValue().toString();
-                    String date = d.child("date").getValue().toString();
-                    String category = d.child("category").getValue().toString();
-                    String upload_time = d.child("upload_time").getValue().toString();
-                    String likes = d.child("likes").getValue().toString();
+                    for (DataSnapshot d : snapshot.getChildren()) {
+                        String fid = d.child("fid").getValue().toString();
+                        String img = d.child("image").getValue().toString();
+                        String ref = d.child("ref").getValue().toString();
+                        String name = d.child("uName").getValue().toString();
+                        String email = d.child("email").getValue().toString();
+                        String title = d.child("title").getValue().toString();
+                        String description = d.child("description").getValue().toString();
+                        String date = d.child("date").getValue().toString();
+                        String category = d.child("category").getValue().toString();
+                        String upload_time = d.child("upload_time").getValue().toString();
+                        String likes = d.child("likes").getValue().toString();
 
-                    FeedModel feedModel = new FeedModel(fid, img, ref, name, email, title, description, date, category, upload_time, likes);
+                        FeedModel feedModel = new FeedModel(fid, img, ref, name, email, title, description, date, category, upload_time, likes);
 
-                    if (feedModel.getCategory().contains(c))
-                        feedList.add(feedModel);
+                        if (feedModel.getCategory().contains(c))
+                            feedList.add(feedModel);
 
-                    adapter = new FeedAdapter(getActivity(), feedList);
-                    recyclerView.setAdapter(adapter);
+                        adapter = new FeedAdapter(getActivity(), feedList);
+                        recyclerView.setAdapter(adapter);
+                    }
                 }
             }
 
