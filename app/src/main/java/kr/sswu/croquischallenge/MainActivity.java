@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
 import android.view.MenuItem;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
@@ -67,8 +68,12 @@ public class MainActivity extends AppCompatActivity {
                 return true;
             }
         });
-
         replaceFragment(R.id.fragment_container, new FeedFragment());
+
+        String showCalendar = getIntent().getStringExtra("flag");
+        if (showCalendar != null && showCalendar.equals("calendar")) 
+            bottomNavigationView.setSelectedItemId(R.id.bottom_calendar);
+
     }
 
     //open new fragment func (activity -> fragment : feedFragment에서 사용)

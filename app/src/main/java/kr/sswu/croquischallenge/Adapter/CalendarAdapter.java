@@ -81,6 +81,8 @@ public class CalendarAdapter extends RecyclerView.Adapter<CalendarAdapter.Calend
 
                         }
 
+                        caption.setText(item.getDescription());
+
                         bottomSheetDialog.setContentView(sheetView);
                         bottomSheetDialog.show();
                     }

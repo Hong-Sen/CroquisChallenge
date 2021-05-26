@@ -1,6 +1,7 @@
 package kr.sswu.croquischallenge;
 
 import android.Manifest;
+import android.app.Activity;
 import android.app.DatePickerDialog;
 import android.app.ProgressDialog;
 import android.content.Intent;
@@ -31,6 +32,9 @@ import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.FileProvider;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -54,6 +58,8 @@ import java.time.format.DateTimeFormatter;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
+
+import kr.sswu.croquischallenge.Fragment.CalendarFragment;
 
 public class AddPhotoCalendarActivity extends AppCompatActivity {
 
@@ -359,7 +365,16 @@ public class AddPhotoCalendarActivity extends AppCompatActivity {
                         Toast.makeText(AddPhotoCalendarActivity.this, e.getMessage(), Toast.LENGTH_SHORT).show();
                     }
                 });
-        //feed upload 후 Feed 메인 회면으로 전환
-        startActivity(new Intent(getApplicationContext(), MainActivity.class));
+
+        Intent intent = new Intent(AddPhotoCalendarActivity.this, MainActivity.class);
+        intent.putExtra("flag", "calendar");
+        startActivity(intent);
+    }
+
+    //open new fragment func (activity -> fragment : feedFragment에서 사용)
+    public void replaceFragment(int container, Fragment fragment) {
+        FragmentManager fragmentManager = getSupportFragmentManager();
+        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+        fragmentTransaction.replace(container, fragment).commit();
     }
 }
