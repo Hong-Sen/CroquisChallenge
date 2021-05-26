@@ -87,7 +87,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.PostViewHolder
             @RequiresApi(api = Build.VERSION_CODES.KITKAT)
             @Override
             public void onClick(View view) {
-                showMoreOption(holder.btnMore, email, mEmail, fid, fImg);
+                showMoreOption(holder.btnMore, email, mEmail, fid, fImg, ref);
             }
         });
 
@@ -186,7 +186,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.PostViewHolder
     }
 
     @RequiresApi(api = Build.VERSION_CODES.KITKAT)
-    private void showMoreOption(ImageView btnMore, String email, String mEmail, String fid, String fImg) {
+    private void showMoreOption(ImageView btnMore, String email, String mEmail, String fid, String fImg, String ref) {
 
         PopupMenu popupMenu = new PopupMenu(ctx, btnMore, Gravity.END);
 
@@ -226,6 +226,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.PostViewHolder
                     Intent intent = new Intent(ctx, PostActivity.class);
                     intent.putExtra("key", "edit");
                     intent.putExtra("editFeedId", fid);
+                    intent.putExtra("editFeedRef", ref);
                     intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                     ctx.startActivity(intent);
 

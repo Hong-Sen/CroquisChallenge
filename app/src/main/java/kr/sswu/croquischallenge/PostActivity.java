@@ -25,6 +25,7 @@ import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.PopupMenu;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -88,6 +89,7 @@ public class PostActivity extends AppCompatActivity {
     private String mCurrentPhotoPath;
     private Uri imageUri, imageRefUri;
 
+    private LinearLayout layout_ref;
     private TextView btn_upload;
     private ImageView btn_close, imageView, add, imageView_ref, add_ref;
     private EditText edit_title, edit_description, edit_date, edit_category;
@@ -98,7 +100,8 @@ public class PostActivity extends AppCompatActivity {
 
     //Edit
     private String editTitle, editDescription, editDate, editCategory, editImage, editRef;
-    String isEditKey, editFeedId ;
+    String isEditKey, editFeedId, editFeedRef;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -146,6 +149,8 @@ public class PostActivity extends AppCompatActivity {
         btn_date = (ImageButton) findViewById(R.id.btn_date);
         btn_category = (ImageButton) findViewById(R.id.btn_category);
 
+        layout_ref = (LinearLayout) findViewById(R.id.layout_ref);
+
         progressDialog = new ProgressDialog(this);
 
         //edited
@@ -153,6 +158,7 @@ public class PostActivity extends AppCompatActivity {
         if (intent != null) {
             isEditKey = intent.getStringExtra("key");
             editFeedId = intent.getStringExtra("editFeedId");
+            editFeedRef = intent.getStringExtra("editFeedRef");
         }
 
         if (isEditKey == null) {
@@ -162,7 +168,10 @@ public class PostActivity extends AppCompatActivity {
             tool_bar_title.setText("Edit Post");
             btn_upload.setText("Update");
             imageView.setEnabled(false);
-            imageView_ref.setEnabled(false);
+            if (editFeedRef.equals("")) {
+                layout_ref.setVisibility(View.GONE);
+            } else
+                imageView_ref.setEnabled(false);
             loadFeedData(editFeedId);
         }
 
@@ -380,13 +389,13 @@ public class PostActivity extends AppCompatActivity {
 
                     }
 
-                    if (!editRef.equals("")) {
+                    if (!editRef.equals(""))
                         try {
                             Picasso.get().load(editRef).into(imageView_ref);
                         } catch (Exception e) {
 
                         }
-                    }
+
                 }
             }
 
