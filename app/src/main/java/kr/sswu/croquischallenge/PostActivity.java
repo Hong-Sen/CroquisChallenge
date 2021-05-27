@@ -84,12 +84,11 @@ public class PostActivity extends AppCompatActivity {
 
     private String name, email, uid;
 
-    private BottomSheetDialog bottomSheetDialog;
+    private BottomSheetDialog bottomSheetDialog, bottomCheckDialog;
 
     private String mCurrentPhotoPath;
     private Uri imageUri, imageRefUri;
 
-    private LinearLayout layout_ref;
     private TextView btn_upload;
     private ImageView btn_close, imageView, add, imageView_ref, add_ref;
     private EditText edit_title, edit_description, edit_date, edit_category;
@@ -101,6 +100,7 @@ public class PostActivity extends AppCompatActivity {
     //Edit
     private String editTitle, editDescription, editDate, editCategory, editImage, editRef;
     String isEditKey, editFeedId, editFeedRef;
+    private boolean isEditRef = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -149,8 +149,6 @@ public class PostActivity extends AppCompatActivity {
         btn_date = (ImageButton) findViewById(R.id.btn_date);
         btn_category = (ImageButton) findViewById(R.id.btn_category);
 
-        layout_ref = (LinearLayout) findViewById(R.id.layout_ref);
-
         progressDialog = new ProgressDialog(this);
 
         //edited
@@ -168,10 +166,6 @@ public class PostActivity extends AppCompatActivity {
             tool_bar_title.setText("Edit Post");
             btn_upload.setText("Update");
             imageView.setEnabled(false);
-            if (editFeedRef.equals("")) {
-                layout_ref.setVisibility(View.GONE);
-            } else
-                imageView_ref.setEnabled(false);
             loadFeedData(editFeedId);
         }
 
@@ -203,9 +197,11 @@ public class PostActivity extends AppCompatActivity {
                             uploadToFirebase(imageUri, imageRefUri);
                     } else
                         Toast.makeText(getApplicationContext(), "Select image", Toast.LENGTH_SHORT).show();
-                } else if (isEditKey.equals("edit")) {
-                    updateToFirebase(edit_title, edit_description, edit_category, edit_date, editFeedId);
-                }
+                } else if (isEditKey.equals("edit"))
+                    if (isEditRef == true)
+                        updateToFirebase(edit_title, edit_description, edit_category, edit_date, String.valueOf(imageRefUri), editFeedId);
+                    else
+                        updateToFirebase(edit_title, edit_description, edit_category, edit_date, editFeedRef, editFeedId);
             }
         });
 
@@ -297,39 +293,83 @@ public class PostActivity extends AppCompatActivity {
         imageView_ref.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                bottomSheetDialog = new BottomSheetDialog(PostActivity.this, R.style.BottomSheetTheme);
+                if (isEditKey == null) {
+                    showBottomSheet();
+                } else {
+                    bottomCheckDialog = new BottomSheetDialog(PostActivity.this, R.style.BottomSheetTheme);
+                    View checkView = LayoutInflater.from(getApplicationContext()).inflate(R.layout.bottom_sheet_ref_layout,
+                            (ViewGroup) findViewById(R.id.bottom_sheet));
 
-                View sheetView = LayoutInflater.from(getApplicationContext()).inflate(R.layout.bottom_sheet_layout,
-                        (ViewGroup) findViewById(R.id.bottom_sheet));
+                    TextView replace = checkView.findViewById(R.id.replace);
+                    if (editFeedRef.equals(""))
+                        replace.setText("Add Photo");
+                    else
+                        replace.setText("Replace Photo");
 
-                sheetView.findViewById(R.id.getCamera).setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-                        //카메라로 사진 가져오기
-                        dispatchTakePhotoIntent(REF_CAMERA_ACTION_CODE);
-                    }
-                });
+                    checkView.findViewById(R.id.replace).setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View view) {
+                            showBottomSheet();
+                            bottomCheckDialog.dismiss();
+                        }
+                    });
 
-                sheetView.findViewById(R.id.getGallery).setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-                        // 앨범에서 사진 가져오기
-                        Intent intent = new Intent();
-                        intent.setAction(Intent.ACTION_GET_CONTENT);
-                        intent.setType("image/*");
-                        startActivityForResult(intent, REF_GALLERY_ACTION_CODE);
+                    checkView.findViewById(R.id.delete).setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View view) {
+                            isEditRef = true;
 
-                        bottomSheetDialog.dismiss();
-                    }
-                });
-                bottomSheetDialog.setContentView(sheetView);
-                bottomSheetDialog.show();
+                            imageRefUri = Uri.parse("");
+                            imageView_ref.setImageResource(R.drawable.image_border);
+                            add_ref.setVisibility(View.VISIBLE);
+
+                            bottomCheckDialog.dismiss();
+                        }
+                    });
+
+                    bottomCheckDialog.setContentView(checkView);
+                    bottomCheckDialog.show();
+                }
+            }
+        });
+    }
+
+    private void showBottomSheet() {
+        bottomSheetDialog = new BottomSheetDialog(PostActivity.this, R.style.BottomSheetTheme);
+
+        View sheetView = LayoutInflater.from(getApplicationContext()).inflate(R.layout.bottom_sheet_layout,
+                (ViewGroup) findViewById(R.id.bottom_sheet));
+
+        sheetView.findViewById(R.id.getCamera).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (isEditKey != null)
+                    isEditRef = true;
+                //카메라로 사진 가져오기
+                dispatchTakePhotoIntent(REF_CAMERA_ACTION_CODE);
             }
         });
 
+        sheetView.findViewById(R.id.getGallery).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (isEditKey != null)
+                    isEditRef = true;
+                // 앨범에서 사진 가져오기
+                Intent intent = new Intent();
+                intent.setAction(Intent.ACTION_GET_CONTENT);
+                intent.setType("image/*");
+                startActivityForResult(intent, REF_GALLERY_ACTION_CODE);
+
+                bottomSheetDialog.dismiss();
+
+            }
+        });
+        bottomSheetDialog.setContentView(sheetView);
+        bottomSheetDialog.show();
     }
 
-    private void updateToFirebase(EditText edit_title, EditText edit_description, EditText edit_category, EditText edit_date, String editFeedId) {
+    private void updateToFirebase(EditText edit_title, EditText edit_description, EditText edit_category, EditText edit_date, String refUri, String editFeedId) {
         progressDialog.setMessage("Update..");
         progressDialog.show();
 
@@ -339,6 +379,7 @@ public class PostActivity extends AppCompatActivity {
         feed.put("description", edit_description.getEditableText().toString());
         feed.put("date", edit_date.getText().toString());
         feed.put("category", edit_category.getEditableText().toString());
+        feed.put("ref", refUri);
 
         DatabaseReference ref = FirebaseDatabase.getInstance().getReference("Feeds");
         ref.child(editFeedId)
