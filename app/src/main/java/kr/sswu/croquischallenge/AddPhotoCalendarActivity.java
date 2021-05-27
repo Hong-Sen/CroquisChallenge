@@ -1,7 +1,6 @@
 package kr.sswu.croquischallenge;
 
 import android.Manifest;
-import android.app.Activity;
 import android.app.DatePickerDialog;
 import android.app.ProgressDialog;
 import android.content.Intent;
@@ -19,7 +18,6 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -58,8 +56,6 @@ import java.time.format.DateTimeFormatter;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
-
-import kr.sswu.croquischallenge.Fragment.CalendarFragment;
 
 public class AddPhotoCalendarActivity extends AppCompatActivity {
 
@@ -150,7 +146,7 @@ public class AddPhotoCalendarActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 bottomSheetDialog = new BottomSheetDialog(AddPhotoCalendarActivity.this, R.style.BottomSheetTheme);
-                View sheetView = LayoutInflater.from(getApplicationContext()).inflate(R.layout.bottom_sheet_layout,
+                View sheetView = LayoutInflater.from(getApplicationContext()).inflate(R.layout.bottom_sheet_photo_layout,
                         (ViewGroup) findViewById(R.id.bottom_sheet));
 
                 sheetView.findViewById(R.id.getCamera).setOnClickListener(new View.OnClickListener() {

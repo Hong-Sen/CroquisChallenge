@@ -178,6 +178,7 @@ public class CalendarFragment extends Fragment {
                     if (calendarModel.getMonthYear().equals(model.getMonthYear())) {
                         if (i - dayOfWeek < 10) {
                             if (calendarModel.getDay().equals("0" + String.valueOf(i - dayOfWeek))) {
+                                model.setFid(calList.get(j).getFid());
                                 model.setImage(calList.get(j).getImage());
                                 model.setDescription(calList.get(j).getDescription());
                                 countAdd++;
@@ -185,6 +186,7 @@ public class CalendarFragment extends Fragment {
                             }
                         } else {
                             if (calendarModel.getDay().equals(String.valueOf(i - dayOfWeek))) {
+                                model.setFid(calList.get(j).getFid());
                                 model.setImage(calList.get(j).getImage());
                                 model.setDescription(calList.get(j).getDescription());
                                 countAdd++;
@@ -196,6 +198,7 @@ public class CalendarFragment extends Fragment {
             }
 
             if (model.getImage() == null) {
+                model.setFid("");
                 model.setImage("");
                 model.setDescription("");
             }
