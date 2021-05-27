@@ -1,6 +1,8 @@
 package kr.sswu.croquischallenge.Fragment;
 
 import android.app.DatePickerDialog;
+import android.content.res.ColorStateList;
+import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
@@ -9,6 +11,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.DatePicker;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -45,6 +48,9 @@ public class CalendarFragment extends Fragment {
     private TextView monthYear;
     private RecyclerView recyclerView;
 
+    private ProgressBar progressBar;
+    private TextView txt_progress, txt_totalDay;
+
     public CalendarAdapter adapter;
     private ArrayList<CalendarModel> calList;
 
@@ -60,6 +66,10 @@ public class CalendarFragment extends Fragment {
         back = (ImageView) view.findViewById(R.id.btn_back);
         monthYear = (TextView) view.findViewById(R.id.txt_monthYear);
         forward = (ImageView) view.findViewById(R.id.btn_forward);
+
+        progressBar = (ProgressBar) view.findViewById(R.id.cal_progressBar);
+        txt_progress = (TextView) view.findViewById(R.id.txt_progress);
+        txt_totalDay = (TextView) view.findViewById(R.id.txt_totalDay);
 
         RecyclerView.LayoutManager layoutManager = new GridLayoutManager(getContext(), 7);
         recyclerView = (RecyclerView) view.findViewById(R.id.calendarRecyclerView);
@@ -143,6 +153,7 @@ public class CalendarFragment extends Fragment {
 
     @RequiresApi(api = Build.VERSION_CODES.O)
     private void setMonthView() {
+        int countAdd = 0;
 
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy MM");
         monthYear.setText(selectedDate.format(formatter));
@@ -164,20 +175,23 @@ public class CalendarFragment extends Fragment {
                 model.setDay(String.valueOf(i - dayOfWeek));
                 for (int j = 0; j < calList.size(); j++) {
                     CalendarModel calendarModel = calList.get(j);
-                    if (calendarModel.getMonthYear().equals(model.getMonthYear()))
+                    if (calendarModel.getMonthYear().equals(model.getMonthYear())) {
                         if (i - dayOfWeek < 10) {
                             if (calendarModel.getDay().equals("0" + String.valueOf(i - dayOfWeek))) {
                                 model.setImage(calList.get(j).getImage());
                                 model.setDescription(calList.get(j).getDescription());
+                                countAdd++;
                                 break;
                             }
                         } else {
                             if (calendarModel.getDay().equals(String.valueOf(i - dayOfWeek))) {
                                 model.setImage(calList.get(j).getImage());
                                 model.setDescription(calList.get(j).getDescription());
+                                countAdd++;
                                 break;
                             }
                         }
+                    }
                 }
             }
 
@@ -185,6 +199,12 @@ public class CalendarFragment extends Fragment {
                 model.setImage("");
                 model.setDescription("");
             }
+
+            txt_totalDay.setText(" / " + String.valueOf(daysInMonth));
+            txt_progress.setText(String.valueOf(countAdd));
+            progressBar.setMax(daysInMonth);
+            progressBar.setProgress(countAdd);
+            progressBar.setProgressTintList(ColorStateList.valueOf(Color.DKGRAY));
 
             daysInMonthArray.add(model);
             adapter = new CalendarAdapter(getContext(), daysInMonthArray);
