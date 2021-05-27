@@ -7,48 +7,59 @@
     android:padding="15dp"
     android:orientation="vertical">
 
-    <LinearLayout
-        android:id="@+id/btn_showPhoto"
+    <TextView
         android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_marginTop="10dp"
+        android:text="ADD PHOTO"
+        android:textColor="@color/grey"
+        android:textSize="18sp"
+        android:textStyle="bold" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
         android:padding="8dp">
 
         <ImageView
-            android:layout_width="25dp"
-            android:layout_height="30dp"
-            android:src="@drawable/ic_show_calendar" />
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/camera" />
 
         <TextView
+            android:id="@+id/getCamera"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textColor="@color/grey_dark"
             android:layout_gravity="center"
             android:layout_marginLeft="23dp"
-            android:text="Show Photo"
-            android:textSize="17sp" />
+            android:text="CAMERA"
+            android:textSize="16sp" />
     </LinearLayout>
 
     <LinearLayout
-        android:id="@+id/btn_deletePhoto"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
         android:padding="8dp">
 
         <ImageView
-            android:layout_width="25dp"
-            android:layout_height="30dp"
-            android:src="@drawable/ic_delete" />
-
-        <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textColor="@color/red"
+            android:src="@drawable/album" />
+
+        <TextView
+            android:id="@+id/getGallery"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/grey_dark"
             android:layout_gravity="center"
             android:layout_marginLeft="23dp"
-            android:text="Delete Photo"
-            android:textSize="17sp" />
+            android:text="GALLERY"
+            android:textSize="16sp" />
     </LinearLayout>
+
 
 </LinearLayout>

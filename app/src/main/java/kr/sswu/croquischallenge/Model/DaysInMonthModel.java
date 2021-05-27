@@ -1,17 +1,25 @@
 package kr.sswu.croquischallenge.Model;
 
 public class DaysInMonthModel {
-    private String monthYear, day, image, description;
+    private String fid, monthYear, day, image, description;
 
     public DaysInMonthModel() {
     }
 
 
-    public DaysInMonthModel(String monthYear, String day, String image, String description) {
+    public DaysInMonthModel(String fid, String monthYear, String day, String image, String description) {
         this.monthYear = monthYear;
         this.day = day;
         this.image = image;
         this.description = description;
+    }
+
+    public void setFid(String fid) {
+        this.fid = fid;
+    }
+
+    public String getFid() {
+        return fid;
     }
 
     public void setImage(String image) {
