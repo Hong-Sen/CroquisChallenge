@@ -121,10 +121,10 @@ public class TimerActivity extends AppCompatActivity {
         String timeLeftFormatted;
         if (hours > 0) {
             timeLeftFormatted = String.format(Locale.getDefault(),
-                    "%d:%02d:%02d", hours, minutes, seconds);
+                    "%d : %02d : %02d", hours, minutes, seconds);
         } else {
             timeLeftFormatted = String.format(Locale.getDefault(),
-                    "%02d:%02d", minutes, seconds);
+                    "%02d : %02d", minutes, seconds);
         }
         mTextViewCountDown.setText(timeLeftFormatted);
     }
