@@ -195,7 +195,14 @@ public class PostActivity extends AppCompatActivity {
                         Toast.makeText(getApplicationContext(), "Select image", Toast.LENGTH_SHORT).show();
                 } else if (isEditKey.equals("edit"))
                     if (isEditRef == true)
-                        updateToFirebase(edit_title, edit_description, edit_category, edit_date, String.valueOf(imageRefUri), editFeedId);
+                        if (imageRefUri == null) {
+                            updateToFirebase(edit_title, edit_description, edit_category, edit_date, "", editFeedId);
+                        } else {
+                            if (editFeedRef.equals(""))
+                                updateToFirebaseNullRef(edit_title, edit_description, edit_category, edit_date, imageRefUri, editFeedId);
+                            else
+                                updateToFirebaseWithRef(edit_title, edit_description, edit_category, edit_date, imageRefUri, editFeedId);
+                        }
                     else
                         updateToFirebase(edit_title, edit_description, edit_category, edit_date, editFeedRef, editFeedId);
             }
@@ -315,7 +322,8 @@ public class PostActivity extends AppCompatActivity {
                         public void onClick(View view) {
                             isEditRef = true;
 
-                            imageRefUri = Uri.parse("");
+                            imageRefUri = null;
+                            ;
                             imageView_ref.setImageResource(R.drawable.image_border);
                             add_ref.setVisibility(View.VISIBLE);
 
@@ -365,6 +373,141 @@ public class PostActivity extends AppCompatActivity {
         bottomSheetDialog.show();
     }
 
+    private void updateToFirebaseNullRef(EditText edit_title, EditText edit_description, EditText edit_category, EditText edit_date, Uri refUri, String editFeedId) {
+        String timeStamp = String.valueOf(System.currentTimeMillis());
+
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTimeInMillis(System.currentTimeMillis());
+
+        String filePathName = "Feeds/" + "src_" + timeStamp;
+
+        StorageReference ref = FirebaseStorage.getInstance().getReference().child(filePathName);
+
+        ref.putFile(refUri)
+                .addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+                    @Override
+                    public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                        Task<Uri> uriTask = taskSnapshot.getStorage().getDownloadUrl();
+                        while (!uriTask.isSuccessful()) ;
+
+                        String downloadUri = uriTask.getResult().toString();
+
+                        if (uriTask.isSuccessful()) {
+                            HashMap<String, Object> feed = new HashMap<>();
+
+                            feed.put("title", edit_title.getText().toString());
+                            feed.put("description", edit_description.getEditableText().toString());
+                            feed.put("date", edit_date.getText().toString());
+                            feed.put("category", edit_category.getEditableText().toString());
+                            feed.put("ref", downloadUri);
+
+                            DatabaseReference ref = FirebaseDatabase.getInstance().getReference("Feeds");
+                            ref.child(editFeedId)
+                                    .updateChildren(feed)
+                                    .addOnSuccessListener(new OnSuccessListener<Void>() {
+                                        @Override
+                                        public void onSuccess(Void aVoid) {
+                                            progressDialog.dismiss();
+                                            Toast.makeText(PostActivity.this, "Updated Successfully", Toast.LENGTH_SHORT).show();
+                                        }
+                                    })
+                                    .addOnFailureListener(new OnFailureListener() {
+                                        @Override
+                                        public void onFailure(@NonNull Exception e) {
+                                            progressDialog.dismiss();
+                                            Toast.makeText(PostActivity.this, e.getMessage(), Toast.LENGTH_SHORT).show();
+                                        }
+                                    });
+                        }
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        progressDialog.dismiss();
+                        Toast.makeText(PostActivity.this, e.getMessage(), Toast.LENGTH_SHORT).show();
+                    }
+                });
+        finish();
+    }
+
+    private void updateToFirebaseWithRef(EditText edit_title, EditText edit_description, EditText edit_category, EditText edit_date, Uri refUri, String editFeedId) {
+        progressDialog.setMessage("Update..");
+        progressDialog.show();
+
+        StorageReference feedRef = FirebaseStorage.getInstance().getReferenceFromUrl(editFeedRef);
+        feedRef.delete()
+                .addOnSuccessListener(new OnSuccessListener<Void>() {
+                    @Override
+                    public void onSuccess(Void aVoid) {
+                        String timeStamp = String.valueOf(System.currentTimeMillis());
+
+                        Calendar calendar = Calendar.getInstance();
+                        calendar.setTimeInMillis(System.currentTimeMillis());
+
+                        String filePathName = "Feeds/" + "src_" + timeStamp;
+
+                        StorageReference ref = FirebaseStorage.getInstance().getReference().child(filePathName);
+
+                        ref.putFile(refUri)
+                                .addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+                                    @Override
+                                    public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                                        Task<Uri> uriTask = taskSnapshot.getStorage().getDownloadUrl();
+                                        while (!uriTask.isSuccessful()) ;
+
+                                        String downloadUri = uriTask.getResult().toString();
+
+                                        if (uriTask.isSuccessful()) {
+                                            HashMap<String, Object> feed = new HashMap<>();
+
+                                            feed.put("title", edit_title.getText().toString());
+                                            feed.put("description", edit_description.getEditableText().toString());
+                                            feed.put("date", edit_date.getText().toString());
+                                            feed.put("category", edit_category.getEditableText().toString());
+                                            feed.put("ref", downloadUri);
+
+                                            DatabaseReference ref = FirebaseDatabase.getInstance().getReference("Feeds");
+                                            ref.child(editFeedId)
+                                                    .updateChildren(feed)
+                                                    .addOnSuccessListener(new OnSuccessListener<Void>() {
+                                                        @Override
+                                                        public void onSuccess(Void aVoid) {
+                                                            progressDialog.dismiss();
+                                                            Toast.makeText(PostActivity.this, "Updated Successfully", Toast.LENGTH_SHORT).show();
+                                                        }
+                                                    })
+                                                    .addOnFailureListener(new OnFailureListener() {
+                                                        @Override
+                                                        public void onFailure(@NonNull Exception e) {
+                                                            progressDialog.dismiss();
+                                                            Toast.makeText(PostActivity.this, e.getMessage(), Toast.LENGTH_SHORT).show();
+                                                        }
+                                                    });
+                                        }
+                                    }
+                                })
+                                .addOnFailureListener(new OnFailureListener() {
+                                    @Override
+                                    public void onFailure(@NonNull Exception e) {
+                                        progressDialog.dismiss();
+                                        Toast.makeText(PostActivity.this, e.getMessage(), Toast.LENGTH_SHORT).show();
+                                    }
+                                });
+                    }
+
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        progressDialog.dismiss();
+                        Toast.makeText(PostActivity.this, e.getMessage(), Toast.LENGTH_SHORT).show();
+                    }
+                });
+        progressDialog.dismiss();
+        finish();
+    }
+
     private void updateToFirebase(EditText edit_title, EditText edit_description, EditText edit_category, EditText edit_date, String refUri, String editFeedId) {
         progressDialog.setMessage("Update..");
         progressDialog.show();
@@ -391,9 +534,9 @@ public class PostActivity extends AppCompatActivity {
                     @Override
                     public void onFailure(@NonNull Exception e) {
                         progressDialog.dismiss();
+                        Toast.makeText(PostActivity.this, e.getMessage(), Toast.LENGTH_SHORT).show();
                     }
                 });
-        //feed update 후 Feed 메인 회면으로 전환
         finish();
     }
 
@@ -494,7 +637,7 @@ public class PostActivity extends AppCompatActivity {
             imageView_ref.setBackgroundColor(Color.WHITE);
             imageView_ref.setImageURI(imageRefUri);
             add_ref.setVisibility(View.GONE);
-            txt_ref.setTextColor(Integer.parseInt("#222625"));
+            txt_ref.setTextColor(Color.DKGRAY);
         }
 
         // 카메라로 사진을 찍어 이미지 가져오는 경우 // image
@@ -546,7 +689,7 @@ public class PostActivity extends AppCompatActivity {
                             imageView_ref.setBackgroundColor(Color.WHITE);
                             imageView_ref.setImageURI(imageRefUri);
                             add_ref.setVisibility(View.GONE);
-                            txt_ref.setTextColor(Integer.parseInt("#222625"));
+                            txt_ref.setTextColor(Color.DKGRAY);
                         }
                     } catch (IOException e) {
                         e.printStackTrace();
@@ -558,7 +701,7 @@ public class PostActivity extends AppCompatActivity {
                             imageView_ref.setBackgroundColor(Color.WHITE);
                             imageView_ref.setImageURI(imageRefUri);
                             add_ref.setVisibility(View.GONE);
-                            txt_ref.setTextColor(Integer.parseInt("#222625"));
+                            txt_ref.setTextColor(Color.DKGRAY);
                         }
                     } catch (IOException e) {
                         e.printStackTrace();
@@ -705,14 +848,16 @@ public class PostActivity extends AppCompatActivity {
         String fileSrcPathName = "Feeds/" + "src_" + timeStamp;
 
         StorageReference ref = FirebaseStorage.getInstance().getReference().child(filePathName);
-
         StorageReference refSrc = FirebaseStorage.getInstance().getReference().child(fileSrcPathName);
+
         refSrc.putFile(srcUri)
                 .addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
                     @Override
                     public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
                         Task<Uri> uriTask = taskSnapshot.getStorage().getDownloadUrl();
                         while (!uriTask.isSuccessful()) ;
+
+                        String downloadSrcUri = uriTask.getResult().toString();
 
                         if (uriTask.isSuccessful()) {
                             ref.putFile(uri)
@@ -732,7 +877,7 @@ public class PostActivity extends AppCompatActivity {
                                                 feed.put("email", email);
                                                 feed.put("upload_time", fTime);
                                                 feed.put("image", downloadUri);
-                                                feed.put("ref", imageRefUri.toString());
+                                                feed.put("ref", downloadSrcUri);
                                                 feed.put("title", edit_title.getText().toString());
                                                 feed.put("description", edit_description.getEditableText().toString());
                                                 feed.put("date", edit_date.getText().toString());
