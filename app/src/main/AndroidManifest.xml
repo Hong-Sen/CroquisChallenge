@@ -23,9 +23,8 @@
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-        android:theme="@style/Theme.CroquisChallenge"
-        android:debuggable="false"
-        tools:ignore="HardcodedDebugMode">
+        android:theme="@style/Theme.CroquisChallenge" >
+
 
         <activity android:name=".FeedListActivity" />
         <activity android:name=".RegisterActivity" />
